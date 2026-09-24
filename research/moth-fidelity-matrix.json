@@ -1,0 +1,93 @@
+{
+  "timestamp": "2026-09-24T17:07:30Z",
+  "n_samples_per_clip": 40,
+  "shots": 256,
+  "schemes": [
+    "QSM",
+    "QPAM",
+    "SQPAM"
+  ],
+  "clips": [
+    "sine",
+    "mix",
+    "step"
+  ],
+  "matrix": {
+    "QSM": {
+      "sine": {
+        "ok": true,
+        "pearson": 0.9826727222893884,
+        "mse": 0.0046,
+        "elapsed": 0.987
+      },
+      "mix": {
+        "ok": true,
+        "pearson": 0.99952080157516,
+        "mse": 0.0003,
+        "elapsed": 0.033
+      },
+      "step": {
+        "ok": true,
+        "pearson": 0.0,
+        "mse": 0.32,
+        "elapsed": 0.01
+      }
+    },
+    "QPAM": {
+      "sine": {
+        "ok": true,
+        "pearson": 0.8730230138317808,
+        "mse": 0.0839,
+        "elapsed": 0.017
+      },
+      "mix": {
+        "ok": true,
+        "pearson": 0.8383155474170889,
+        "mse": 0.0801,
+        "elapsed": 0.014
+      },
+      "step": {
+        "ok": true,
+        "pearson": 0.7301929253224568,
+        "mse": 0.1676,
+        "elapsed": 0.016
+      }
+    },
+    "SQPAM": {
+      "sine": {
+        "ok": true,
+        "pearson": 0.590238930812353,
+        "mse": 0.2816,
+        "elapsed": 10.27
+      },
+      "mix": {
+        "ok": true,
+        "pearson": 0.49199984454058976,
+        "mse": 0.3263,
+        "elapsed": 10.15
+      },
+      "step": {
+        "ok": true,
+        "pearson": 0.6596897267089924,
+        "mse": 0.3957,
+        "elapsed": 10.165
+      }
+    }
+  },
+  "best_scheme_per_clip": {
+    "sine": [
+      "QSM",
+      0.9826727222893884
+    ],
+    "mix": [
+      "QSM",
+      0.99952080157516
+    ],
+    "step": [
+      "QPAM",
+      0.7301929253224568
+    ]
+  },
+  "ok_count": 9,
+  "total_count": 9
+}

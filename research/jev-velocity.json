@@ -1,0 +1,102 @@
+{
+  "summary": {
+    "doctrine": "3 N-of-M verdict > single-model gate"
+  },
+  "questions": {
+    "bedrock_A": {
+      "n": 20,
+      "mean": 0.288,
+      "min": 0.27,
+      "max": 0.31,
+      "first_stable_trial": 1,
+      "trace_first10": [
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.28,
+        0.29,
+        0.29,
+        0.29,
+        0.29,
+        0.29
+      ]
+    },
+    "bedrock_B": {
+      "n": 20,
+      "mean": 0.5385,
+      "min": 0.47,
+      "max": 0.59,
+      "first_stable_trial": 20,
+      "trace_first10": [
+        0.47,
+        0.48,
+        0.5,
+        0.5,
+        0.51,
+        0.52,
+        0.53,
+        0.53,
+        0.54,
+        0.54
+      ]
+    },
+    "speculative_A": {
+      "n": 20,
+      "mean": 0.202,
+      "min": 0.19,
+      "max": 0.21,
+      "first_stable_trial": 1,
+      "trace_first10": [
+        0.19,
+        0.2,
+        0.2,
+        0.2,
+        0.2,
+        0.2,
+        0.2,
+        0.2,
+        0.2,
+        0.2
+      ]
+    },
+    "speculative_B": {
+      "n": 20,
+      "mean": 0.1915,
+      "min": 0.18,
+      "max": 0.21,
+      "first_stable_trial": 1,
+      "trace_first10": [
+        0.18,
+        0.18,
+        0.18,
+        0.18,
+        0.18,
+        0.19,
+        0.19,
+        0.19,
+        0.19,
+        0.19
+      ]
+    },
+    "borderline": {
+      "n": 20,
+      "mean": 0.302,
+      "min": 0.29,
+      "max": 0.33,
+      "first_stable_trial": 1,
+      "trace_first10": [
+        0.29,
+        0.29,
+        0.29,
+        0.29,
+        0.3,
+        0.3,
+        0.3,
+        0.3,
+        0.3,
+        0.3
+      ]
+    }
+  }
+}
