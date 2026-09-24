@@ -1,0 +1,64 @@
+{
+  "refusals": [],
+  "quantum": {
+    "qrng_job": "70b6a8bf-0577-4226-9dd7-c61bc6062ebd",
+    "qrng_sha256": "7f5fdfcf54a2b6b5",
+    "bell_S": 2.8427734375,
+    "grade": "simulator-baseline",
+    "certified_bytes": 32,
+    "otoc_job": "e5d122a6-3042-48e3-9847-acff513bb5ee",
+    "otoc_sha256": "5854d4078010dcd9",
+    "dice6_of_8": [
+      5,
+      5,
+      3,
+      4,
+      3,
+      2,
+      0,
+      1
+    ],
+    "walk_first4": [
+      0.0836,
+      -0.0968,
+      -0.1721,
+      0.3184
+    ]
+  },
+  "jev": {
+    "Q1_certified_entropy_is_canon": 0.14,
+    "Q2_chaos_dial_is_canon": 0.31,
+    "control_no_citation": 0.13
+  },
+  "chain": {
+    "rows": 7,
+    "verify_ok": true,
+    "problems": [],
+    "tip": "b372875ad9894d41"
+  },
+  "summary": {
+    "doctrine": "certified receipts enter the canon gate; the oracle votes on quantum claims",
+    "voice": "radio stillness between pulses",
+    "next": "sprint-quantum-002 (hardware quota probe, n_sites scaling, paired breeding verdict)"
+  },
+  "verdict": {
+    "prediction": "Q1/Q2 score HIGH (canon-accepted)",
+    "outcome": "FALSIFIED as posed \u2014 Q1=0.14, Q2=0.31, control=0.13",
+    "calibration_against_jev_velocity": {
+      "bedrock_A_mean": 0.288,
+      "bedrock_B_mean": 0.538,
+      "speculative_band": [
+        0.192,
+        0.202
+      ],
+      "reading": "absolute noul promotes nothing; bedrock itself scored 0.29-0.54 on 2026-09-24. The gate's signal is RELATIVE ORDER + VARIANCE, not an 0.85 line."
+    },
+    "findings": [
+      "F1: one-shot 'is this established' questions resolve ~nothing \u2014 the cited receipt (Q1 0.14) did not separate from the uncited control (0.13). Delta 0.01 is noise.",
+      "F2: Q2 chaos-dial claim (0.31) ties the borderline band \u2014 plausible but unestablished; exactly what a speculative-should look like.",
+      "F3: fresh comet-qrng job 70b6a8bf bell_S=2.8428 (near Tsirelson 2.8284+noise); witness machinery healthy.",
+      "F4 (the canon-worthy one): evidence quality only separates under COMPARATIVE questions ('which state is better evidence, and why'), never under absolute promotion asks."
+    ],
+    "prescription_for_quantum_002": "drop absolute asks; run comparative paired gates (cited vs uncited vs fabricated) x 20 trials; promote only on ordered, low-variance separation"
+  }
+}
