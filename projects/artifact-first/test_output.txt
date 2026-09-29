@@ -1,0 +1,22 @@
+
+  artifact-first test suite
+  ============================================================
+  [PASS] grounded claim passes gate 1
+  [PASS] claim made before its artifact fails gate 1
+  [PASS] claim with no receipt is UNSOURCED not false
+  [PASS] NEGATIVE: unparseable timestamps are UNSOURCED, not a crash
+  [PASS] lag is negative exactly when the claim came first
+  [PASS] CLEAN report produces no findings
+  [PASS] NEGATIVE: C1 universal-vs-exception is detected
+  [PASS] NEGATIVE: C2 summary-only statistic is detected
+  [PASS] NEGATIVE: C3 polarity flip is detected
+  [PASS] NEGATIVE: C4 count disagreement is detected
+  [PASS] DOCUMENTED LIMIT: a headingless report has no body, so C1 cannot fire
+  [PASS] every check has a corresponding firing input
+  [PASS] the linter rediscovers the REAL defect in the REAL fleet report
+  [PASS] grounded claim with a contradictory report FAILS the combined gate
+  [PASS] grounded claim with a clean report PASSES the combined gate
+  [PASS] unsourced claim FAILS even with a clean report
+  [PASS] NEGATIVE: the combined gate is not just gate 1 -- a grounded claim can still fail it
+  ============================================================
+  17/17 correct
