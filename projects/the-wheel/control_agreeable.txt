@@ -1,0 +1,24 @@
+  IS THE ORACLE AGREEABLE AS A SECOND INSTRUMENT? Three subjects, one call.
+  Only the third has a real artifact.
+
+    truth:   NO artifact / NO artifact but DESCRIBED AS IF it had one / real artifact
+  ----------------------------------------------------------------------------
+    NO artifact                                oracle p = 0.04
+    NO artifact, described AS IF it had one    oracle p = 0.48
+    real artifact                              oracle p = 0.96
+  ----------------------------------------------------------------------------
+    spread: 0.920
+
+  READ:
+    1. It is NOT agreeable. A bare no-evidence subject scores 0.04.
+    2. But it is DESCRIPTION-SENSITIVE. Describing the same non-existent artifact as
+       having a repo, code paths and stored results moves it 0.04 -> 0.48. Not fooled,
+       but moved by a factor of twelve.
+    3. So it is a genuine second route, with a quantified limit: it reads the DESCRIPTION
+       of an artifact, not the artifact. The three disagreements in calibrate.log are
+       therefore real signal that the keyword matcher under-counts -- and the three
+       papers deserve a human look.
+
+  THE CONTROL IS THE DELIVERABLE. Without it, "the oracle disagrees with me" would have
+  read as "my matcher is wrong", which is exactly the conclusion the oracle's
+  agreeableness would have manufactured.
