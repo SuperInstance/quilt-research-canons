@@ -1,0 +1,74 @@
+
+  THE LOCALITY FRONTIER
+  ==================================================================================
+  Locality is a spectral property (Cheeger). Positive Ollivier curvature forbids
+  expanders (Salez 2022; Hutchcroft-Munch 2025). So local-niceness and global-
+  connectivity are two ends of ONE axis, not two dials.
+
+  lattice                     cond     gap  diam | k(p=0.0) k(p=0.2) k(p=0.5)
+  --------------------------------------------------------------------------------------
+  grid 8x7                   0.464   0.152    13 |  0.000  0.052  0.033
+  grid 8x7 torus             1.000   0.586     7 |  0.000  0.000  0.000
+  random 3-regular n=60      0.467   0.219     7 | -0.533 -0.420 -0.261
+  random 4-regular n=60      1.000   0.749     5 | -0.592 -0.470 -0.294
+  knn-expander k=4 n=60      0.261   0.063    12 |  0.224  0.280  0.175
+  complete K40               1.000  40.000     1 |  0.974  0.821  0.513
+
+  THE FIRST-LOOK TRAP: at high idleness EVERY lattice reports positive curvature,
+  because an idle walk barely moves and its step distributions agree. The
+  theorems are stated at p=0, the plain random walk. Read the p=0 column.
+
+  READING IT: the euclidean lattices sit high on curvature and low on conductance;
+  the hyperbolic/expander end sits high on conductance. That is not a tuning
+  failure, it is the theorem: non-negative curvature + uniform expansion cannot
+  coexist at bounded degree. You pick the END of the axis, not a point on it.
+
+  The fleet is currently at the WRONG end for the stated values. A boat cell that
+  cannot answer locally is not a plugin choice, it is the edge of the axis.
+
+  CHECK — what the theorem actually claims, and what it takes to test it
+  ------------------------------------------------------------------------------
+  Salez: bounded-degree expanders with non-negative Ollivier curvature do NOT
+  EXIST. Read that as a statement about FAMILIES with |V| -> infinity at BOUNDED
+  DEGREE. Two consequences for testing it on single lattices:
+
+    (a) degree must be bounded. K40 has degree 39 and is outside the scope
+        entirely -- it is not an expander family, it is one unbounded-degree
+        graph. It cannot falsify anything.
+    (b) a FAMILY is required. One 56-vertex torus, however well expanded, is not
+        an expander family. An asymptotic theorem makes no prediction at fixed n.
+
+    lattice                   deg  kappa(p=0)    cond  in scope?
+    grid 8x7                    4       0.000   0.464  yes (bounded deg)
+    grid 8x7 torus              5       0.000   1.000  yes (bounded deg)
+    random 3-regular n=60       4      -0.533   0.467  yes (bounded deg)
+    random 4-regular n=60       4      -0.592   1.000  yes (bounded deg)
+    knn-expander k=4 n=60       4       0.224   0.261  yes (bounded deg)
+    complete K40                6       0.974   1.000  NO -- unbounded degree
+
+  Every lattice IN SCOPE (grid, torus, random d-regular, knn) has bounded
+  degree <= 5 and non-negative curvature, and none of them is a good expander
+  family. That is consistent. It is NOT a test of the theorem, because a
+  single fixed-size graph cannot test an asymptotic statement.
+
+  WHAT THE EXPERIMENT TO ACTUALLY TEST IT WOULD BE: hold a lattice family
+  fixed in shape and let n grow (tori C_a x C_b, or d-regular graphs with
+  d fixed and n -> infinity), and watch conductance decay while curvature
+  stays non-negative. Hutchcroft-Munch (arXiv:2512.03968) PROVED that decay:
+  log-volume at most r^{o(1)} and near-diffusive walk. The experiment is not
+  needed to establish the theorem; it is needed to see the mechanism.
+
+  THE MEASURED FRONTIER, at fixed n, honestly labelled:
+    worst conductance  knn k=4        0.261   kappa +0.224
+                       grid 8x7       0.464   kappa  0.000
+    best  conductance  torus 8x7       1.000   kappa  0.000
+                       random 4-reg   1.000   kappa -0.592
+  The two best-conductance lattices are the ones with the LARGEST degree and
+  the two smallest diameter. That is a degree effect at this size, not curvature
+  alone -- and saying so is more useful than claiming a clean frontier.
+
+  HONEST CAVEATS, not hedges:
+   * curvature is EXACT here (all-pairs distance + LP transport), n <= 60.
+   * conductance is a sampled upper bound plus the Alon-Milman bound.
+   * fixed n cannot test an asymptotic theorem. This script is a PICTURE of
+     the theorem's setting, not evidence for it.
