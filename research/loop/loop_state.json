@@ -653,6 +653,283 @@
         "graded": true,
         "mixed_collapsed": true
       }
+    },
+    {
+      "round": 9,
+      "title": "score-as-rubric, serving-vs-model, and distinct-instruction batches",
+      "registered_at": "2026-09-29T17:12:18.646996+00:00",
+      "predictions": [
+        {
+          "id": "score-rubric-carries-signal",
+          "kind": "bool",
+          "predict": true,
+          "claim": "A `score` question whose rubric LEVELS are the two axes will produce per-level probabilities that separate the both/one/neither cases, giving a third gate option with no noul in it.",
+          "result": true
+        },
+        {
+          "id": "collapse-is-servicing-not-model",
+          "kind": "bool",
+          "predict": false,
+          "claim": "The noul collapse is a property of the MODEL, not the serving layer. A raw HTTP request with an identical body will collapse exactly as the client does. (If the raw call behaves DIFFERENTLY, the client or an intermediary is reshaping the request, and the client is the fix.)",
+          "result": false
+        },
+        {
+          "id": "distinct-instructions-survive",
+          "kind": "bool",
+          "predict": true,
+          "claim": "A batched noul call where each question carries a DISTINCT instruction will survive, because the collapse is an instruction-dedup artifact.",
+          "result": true
+        }
+      ],
+      "results": null,
+      "debrief": [
+        {
+          "id": "score-rubric-carries-signal",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "collapse-is-servicing-not-model",
+          "kind": "bool",
+          "predicted": false,
+          "actual": false,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "distinct-instructions-survive",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        }
+      ],
+      "data": {
+        "score_rubric": {
+          "both": {
+            "score": 2.53,
+            "probs": {
+              "0": 0.0,
+              "1": 0.03,
+              "2": 0.4,
+              "3": 0.57
+            }
+          },
+          "one": {
+            "score": 1.02,
+            "probs": {
+              "0": 0.01,
+              "1": 0.97,
+              "2": 0.01,
+              "3": 0.01
+            }
+          },
+          "neither": {
+            "score": 0.98,
+            "probs": {
+              "0": 0.03,
+              "1": 0.96,
+              "2": 0.01,
+              "3": 0.0
+            }
+          }
+        },
+        "graded": true,
+        "ordered": true,
+        "raw_http": [
+          0.38,
+          0.38
+        ],
+        "raw_spread": 0.0,
+        "client": [
+          0.38,
+          0.38
+        ],
+        "serving_artifact": false,
+        "distinct": [
+          0.29,
+          0.05
+        ],
+        "distinct_spread": 0.24,
+        "distinct_survives": true
+      }
+    },
+    {
+      "round": 10,
+      "title": "how far does the distinct-instruction fix go, and is it accurate",
+      "registered_at": "2026-09-29T17:12:50.404690+00:00",
+      "predictions": [
+        {
+          "id": "survives-at-3-and-4",
+          "kind": "bool",
+          "predict": true,
+          "claim": "Distinct instructions will keep the per-item spread >= 0.15 at batch sizes 3 AND 4, not just 2. If it decays with size the fix is only good for pairs.",
+          "result": false
+        },
+        {
+          "id": "recovered-is-accurate",
+          "kind": "bool",
+          "predict": true,
+          "claim": "A distinct-instruction batch will land within 0.15 of the SEPARATE-CALL value for each subject, i.e. it recovers the right number and not merely a different one.",
+          "result": true
+        },
+        {
+          "id": "semantic-distinctness-required",
+          "kind": "bool",
+          "predict": true,
+          "claim": "Synonym-swapped instructions (same meaning, different words) will ALSO survive. If they do not, the fix depends on the instructions being genuinely different, not merely textually distinct.",
+          "result": true
+        }
+      ],
+      "results": null,
+      "debrief": [
+        {
+          "id": "survives-at-3-and-4",
+          "kind": "bool",
+          "predicted": true,
+          "actual": false,
+          "status": "REFUTED"
+        },
+        {
+          "id": "recovered-is-accurate",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "semantic-distinctness-required",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        }
+      ],
+      "data": {
+        "b2": {
+          "A": 0.9,
+          "B": 0.93
+        },
+        "b3": {
+          "A": 0.92,
+          "B": 0.93,
+          "C": 0.13
+        },
+        "b4": {
+          "A": 0.93,
+          "B": 0.94,
+          "C": 0.15,
+          "D": 0.19
+        },
+        "spreads": {
+          "2": 0.030000000000000027,
+          "3": 0.8,
+          "4": 0.7899999999999999
+        },
+        "separate": {
+          "A": 0.86,
+          "B": 0.93,
+          "C": 0.15,
+          "D": 0.31
+        },
+        "max_err": 0.12,
+        "accurate": true,
+        "identical_wording": {
+          "A": 0.93,
+          "B": 0.23,
+          "C": 0.08,
+          "D": 0.07
+        },
+        "identical_spread": 0.8600000000000001,
+        "varied_wording": {
+          "A": 0.93,
+          "B": 0.93,
+          "C": 0.19,
+          "D": 0.22
+        },
+        "varied_spread": 0.74,
+        "same_means_survive": true
+      }
+    },
+    {
+      "round": 11,
+      "title": "is the collapse about subject identification, not instruction dedup",
+      "registered_at": "2026-09-29T17:13:21.497034+00:00",
+      "predictions": [
+        {
+          "id": "identification-is-the-mechanism",
+          "kind": "bool",
+          "predict": true,
+          "claim": "A batch where all four questions are TEXTUALLY IDENTICAL and UNNAMED will collapse, while a batch where all four are TEXTUALLY IDENTICAL but each NAMES its subject will survive. If true, the mechanism is subject identification and instruction wording is irrelevant.",
+          "result": true
+        },
+        {
+          "id": "unnamed-always-collapses",
+          "kind": "bool",
+          "predict": true,
+          "claim": "An unnamed question collapses regardless of what other questions are in the batch. Naming at least one other question in the batch will not rescue it.",
+          "result": true
+        },
+        {
+          "id": "single-identifier-suffices",
+          "kind": "bool",
+          "predict": true,
+          "claim": "Naming the subject in a fixed PREFIX (e.g. 'Regarding Subject C: ...') is as effective as a fully distinct question. The mechanism needs a pointer, not a different question.",
+          "result": true
+        }
+      ],
+      "results": null,
+      "debrief": [
+        {
+          "id": "identification-is-the-mechanism",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "unnamed-always-collapses",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "single-identifier-suffices",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        }
+      ],
+      "data": {
+        "unnamed": {
+          "A": 0.44,
+          "B": 0.43,
+          "C": 0.44,
+          "D": 0.44
+        },
+        "unnamed_spread": 0.01,
+        "named": {
+          "A": 0.7,
+          "B": 0.7,
+          "C": 0.14,
+          "D": 0.13
+        },
+        "named_spread": 0.57,
+        "solo": {
+          "A": 0.6
+        },
+        "mixed": {
+          "A": 0.69,
+          "B": 0.44,
+          "C": 0.45,
+          "D": 0.44
+        },
+        "identification_is_mechanism": true,
+        "unnamed_stays_collapsed": true
+      }
     }
   ],
   "carried": [
@@ -722,6 +999,13 @@
     {
       "from_round": 8,
       "id": "choice-carries-two-axes",
+      "predicted": true,
+      "actual": false,
+      "note": "prediction was wrong; the belief it encoded is suspect"
+    },
+    {
+      "from_round": 10,
+      "id": "survives-at-3-and-4",
       "predicted": true,
       "actual": false,
       "note": "prediction was wrong; the belief it encoded is suspect"
