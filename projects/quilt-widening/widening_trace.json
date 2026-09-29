@@ -1,0 +1,180 @@
+{
+ "rounds": 3,
+ "seed_width": 3,
+ "split": 2,
+ "actions": [
+  {
+   "seq": 1,
+   "kind": "seed",
+   "detail": {
+    "cells": [
+     "seed-0",
+     "seed-1",
+     "seed-2"
+    ],
+    "question": "Is this element a distinct, non-redundant part of the whole, or a restatement of its neighbours?"
+   },
+   "undo_of": null,
+   "result": "seeded 3 cells"
+  },
+  {
+   "seq": 2,
+   "kind": "decompose",
+   "detail": {
+    "parent": "seed-0",
+    "children": [
+     "seed-0.0",
+     "seed-0.1"
+    ],
+    "k": 2
+   },
+   "undo_of": null,
+   "result": "seed-0 -> 2 named children"
+  },
+  {
+   "seq": 3,
+   "kind": "rewind",
+   "detail": {
+    "to_seq": 1,
+    "head_after": 0
+   },
+   "undo_of": 1,
+   "result": "prefix shortened to 1 action(s)"
+  },
+  {
+   "seq": 4,
+   "kind": "nudge",
+   "detail": {
+    "action": "rewind to seed"
+   },
+   "undo_of": null,
+   "result": "live cells 4 -> 3 (nothing deleted)"
+  },
+  {
+   "seq": 5,
+   "kind": "decompose",
+   "detail": {
+    "parent": "seed-0",
+    "children": [
+     "seed-0.0",
+     "seed-0.1"
+    ],
+    "k": 2
+   },
+   "undo_of": null,
+   "result": "re-applied after the rewind demo"
+  },
+  {
+   "seq": 6,
+   "kind": "decompose",
+   "detail": {
+    "parent": "seed-0.0",
+    "children": [
+     "seed-0.0.0",
+     "seed-0.0.1"
+    ],
+    "k": 2
+   },
+   "undo_of": null,
+   "result": "seed-0.0 -> 2 named children"
+  },
+  {
+   "seq": 7,
+   "kind": "decompose",
+   "detail": {
+    "parent": "seed-0.0.0",
+    "children": [
+     "seed-0.0.0.0",
+     "seed-0.0.0.1"
+    ],
+    "k": 2
+   },
+   "undo_of": null,
+   "result": "seed-0.0.0 -> 2 named children"
+  }
+ ],
+ "final_width": 6,
+ "cells": {
+  "seed-0": {
+   "cid": "seed-0",
+   "kind": "seed",
+   "text": "a seed cell holding one instruction about the whole system",
+   "characteristic": "directive",
+   "parent": null,
+   "depth": 0,
+   "subject": "the whole system, read as directive"
+  },
+  "seed-1": {
+   "cid": "seed-1",
+   "kind": "seed",
+   "text": "a seed cell holding one instruction about the whole system",
+   "characteristic": "question",
+   "parent": null,
+   "depth": 0,
+   "subject": "the whole system, read as question"
+  },
+  "seed-2": {
+   "cid": "seed-2",
+   "kind": "seed",
+   "text": "a seed cell holding one instruction about the whole system",
+   "characteristic": "refusal",
+   "parent": null,
+   "depth": 0,
+   "subject": "the whole system, read as refusal"
+  },
+  "seed-0.0": {
+   "cid": "seed-0.0",
+   "kind": "child",
+   "text": "a seed cell holding one instruction about the whole system (narrowed: directive)",
+   "characteristic": "directive",
+   "parent": "seed-0",
+   "depth": 1,
+   "subject": "element 0 of seed-0, which is specifically about directive"
+  },
+  "seed-0.1": {
+   "cid": "seed-0.1",
+   "kind": "child",
+   "text": "a seed cell holding one instruction about the whole system (narrowed: question)",
+   "characteristic": "question",
+   "parent": "seed-0",
+   "depth": 1,
+   "subject": "element 1 of seed-0, which is specifically about question"
+  },
+  "seed-0.0.0": {
+   "cid": "seed-0.0.0",
+   "kind": "child",
+   "text": "a seed cell holding one instruction about the whole system (narrowed: directive) (narrowed: directive)",
+   "characteristic": "directive",
+   "parent": "seed-0.0",
+   "depth": 2,
+   "subject": "element 0 of seed-0.0, which is specifically about directive"
+  },
+  "seed-0.0.1": {
+   "cid": "seed-0.0.1",
+   "kind": "child",
+   "text": "a seed cell holding one instruction about the whole system (narrowed: directive) (narrowed: question)",
+   "characteristic": "question",
+   "parent": "seed-0.0",
+   "depth": 2,
+   "subject": "element 1 of seed-0.0, which is specifically about question"
+  },
+  "seed-0.0.0.0": {
+   "cid": "seed-0.0.0.0",
+   "kind": "child",
+   "text": "a seed cell holding one instruction about the whole system (narrowed: directive) (narrowed: directive) (narrowed: directive)",
+   "characteristic": "directive",
+   "parent": "seed-0.0.0",
+   "depth": 3,
+   "subject": "element 0 of seed-0.0.0, which is specifically about directive"
+  },
+  "seed-0.0.0.1": {
+   "cid": "seed-0.0.0.1",
+   "kind": "child",
+   "text": "a seed cell holding one instruction about the whole system (narrowed: directive) (narrowed: directive) (narrowed: question)",
+   "characteristic": "question",
+   "parent": "seed-0.0.0",
+   "depth": 3,
+   "subject": "element 1 of seed-0.0.0, which is specifically about question"
+  }
+ }
+}
