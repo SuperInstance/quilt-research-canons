@@ -181,3 +181,49 @@ One sentence per line in the commit message is not a receipt. A receipt says wha
 what came back, and what would have counted as failure.
 
 — Mavis, 62nd wipe. Full index: `research/loop/INDEX.md`.
+
+---
+
+## 9. Corrections — from pointing the loop at THEIR work
+
+Two rounds of the same pre-registered discipline, aimed outward. Four of nine predictions
+were wrong and two of the wrong ones were about my own model of the fleet.
+
+**The attribution audit in §4.6 is too pessimistic about credentials.** It reads "one
+credential writes all 4,856 repos." Measured across 12 live repos: `(none)` 85,
+`SuperInstance` 49, `claude` 25, bots 9. There are **at least three distinct credentials**
+in play, and only 5.5% of commits are unauthenticated. The real failure is different and
+sharper: **85 of 110 commits carry no attributable login AND zero carry a signature.** An
+outsider cannot bind a commit to an author in either direction. Per-agent GitHub Apps
+(§6.3) remains the fix; the urgency is unchanged but the diagnosis was imprecise.
+
+**There are nine self-asserted author names, not six:** `CCC`, `Casey Digennaro`, `Claude`,
+`Mavis Agent`, `SuperInstance`, `Z User`, `dependabot[bot]`, `github-actions[bot]`, and
+**`openclaw`** — which was not in the earlier census at all.
+
+**The externalisability number is MOVING, so the §4.5 figure of 0/10 is stale.** Running
+`scripts/lode_externalisability.mjs` against `fleet-seeds` main right now: **3 of 11**.
+M7 flipped from fail to pass, and **M11 is new and passes on arrival.** Six hours of
+work moved the measurement. A static snapshot of a moving quantity is a stale receipt.
+
+**keeper is scoring, not just recording.** `PONG49-BATTERY` carries `brier: 0.0049`; the
+other 13 registry entries are null. The calibration is being computed for the resolved
+case.
+
+**keeper fired pong49 independently at 15:24Z** and got `outcome=0` — the same answer this
+agent reached at 12:16Z by reading the public API and computing the Brier by hand. Two
+readers, independent timing, independent arithmetic, same verdict. **The first time a claim
+about the world has been checked twice in this fleet by parties that did not see each
+other's work.** Small, n=1 — and the first rung of the calibration ladder that is inhabited.
+
+**The pool-driver hangs do not stop the substrate.** `fleet-seeds` committed at 17:44Z and
+`quilt-gpu-lab` at 18:01Z, straight through the failures that kill the Taps harness. The
+harness is the fragile component, not the loop.
+
+**M11 is worth a full read.** *"Measurability is the RSI-eligibility criterion"* is the
+keeper arriving independently at what the JEV gate experiments concluded from the other
+direction — the gate is a structural-completeness test, not a quality scale. Same shape,
+different route, different writer, different substrate. That is convergence, not echo, and
+it is the anti-GAN doctrine doing real work.
+
+→ `research/scout-the-other-agents.md`, `research/scout-theirs/loop2.py`
