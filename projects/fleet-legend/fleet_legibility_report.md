@@ -15,8 +15,18 @@ timeout and took down an entire run.
 
 ## What this report does NOT do
 
-- **It is not the whole fleet.** The API enumerates 100 repos of a claimed 1300. Every
-  number here is scoped to those 100 and to the default branch at read time.
+- **It is not the whole fleet, and the sample is biased.** Paging the API enumerates
+  **3,900** public repos, not 100 and not 1,300. The profile claims 4,856, so 956 (20%)
+  are unreachable by any API I could find. This report scored **100 repos sorted by
+  `pushed_at` descending — 2.6% of the enumerable fleet, and the *newest* slice, which is
+  a recency-biased sample rather than a random one.**
+  **The "16 of 100 ENTERABLE" figure therefore describes the newest slice and must not be
+  extrapolated.** An earlier version of this document said "100 of a claimed 1300"; the
+  1,300 was a truncated page count mistaken for a census, and it understated the fleet
+  threefold.
+- **736 of the 3,900 are forks** and cannot be fixed by us at all — a legibility PR needs
+  write access. Any fleet-wide legibility effort has to exclude them first, which is a
+  further 19% of the apparent work.
 - **It does not judge code quality.** Only whether a stranger can get in and recover.
 - **L3/L4/L5 are keyword heuristics.** A repo can satisfy them by accident, and can fail
   them while being perfectly legible to a human. The grade is a prompt for a human look,
