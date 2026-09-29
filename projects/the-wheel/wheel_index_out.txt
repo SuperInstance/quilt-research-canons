@@ -1,0 +1,8 @@
+
+  WHEEL INDEX — 151 cells, 223 terms, bag-of-words cosine
+  local embedding, NOT a vector database. Cloudflare Vectorize is
+  unavailable on this account (1005 unknown_content_type).
+  ====================================================================================
+    GAP            82
+    SUPPORTED      56
+    UNKNOWN        13
