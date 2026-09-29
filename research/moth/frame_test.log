@@ -1,0 +1,39 @@
+
+  MOTH qpixl-v1 -- THE HARD CASE: do glyphs survive a NON-MONOTONE field?
+  ==========================================================================
+  A monotone ramp is the easy case for an order-preserving map. These are not.
+
+  2x2 checker  (max crossing)
+     [0.0, 1.0]  ->  [0, 1]
+     [1.0, 0.0]  ->  [1, 0]
+     order inversions : 0      max |out-in| : 0.0000
+     glyphs in  [[0, 9], [9, 0]]
+     glyphs out [[0, 9], [9, 0]]   IDENTICAL: True
+
+  2x2 ramp     (control)
+     [0.0, 0.3]  ->  [0, 0.291]
+     [0.6, 1.0]  ->  [0.611, 1]
+     order inversions : 0      max |out-in| : 0.0114
+     glyphs in  [[0, 3], [6, 9]]
+     glyphs out [[0, 2], [6, 9]]   IDENTICAL: False
+
+  2x3 crossing
+     [0.0, 0.5, 1.0]  ->  [0, 0.504, 1]
+     [1.0, 0.5, 0.0]  ->  [1, 0.524, 0]
+     order inversions : 0      max |out-in| : 0.0242
+     glyphs in  [[0, 5, 9], [9, 5, 0]]
+     glyphs out [[0, 5, 9], [9, 5, 0]]   IDENTICAL: True
+
+  2x4 crossing
+     [0.0, 0.1, 0.9, 1.0]  ->  [0, 0.103, 0.902, 1]
+     [0.2, 0.8, 0.3, 0.7]  ->  [0.197, 0.796, 0.296, 0.686]
+     order inversions : 0      max |out-in| : 0.0135
+     glyphs in  [[0, 1, 9, 9], [2, 8, 3, 7]]
+     glyphs out [[0, 1, 9, 9], [1, 7, 2, 6]]   IDENTICAL: False
+
+  1x5 zigzag                     NO RESULT  {"message": "5 values exceed aer's data-qubit capacity of 1.", "retryable": false, "type": "insufficient_qubits"}
+  ==========================================================================
+  VERDICT: glyph stream survives on every non-monotone case: False
+  A non-zero inversion count means the monotone result does NOT extend
+  beyond a ramp, and the glyph-codec claim needs weakening.
+
