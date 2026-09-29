@@ -1,0 +1,319 @@
+{
+  "rounds": [
+    {
+      "round": 1,
+      "title": "who is producing, and can a stranger bind a commit to an author",
+      "registered_at": "2026-09-29T18:54:30.799967+00:00",
+      "predictions": [
+        {
+          "id": "unauth-share-high",
+          "kind": "num",
+          "predict": 0.5,
+          "tolerance": 0.25,
+          "claim": "Across the 8 live repos, MORE THAN HALF of the recent commits have no GitHub-authenticated login attached, because the fleet writes with a PAT. That is the 791-commits-0-signed problem, visible per-repo.",
+          "result": 0.055
+        },
+        {
+          "id": "distinct-authors-wide",
+          "kind": "num",
+          "predict": 6.0,
+          "tolerance": 3.0,
+          "claim": "There are at least SIX distinct self-asserted author names across the live repos \u2014 not five, and not one. Fragmentation, not identity.",
+          "result": 9.0
+        },
+        {
+          "id": "signed-still-zero",
+          "kind": "num",
+          "predict": 0.0,
+          "tolerance": 0.0,
+          "claim": "ZERO of the recent commits carry a cryptographic signature. The key was published at 15:08Z today; whether anyone has adopted it is the question.",
+          "result": 0.0
+        },
+        {
+          "id": "keeper-not-blocked",
+          "kind": "bool",
+          "predict": true,
+          "claim": "fleet-seeds (the keeper) is still committing, i.e. the pool-driver hangs that block Taps do NOT block the keeper loop. The two agents fail differently.",
+          "result": true
+        },
+        {
+          "id": "claude-mostly-ai-writings",
+          "kind": "bool",
+          "predict": true,
+          "claim": "Claude's recent commits are concentrated in AI-Writings and Syzygy, i.e. the prose/corpus lanes rather than the substrate lanes.",
+          "result": true
+        }
+      ],
+      "debrief": [
+        {
+          "id": "unauth-share-high",
+          "kind": "num",
+          "predicted": 0.5,
+          "actual": 0.055,
+          "status": "REFUTED"
+        },
+        {
+          "id": "distinct-authors-wide",
+          "kind": "num",
+          "predicted": 6.0,
+          "actual": 9.0,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "signed-still-zero",
+          "kind": "num",
+          "predicted": 0.0,
+          "actual": 0.0,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "keeper-not-blocked",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "claude-mostly-ai-writings",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        }
+      ],
+      "data": {
+        "per_repo": {
+          "fleet-seeds": {
+            "names": [
+              "Z User"
+            ],
+            "logins": {
+              "?": 15
+            },
+            "signed": 0,
+            "newest": "2026-09-29T17:44:08Z"
+          },
+          "quilt-gpu-lab": {
+            "names": [
+              "SuperInstance"
+            ],
+            "logins": {
+              "?": 15
+            },
+            "signed": 0,
+            "newest": "2026-09-29T18:01:14Z"
+          },
+          "quilt-jepa": {
+            "names": [
+              "Z User"
+            ],
+            "logins": {
+              "?": 13
+            },
+            "signed": 0,
+            "newest": "2026-09-29T16:53:39Z"
+          },
+          "AI-Writings": {
+            "names": [
+              "Casey Digennaro",
+              "Claude",
+              "github-actions[bot]"
+            ],
+            "logins": {
+              "github-actions[bot]": 3,
+              "claude": 11,
+              "SuperInstance": 1
+            },
+            "signed": 0,
+            "newest": "2026-09-29T18:48:54Z"
+          },
+          "MicroMoth-quilt": {
+            "names": [
+              "CCC",
+              "Casey Digennaro"
+            ],
+            "logins": {
+              "SuperInstance": 10,
+              "?": 5
+            },
+            "signed": 0,
+            "newest": "2026-09-29T03:49:49Z"
+          },
+          "Syzygy": {
+            "names": [
+              "Casey Digennaro",
+              "Claude"
+            ],
+            "logins": {
+              "claude": 12,
+              "SuperInstance": 2
+            },
+            "signed": 0,
+            "newest": "2026-09-28T22:15:16Z"
+          },
+          "chiaroscuro": {
+            "names": [
+              "Casey Digennaro",
+              "Claude",
+              "SuperInstance"
+            ],
+            "logins": {
+              "SuperInstance": 1,
+              "?": 6,
+              "claude": 1
+            },
+            "signed": 0,
+            "newest": "2026-09-29T01:17:23Z"
+          },
+          "quilt": {
+            "names": [
+              "CCC",
+              "Casey Digennaro",
+              "Mavis Agent",
+              "SuperInstance",
+              "Z User",
+              "dependabot[bot]",
+              "openclaw"
+            ],
+            "logins": {
+              "SuperInstance": 8,
+              "?": 5,
+              "dependabot[bot]": 2
+            },
+            "signed": 0,
+            "newest": "2026-09-29T06:42:17Z"
+          }
+        },
+        "total": 110,
+        "signed": 0,
+        "unauth": 6,
+        "distinct_names": [
+          "CCC",
+          "Casey Digennaro",
+          "Claude",
+          "Mavis Agent",
+          "SuperInstance",
+          "Z User",
+          "dependabot[bot]",
+          "github-actions[bot]",
+          "openclaw"
+        ],
+        "claude_writings_syzygy": 23
+      }
+    },
+    {
+      "round": 2,
+      "title": "does keeper's own lode survive the externalisability gate I wrote",
+      "registered_at": "2026-09-29T18:55:05.389456+00:00",
+      "predictions": [
+        {
+          "id": "brier-null",
+          "kind": "bool",
+          "predict": true,
+          "claim": "Every resolved entry in keeper's registry.jsonl has brier: null, meaning the calibration is RECORDED but never SCORED. The fleet predicts at p and records the outcome, and never computes the number that would tell it whether the prediction was any good.",
+          "result": false
+        },
+        {
+          "id": "honest-fail-present",
+          "kind": "bool",
+          "predict": true,
+          "claim": "The registry contains at least one FAIL verdict carried forward, i.e. keeper is keeping losing runs rather than only wins.",
+          "result": true
+        },
+        {
+          "id": "mines-still-undeciable",
+          "kind": "num",
+          "predict": 0.0,
+          "tolerance": 0.2,
+          "claim": "Applying my own externalisability gate to keeper's CURRENT mines will still return ~0 externally decidable. Six hours of new work has not changed the shape.",
+          "result": 3.0
+        },
+        {
+          "id": "pong49-folds",
+          "kind": "bool",
+          "predict": true,
+          "claim": "PONG49-BATTERY will still read ARMED in the registry \u2014 the outcome I resolved at 12:16Z has not been folded in by the keeper.",
+          "result": true
+        }
+      ],
+      "debrief": [
+        {
+          "id": "brier-null",
+          "kind": "bool",
+          "predicted": true,
+          "actual": false,
+          "status": "REFUTED"
+        },
+        {
+          "id": "honest-fail-present",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "mines-still-undeciable",
+          "kind": "num",
+          "predicted": 0.0,
+          "actual": 3.0,
+          "status": "REFUTED"
+        },
+        {
+          "id": "pong49-folds",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        }
+      ],
+      "data": {
+        "mines": 11,
+        "registry": 14,
+        "brier_null": 13,
+        "fails": [
+          "JEV-A11"
+        ],
+        "externally_decidable": 3,
+        "pong49_armed": true,
+        "gate_source": "fleet-seeds@mavis/externalisability-gate (PR #2, NOT on main)"
+      }
+    }
+  ],
+  "carried": [
+    {
+      "from_round": 1,
+      "id": "unauth-share-high",
+      "predicted": 0.5,
+      "actual": 0.055,
+      "note": "my belief about THEIR work was wrong"
+    },
+    {
+      "from_round": 2,
+      "id": "brier-null",
+      "predicted": true,
+      "actual": false,
+      "note": "my belief about THEIR work was wrong"
+    },
+    {
+      "from_round": 2,
+      "id": "mines-still-undeciable",
+      "predicted": 0.0,
+      "actual": -1.0,
+      "note": "my belief about THEIR work was wrong"
+    },
+    {
+      "from_round": 2,
+      "id": "brier-null",
+      "predicted": true,
+      "actual": false,
+      "note": "my belief about THEIR work was wrong"
+    },
+    {
+      "from_round": 2,
+      "id": "mines-still-undeciable",
+      "predicted": 0.0,
+      "actual": 3.0,
+      "note": "my belief about THEIR work was wrong"
+    }
+  ]
+}
