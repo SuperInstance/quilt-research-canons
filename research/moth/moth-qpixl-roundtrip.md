@@ -1,24 +1,23 @@
 ---
-title: MOTH Quantum QPIXL round trip — a third-party check on the glyph-codec claim
+title: MOTH Quantum QPIXL round trip — a third-party check, AND ITS OWN CORRECTION
 date: 2026-09-29
 subject: live runs against api.mothquantum.com, engine qpixl-v1
 ---
 
+## Status: PARTIALLY CORRECTED
+
+This document was first written claiming that a glyph ramp round-trips **exactly** through
+the QPIXL encode/decode. A follow-up run on non-monotone 2-D fields **falsified that
+generalisation**. The correction is recorded below rather than quietly edited out, because
+the first claim was shipped and the failure mode is the useful part.
+
 ## Why this was worth running
 
 `research/qpixl-ascii/` reduces a glyph frame by cancelling identity terms. That
-reduction is classical and reproducible, which was the whole point — QuantumArtHack's
-useful contribution is the *decomposition*, not the hardware. But a reduction that is
-only ever checked against itself has not been checked.
+reduction is classical and reproducible — but a reduction only ever checked against
+itself has not been checked. This is the third-party run.
 
-This is the third-party run: the same values, encoded as qubit angles on a real
-MOTH Quantum engine, decoded in a single measurement, and compared.
-
-## The runs
-
-Base `https://api.mothquantum.com/api/v1`, engine `qpixl-v1`, `mode: emu`,
-`machine: aer`. Full request shape (it took four wrong guesses to find, and the
-error messages are good enough to record):
+## API contract (four wrong guesses to find; the errors are legible enough to record)
 
 ```json
 {"mode": "emu",
@@ -26,21 +25,17 @@ error messages are good enough to record):
             "machine": "aer", "shots": 2048}}
 ```
 
-**`values` is a STRING, and it must be wrapped in `[..]`.** A bare comma list fails
-with `unparseable_values` and the message tells you so. A JSON array body fails with
-`expected object` — the body is `{params, mode}`, not the array.
+- `values` is a **STRING** and must be **wrapped in `[..]`**. A bare comma list fails
+  `unparseable_values`; a bare JSON array body fails `expected object`.
+- 4×4 fails `group_count_mismatch`: *"4 groups given but the machine has 5 groups; call
+  `list_groups(values, machine)`."* **The qubit grouping is a property of the MACHINE, not
+  of your array's shape, and cannot be inferred from dimensions.**
+- 1×5 fails `insufficient_qubits`: *"5 values exceed aer's data-qubit capacity of 1."*
+- `is_async: false`, yet a `job_id` is still returned and must be polled. A failed job's
+  `/result` returns a bare **409**; the useful detail is in `status.progress.detail` and
+  `status.error.message`.
 
-| job | input | result |
-|---|---|---|
-| `c65fbb02-f985-4877-ad61-fead4eaf72d2` | `[0.0, 0.143, …, 1.0]` (8 values) | **completed** |
-| `a7c346c6-0555-46e9-be41-5f17325c6fe6` | `[[0.1,0.4],[0.7,1.0]]` (2×2) | **completed** |
-| `dba3bb7c-ec61-4530-b790-5cbcb4c24fb7` | 4×4 grid | failed: `group_count_mismatch` |
-
-The 4×4 failure is worth keeping: *"4 groups given but the machine has 5 groups; call
-`list_groups(values, machine)`."* The qubit **grouping is a property of the machine,
-not of your array's shape**, and you cannot infer it from the dimensions you sent.
-
-## The result
+## Run 1 — the 1-D ramp (this is what I first claimed from)
 
 ```
  i  input i/7     output     delta
@@ -54,36 +49,64 @@ not of your array's shape**, and you cannot infer it from the dimensions you sen
  7     1.0000     1.0000   +0.0000
 ```
 
-- input strictly increasing: **True**
-- output strictly increasing: **True**
-- max |output − input|: **0.0467**
-- values returned exactly: **2 / 8**
+max |out−in| = 0.0467, only 2/8 exact, **output strictly increasing**. On this input an
+8-level ramp round-trips exactly.
 
-## The finding
+## Run 2 — the hard case, and the correction
 
-**The quantum round trip is MONOTONE but not value-preserving.** No ordering is ever
-inverted; the intensities are moved around by up to 0.047.
+A monotone ramp is the easiest possible input for an order-preserving map. These fields
+have crossing neighbours and ties.
 
-Now quantise both to an 8-level glyph ramp:
+| case | order inversions | nearest-level glyphs identical? |
+|---|---|---|
+| 2×2 checker | **0** | yes |
+| 2×2 ramp | **0** | **NO** |
+| 2×3 crossing | **0** | yes |
+| 2×4 crossing | **0** | **NO** |
 
-```
-in : [0, 1, 2, 3, 4, 5, 6, 7]
-out: [0, 1, 2, 3, 4, 5, 6, 7]     identical
-```
+**1. Order IS preserved.** Zero inversions in every field tested, including 2×4 with
+crossing neighbours. This part is real and it is the useful part: the map does not
+scramble a frame.
 
-**They are identical.** A glyph is a RANK, not a measurement. A monotone map
-round-trips a glyph ramp exactly while mangling the underlying intensities. The
-distortion that would destroy a pixel codec is invisible to a glyph codec.
+**2. Ties are BROKEN.** `[0.0, 0.5, 1.0, 1.0, 0.5, 0.0]` came back as
+`[0, 0.504, 1, 1, 0.524, 0]`. The two inputs that were both exactly 0.5 are now 0.504
+and 0.524. The quantum step is noisy in magnitude, so identical inputs land at different
+outputs and **which output belongs to which input is not recoverable from the order
+information.**
 
-This is the strongest available support for the Lane U claim, and it is a *third-party*
-measurement rather than a self-consistency check. The 2×2 control shows the same
-monotonicity per axis in two dimensions.
+**3. That kills the elegant argument.** "A glyph is a rank, not a measurement" was the
+reasoning behind the first claim. But a real glyph frame is mostly *repeated* values —
+repeated glyphs are ties, and ties are exactly what gets destroyed. **Rank-based readout
+is ill-defined precisely where glyph streams live.** I proposed rank-based
+re-quantisation as the fix; it fails on every tied case.
 
-### What this does NOT establish
+**4. Nearest-level readout fails near boundaries.** In the 2×4 case all four cells of the
+second row dropped a ramp level despite zero inversions.
 
-- One ramp is not a distribution. Monotonicity could hold on a monotone input and
-  fail on a field where neighbouring values cross. **The test that matters next is a
-  full glyph frame, not a ramp.**
-- `aer` is a noiseless simulator. The interesting question is what real hardware
-  does to monotonicity, and `mode: qpu` requires an explicit `backend_name`.
-- 2/8 values returned exactly, so this is emphatically not "QPIXL is lossless."
+## The corrected claim
+
+**What survives:**
+- the QPIXL round trip **preserves order** — it does not scramble a field
+- it does **not** preserve enough magnitude for nearest-level glyphs
+- it **breaks ties**, which is fatal for repeated glyphs
+
+**What I got wrong:** "quantise to a glyph ramp and it round-trips exactly" held for the
+one ramp I happened to test and does not hold in general. A single test on a monotone
+input is exactly the kind of demonstration that cannot fail.
+
+**What this actually argues for:** not a single-shot glyph codec, but a per-cell
+confidence, or a repeated measurement, or a readout that tolerates tie-breaking noise.
+The order-preservation result is still a genuine positive — it means the frame's
+*topology* survives even where its glyphs do not.
+
+## Limits, stated rather than hedged
+
+- `aer` is a **noiseless simulator**. The load-bearing unknown is whether order
+  preservation survives real hardware noise. Untested.
+- Fields only up to 2×4 — 4×4 and 1×5 are rejected by the machine's own capacity rules.
+- One ramp, one machine, 2048–4096 shots, no repeated trials.
+
+## Files
+
+- `moth_frame_test.py` — the hard-case harness (this document's second half)
+- `frame_test.log` — its output, unmodified
