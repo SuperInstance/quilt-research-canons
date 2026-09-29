@@ -1,0 +1,111 @@
+
+  FAMILY EXPANSION — growing the lattice and watching the frontier move
+                                                                                
+  kappa is EXACT only for n<=70 (O(n*deg) LPs); larger is reported as '-'.
+  cond is EXACT for n<=24 and a sampled ball-grow bound above that.
+
+
+  === A. STRUCTURED: tori C_a x C_b, flat, kappa = 0, degree 4 ===
+
+  torus  [structured]
+         n   d     lam_2     cond    kappa  diam
+        16   4    2.0000    1.000   +0.000     4
+        36   4    1.0000    1.000   +0.000     6
+        64   4    0.5858    1.000   +0.000     8
+       100   4    0.3820    0.878        -    10
+       144   4    0.2679    0.721        -    12
+       196   4    0.1981    0.612        -    14
+
+  === B. STRUCTURED: grids, kappa = 0, degree <= 4, NOT wrapping ===
+
+  grid  [structured]
+         n   d     lam_2     cond    kappa  diam
+        16   4    0.5858    0.500   +0.000     6
+        36   4    0.2679    0.647   +0.000    10
+        64   4    0.1522    0.500   +0.000    14
+       100   4    0.0979    0.388        -    18
+       144   4    0.0681    0.319        -    22
+
+  === C. TYPICAL: random 3-regular, kappa < 0, degree 3 ===
+
+  random 3-regular  [typical]
+         n   d     lam_2     cond    kappa  diam
+        20   3    0.5006    0.500   -0.300     5
+        40   3    0.3194    0.529   -0.417     7
+        60   3    0.2509    0.517   -0.374     7
+       100   3    0.1719    0.543        -     9
+       160   3    0.2092    0.627        -    10
+       240   3    0.1936    0.603        -    10
+
+  === D. TYPICAL: random 4-regular, kappa < 0, degree 4 ===
+
+  random 4-regular  [typical]
+         n   d     lam_2     cond    kappa  diam
+        20   4    0.8289    0.800   -0.062     4
+        40   4    0.7826    1.000   -0.412     5
+        60   4    0.5065    0.957   -0.508     6
+       100   4    0.7382    1.000        -     6
+       160   4    0.6831    1.000        -     6
+       240   4    0.6092    1.000        -     7
+
+  ==============================================================================
+  THE TREND, WHICH IS THE ACTUAL DELIVERABLE
+  ==============================================================================
+  torus          n   16->196   lam_2 2.0000->0.1981 (decays)   cond 1.000->0.612 (decays)
+  grid           n   16->144   lam_2 0.5858->0.0681 (decays)   cond 0.500->0.319 (decays)
+  random 3-reg   n   20->240   lam_2 0.5006->0.1936 (decays)   cond 0.500->0.603 (grows)
+  random 4-reg   n   20->240   lam_2 0.8289->0.6092 (decays)   cond 0.800->1.000 (grows)
+
+  THE RESULT, WHICH CONTRADICTS THE STORY I WROTE BEFORE RUNNING IT
+  ==============================================================================
+  I drafted the conclusion above the data and guessed wrong. Here is what the
+  numbers actually say.
+
+      TORUS  C_a x C_b   kappa = 0.000 exactly   cond 1.000 -> 0.612  DECAYS
+      GRID   a x b       kappa = 0.000 exactly   cond 0.500 -> 0.319  DECAYS
+      RANDOM 3-regular   kappa < 0              cond 0.500 -> 0.603  FLAT
+      RANDOM 4-regular   kappa < 0              cond 0.800 -> 1.000  FLAT/GROWS
+
+  So the non-negatively curved (flat) families LOSE their expansion as they
+  grow, and the negatively curved random ones KEEP it. That is Salez's theorem
+  confirmed on both sides, which is the opposite of what I predicted.
+
+  AND MY INSTRUMENT UNDERSTATES THE DECAY BY A LOT. There is an exact answer
+  for the torus:
+
+      h(C_n x C_n) = 4/n        (attained by a half-torus slab)
+      lambda_2    ~ 4*pi^2/n^2
+
+  At n=196 the TRUE conductance is 4/196 = 0.0204. My table says 0.612 -- a
+  30x-looser UPPER BOUND. The 'cond' column above n=24 is a sampled ball-grow
+  estimate OR'd with the Alon-Milman bound, and the Alon-Milman bound
+  sqrt(2*d*lambda_2) decays like 1/sqrt(n) while the truth decays like 1/n.
+  So the real collapse is much faster and much worse than the table suggests.
+
+  THIS IS THE LOCALITY FINDING WITH TEETH:
+
+  A flat lattice -- locally well-behaved, kappa = 0, no bottlenecks inside any
+  neighbourhood -- gets PROGRESSIVELY WORSE at letting a cell escape to its
+  complement as it grows, and the exact law is 4/n. A lattice grown with
+  negative curvature does not have this problem.
+
+  The fleet builds STRUCTURED lattices. That is the losing side of the axis,
+  and the trade-off ledger's 'Locality: optimised by 0, taxed by 2' is worse
+  than an accounting error -- it is a default that gets monotonically more
+  expensive with scale.
+
+  WHAT THIS DOES NOT SAY: it does not say random growth is the answer. Random
+  curvature is negative, and negative curvature is the regime Hutchcroft-Munch
+  measure as near-diffusive, which is local in time but not in space. Trading
+  4/n for O(1) conductance by abandoning structure is a real trade, not a win.
+
+  HONEST CAVEATS:
+   * cond is exact only for n<=24; above that it is a bound, and the bound is
+     loose by ~30x at n=196. The DIRECTION is trustworthy; the MAGNITUDE is not.
+   * kappa is exact only for n<=70 (O(n*deg) LPs). Large-n rows have none, and
+     curvature is the thing a reader most wants.
+   * the exact 4/n is the checkable anchor; the measured column should be
+     compared against it and is NOT within an order of magnitude at large n.
+     That gap is reported, not hidden.
+   * this measures a TREND across families. It is not a proof and not a
+     refutation of anything in the literature -- it is a picture of the setting
