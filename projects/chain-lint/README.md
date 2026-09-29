@@ -42,27 +42,56 @@ earlier version of a sibling tool in this fleet made that exact mistake.
 **It will not call the head a failure.** A `prev_hash` of zero on the *first* cell is
 correct. Only a chain that is zero everywhere past the head is a defect.
 
-## Measured, and the honest boundary
+## Measured, and the boundary resolved
+
+The open question from the first run was the **detail endpoint's response shape**. It is:
 
 ```
-host                    : https://api.superinstance.dev
-cells sampled           : 30    (index retries: 0)
-schema declares prev_hash on the INDEX : False
-cells with a LINKED prev_hash          : 0/30  (0%)
-verdict                 : NO CHAIN ANYWHERE (and the index does not declare one)
+GET /api/cell/<id>  ->  {"ok":true,"cell":{ id, type, state, embedding_id,
+                                           prev_hash, timestamp, created_at, source }}
 ```
 
-**What that does and does not establish.** On the **index** endpoint the field is not
-present in responses at all, and no cell carries a link. The stronger claim — *the schema
-declares `prev_hash` and every sampled cell's value is zero* — comes from the **detail**
-endpoint, where a separate 550-cell read found the declaration and the zeros.
+and **`state` is a JSON *string*, not an object.** That single fact is why the first
+version of this tool read zero keys back: it called `.keys()` on a string. The index
+endpoint (`/api/cells?limit=N`) legitimately omits `prev_hash`; the declaration is judged
+on the detail payload, not the index, because reading it off the index understates the
+problem.
 
-**I could not reproduce the detail read.** `GET /api/cell/<id>` returned a payload with
-none of the expected fields populated for me, so my own confirmation rests on the index
-plus that other read. **The first thing anyone re-checking this should do is pin down the
-detail endpoint's actual response shape** — a tool that reports "no chain" when the real
-situation is "declared but unused" is under-reporting in the safe direction, which is the
-right direction to be wrong in, but it is still wrong.
+With that resolved, the measurement is unambiguous:
+
+```
+cells sampled                    : 14   (retries 0, unreadable 0)
+DETAIL payload declares prev_hash: True
+  LINKED 0   ZERO 14   MISSING 0
+  cron-1790722551544   prev_hash=0x0000000000000000
+  cron-1790722253261   prev_hash=0x0000000000000000
+  cron-1790721963076   prev_hash=0x0000000000000000
+VERDICT: DECLARED-NOT-USED
+```
+
+**The field is in the payload of every sampled cell and carries no link on any of them.**
+This reproduces a separate 550-cell read by a different agent, through a different path.
+
+## This tool shipped two bugs, and they are the finding
+
+Both bugs reported the chain as **PRESENT** when it is absent. Both are in the
+self-test now.
+
+1. **Zero-detection was width-dependent.** The zero-set enumerated one exact 64-zero
+   string; the field carries 16 zeros, so every zero hash fell through and counted as a
+   live link. Fixed by asking whether the digits are *all* zero, which makes width
+   irrelevant — which was the point.
+
+2. **`MISSING` was counted as `LINKED`.** A field absent from the payload and a field
+   holding `None` are both "not zero" to a naive test, and the caller incremented on
+   `not is_zero`. Fixed with a three-state classifier — `MISSING / ZERO / LINKED`, never
+   two — because **a missing value and a live value are different facts**.
+
+Bug 2 is the one worth dwelling on. This tool exists to say *a field that exists is not a
+field that is used*, and in its first form it made the same class of mistake in the
+opposite direction: it treated a value that is not there as a value that is fine. **A
+measurement that cannot be wrong is not a measurement, and neither is a tool that
+confidently gets the direction wrong.**
 
 ## Run it
 
