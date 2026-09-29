@@ -1,0 +1,942 @@
+[
+ {
+  "name": "quilt-gpu-lab",
+  "v": "INVISIBLE",
+  "desc": false,
+  "lang": "Python",
+  "fails": [
+   "L1",
+   "L2",
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "fleet-seeds",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-research-canons",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L4"
+  ]
+ },
+ {
+  "name": "quilt-i2i",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Erlang",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-c",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "C",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-jepa",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "AI-Writings",
+  "v": "INVISIBLE",
+  "desc": true,
+  "lang": "HTML",
+  "fails": [
+   "L2"
+  ]
+ },
+ {
+  "name": "MicroMoth-quilt",
+  "v": "ENTERABLE-WEAK",
+  "desc": false,
+  "lang": "Python",
+  "fails": [
+   "L1"
+  ]
+ },
+ {
+  "name": "Syzygy",
+  "v": "ENTERABLE",
+  "desc": true,
+  "lang": "C",
+  "fails": []
+ },
+ {
+  "name": "breakthrough-prospector",
+  "v": "ENTERABLE-WEAK",
+  "desc": false,
+  "lang": "JavaScript",
+  "fails": [
+   "L1",
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "hermit",
+  "v": "ENTERABLE-WEAK",
+  "desc": false,
+  "lang": "TypeScript",
+  "fails": [
+   "L1"
+  ]
+ },
+ {
+  "name": "quilt-atlas",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L4"
+  ]
+ },
+ {
+  "name": "SuperInstance",
+  "v": "ENTERABLE-WEAK",
+  "desc": false,
+  "lang": "HTML",
+  "fails": [
+   "L1"
+  ]
+ },
+ {
+  "name": "plato-portal",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "HTML",
+  "fails": [
+   "L3",
+   "L4"
+  ]
+ },
+ {
+  "name": "jev-garden",
+  "v": "ENTERABLE",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": []
+ },
+ {
+  "name": "webgpu-profiler",
+  "v": "ENTERABLE",
+  "desc": true,
+  "lang": "Python",
+  "fails": []
+ },
+ {
+  "name": "CognitiveEngine",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "PersonalLog",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "TypeScript",
+  "fails": [
+   "L5"
+  ]
+ },
+ {
+  "name": "tripartite-rs-archive",
+  "v": "ENTERABLE",
+  "desc": true,
+  "lang": "Rust",
+  "fails": []
+ },
+ {
+  "name": "knowledge-vault-rs",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Rust",
+  "fails": [
+   "L4"
+  ]
+ },
+ {
+  "name": "SmartCRDT",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "TypeScript",
+  "fails": [
+   "L3",
+   "L4"
+  ]
+ },
+ {
+  "name": "quilt-fleet",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "TypeScript",
+  "fails": [
+   "L3",
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "polln",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "TypeScript",
+  "fails": [
+   "L3",
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "pong-quilt",
+  "v": "INVISIBLE",
+  "desc": false,
+  "lang": "JavaScript",
+  "fails": [
+   "L1",
+   "L2",
+   "L4"
+  ]
+ },
+ {
+  "name": "exoj",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "qthe-verify",
+  "v": "ENTERABLE-WEAK",
+  "desc": false,
+  "lang": "JavaScript",
+  "fails": [
+   "L1",
+   "L5"
+  ]
+ },
+ {
+  "name": "PuddnHead",
+  "v": "INVISIBLE",
+  "desc": true,
+  "lang": "-",
+  "fails": [
+   "L2",
+   "L5"
+  ]
+ },
+ {
+  "name": "jev-quilt",
+  "v": "ENTERABLE",
+  "desc": true,
+  "lang": "Python",
+  "fails": []
+ },
+ {
+  "name": "chiaroscuro",
+  "v": "ENTERABLE",
+  "desc": true,
+  "lang": "HTML",
+  "fails": []
+ },
+ {
+  "name": "mavis-pincher-pages",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "HTML",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "mavis-pincher",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "TypeScript",
+  "fails": [
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-forge",
+  "v": "ENTERABLE-WEAK",
+  "desc": false,
+  "lang": "JavaScript",
+  "fails": [
+   "L1",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-cloudflare",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "TypeScript",
+  "fails": [
+   "L4"
+  ]
+ },
+ {
+  "name": "cellforge",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L5"
+  ]
+ },
+ {
+  "name": "cns-substrate",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L3",
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "mavis-essay-scout",
+  "v": "ENTERABLE",
+  "desc": true,
+  "lang": "Python",
+  "fails": []
+ },
+ {
+  "name": "pincher",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Rust",
+  "fails": [
+   "L5"
+  ]
+ },
+ {
+  "name": "qthe",
+  "v": "INVISIBLE",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L2",
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "glyphspace",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "-",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "glyphcast",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "-",
+  "fails": [
+   "L3",
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "coev",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L5"
+  ]
+ },
+ {
+  "name": "fleet-hooks",
+  "v": "ENTERABLE",
+  "desc": true,
+  "lang": "Shell",
+  "fails": []
+ },
+ {
+  "name": "quilt-codespace-lab",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Shell",
+  "fails": [
+   "L5"
+  ]
+ },
+ {
+  "name": "mavis-substrate-walker",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "duke-lab",
+  "v": "ENTERABLE-WEAK",
+  "desc": false,
+  "lang": "JavaScript",
+  "fails": [
+   "L1"
+  ]
+ },
+ {
+  "name": "quilt-tools",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "tidepool",
+  "v": "ENTERABLE-WEAK",
+  "desc": false,
+  "lang": "JavaScript",
+  "fails": [
+   "L1",
+   "L4"
+  ]
+ },
+ {
+  "name": "jeviter",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "fleet-static-host",
+  "v": "ENTERABLE-WEAK",
+  "desc": false,
+  "lang": "HTML",
+  "fails": [
+   "L1",
+   "L4"
+  ]
+ },
+ {
+  "name": "api-orchestra",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L4"
+  ]
+ },
+ {
+  "name": "quilt-arcade",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "HTML",
+  "fails": [
+   "L5"
+  ]
+ },
+ {
+  "name": "elephant",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L5"
+  ]
+ },
+ {
+  "name": "quantum-audio-honesty",
+  "v": "ENTERABLE-WEAK",
+  "desc": false,
+  "lang": "JavaScript",
+  "fails": [
+   "L1",
+   "L3",
+   "L4"
+  ]
+ },
+ {
+  "name": "cargo-line-tycoon",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "HTML",
+  "fails": [
+   "L5"
+  ]
+ },
+ {
+  "name": "paced-seam",
+  "v": "ENTERABLE-WEAK",
+  "desc": false,
+  "lang": "JavaScript",
+  "fails": [
+   "L1",
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-qcells",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L5"
+  ]
+ },
+ {
+  "name": "qthe-codec",
+  "v": "INVISIBLE",
+  "desc": false,
+  "lang": "Python",
+  "fails": [
+   "L1",
+   "L2",
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-swarm",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "TypeScript",
+  "fails": [
+   "L3",
+   "L5"
+  ]
+ },
+ {
+  "name": "tessera",
+  "v": "ENTERABLE-WEAK",
+  "desc": false,
+  "lang": "Python",
+  "fails": [
+   "L1",
+   "L3",
+   "L5"
+  ]
+ },
+ {
+  "name": "fleet-murmur",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-rips",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "crab-traps",
+  "v": "ENTERABLE",
+  "desc": true,
+  "lang": "HTML",
+  "fails": []
+ },
+ {
+  "name": "ternary-wiki",
+  "v": "INVISIBLE",
+  "desc": false,
+  "lang": "Shell",
+  "fails": [
+   "L1",
+   "L2",
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-blueprint",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "eos-seed",
+  "v": "ENTERABLE-WEAK",
+  "desc": false,
+  "lang": "Rust",
+  "fails": [
+   "L1"
+  ]
+ },
+ {
+  "name": "micrograd-quilt",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Jupyter Notebook",
+  "fails": [
+   "L5"
+  ]
+ },
+ {
+  "name": "hermes-construct",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L5"
+  ]
+ },
+ {
+  "name": "laya4quilt",
+  "v": "ENTERABLE-WEAK",
+  "desc": false,
+  "lang": "Python",
+  "fails": [
+   "L1"
+  ]
+ },
+ {
+  "name": "Scrapcraft",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-rust",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Rust",
+  "fails": [
+   "L3",
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-esp32",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "C",
+  "fails": [
+   "L4"
+  ]
+ },
+ {
+  "name": "quilt-verilog",
+  "v": "ENTERABLE",
+  "desc": true,
+  "lang": "Python",
+  "fails": []
+ },
+ {
+  "name": "quilt-stone",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "superinstance-advisor",
+  "v": "ENTERABLE",
+  "desc": true,
+  "lang": "HTML",
+  "fails": []
+ },
+ {
+  "name": "erised-mirror",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "cargo-line-tycoon-substrate-ts",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "substrate-llm-client",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "TypeScript",
+  "fails": [
+   "L3",
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-dba",
+  "v": "ENTERABLE",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": []
+ },
+ {
+  "name": "quilt-murmur",
+  "v": "ENTERABLE",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": []
+ },
+ {
+  "name": "yiluodi",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L4"
+  ]
+ },
+ {
+  "name": "quilt-arch",
+  "v": "ENTERABLE",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": []
+ },
+ {
+  "name": "ropesight",
+  "v": "INVISIBLE",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L2",
+   "L5"
+  ]
+ },
+ {
+  "name": "superinstance-website",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "HTML",
+  "fails": [
+   "L4"
+  ]
+ },
+ {
+  "name": "quilt-silicon",
+  "v": "ENTERABLE",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": []
+ },
+ {
+  "name": "quilt-raw",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-fiction",
+  "v": "NO-README",
+  "desc": true,
+  "lang": "HTML",
+  "fails": []
+ },
+ {
+  "name": "moth-waveform",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L4"
+  ]
+ },
+ {
+  "name": "SuperInstance-papers",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "TypeScript",
+  "fails": [
+   "L3",
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "quiltcall",
+  "v": "ENTERABLE-WEAK",
+  "desc": false,
+  "lang": "Python",
+  "fails": [
+   "L1",
+   "L4"
+  ]
+ },
+ {
+  "name": "quality-gate-stream",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-doctor",
+  "v": "ENTERABLE-WEAK",
+  "desc": false,
+  "lang": "Python",
+  "fails": [
+   "L1",
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-bootstrap",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L3",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-brewer",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L3",
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-cowboy",
+  "v": "ENTERABLE",
+  "desc": true,
+  "lang": "Python",
+  "fails": []
+ },
+ {
+  "name": "git-agent",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "Python",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "SuperInstance.github.io",
+  "v": "INVISIBLE",
+  "desc": true,
+  "lang": "HTML",
+  "fails": [
+   "L2",
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-show",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "HTML",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "quilt-learn",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "JavaScript",
+  "fails": [
+   "L4",
+   "L5"
+  ]
+ },
+ {
+  "name": "ability-transfer",
+  "v": "ENTERABLE-WEAK",
+  "desc": true,
+  "lang": "C",
+  "fails": [
+   "L4"
+  ]
+ }
+]
