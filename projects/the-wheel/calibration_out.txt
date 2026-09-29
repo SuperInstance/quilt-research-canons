@@ -1,0 +1,24 @@
+
+  CALIBRATE — the oracle ranks the spine; my keyword matcher already did
+                                                            
+  question: Does this paper have a concrete artifact attached — runnable code, a small repository, or stored results — that someone could run or check right now, rather than only a description of an idea?
+
+   oracle  matcher  paper
+  ----------------------------------------------------------------------
+    0.940      269  29-Spreadsheet-as-Cell.md                   
+    0.930       50  03-Confidence-Cascade-Architecture.md       
+    0.920       50  03-Confidence-Cascade-Architecture.md       
+    0.920       40  06-Tile-Algebra-Formalization.md            
+    0.920       40  06-Tile-Algebra-Formalization.md            
+    0.880        8  19-Time-Travel-DAW.md                         <-- DISAGREE
+    0.840       21  07-Origin-Centric-Data-Systems.md           
+    0.820       30  12-Polyformalism-Back-Pressure.md           
+    0.800       52  09-WIGNER-D-HARMONICS-WHITE-PAPER.md        
+    0.800       30  02-SuperInstance-Type-System.md             
+    0.790       12  18-Three-Views.md                             <-- DISAGREE
+    0.790       12  22-Media-Theory-of-Quilt.md                   <-- DISAGREE
+
+  agreement on press/no-press: 9/12
+  DISAGREEMENTS are the deliverable. A single route has nothing to disagree with;
+  that is the whole reason to ask the oracle rather than to re-read my own list.
+  wrote out/calibration.json
