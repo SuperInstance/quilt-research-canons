@@ -1,0 +1,71 @@
+  DRAFTING THE MISSING SECTIONS, VIA THE API, NO CLONES
+  ============================================================================
+
+  === quilt-gpu-lab — 337 files, 3 verified limitations ===
+    - there is no CI configuration in this repository, so nothing here is checked automatically on push  _(`(no CI config found)`)_
+    - it carries no LICENSE file  _(`(no LICENSE file)`)_
+    - no standard build or test file is present, so there is no canonical command to point a reader at  _(`(no build file found)`)_
+    [L3 NEEDS A HUMAN] no build file, so the receipt cannot be guessed
+    [L5 NEEDS A HUMAN] failure modes are not derivable from a file listing
+
+  === AI-Writings — 20115 files, 0 verified limitations ===
+    [L3 CAN BE DERIVED] its canonical command is defined in `package.json`
+    [L5 NEEDS A HUMAN] failure modes are not derivable from a file listing
+
+  === pong-quilt — 89 files, 2 verified limitations ===
+    - it carries no LICENSE file  _(`(no LICENSE file)`)_
+    - no standard build or test file is present, so there is no canonical command to point a reader at  _(`(no build file found)`)_
+    [L3 NEEDS A HUMAN] no build file, so the receipt cannot be guessed
+    [L5 NEEDS A HUMAN] failure modes are not derivable from a file listing
+
+  === PuddnHead — 9 files, 3 verified limitations ===
+    - there is no CI configuration in this repository, so nothing here is checked automatically on push  _(`(no CI config found)`)_
+    - it ships no automated tests, so the example command is the only check available  _(`(no test files found)`)_
+    - no standard build or test file is present, so there is no canonical command to point a reader at  _(`(no build file found)`)_
+    [L3 NEEDS A HUMAN] no build file, so the receipt cannot be guessed
+    [L5 NEEDS A HUMAN] failure modes are not derivable from a file listing
+
+  === qthe — 164 files, 3 verified limitations ===
+    - there is no CI configuration in this repository, so nothing here is checked automatically on push  _(`(no CI config found)`)_
+    - it carries no LICENSE file  _(`(no LICENSE file)`)_
+    - no standard build or test file is present, so there is no canonical command to point a reader at  _(`(no build file found)`)_
+    [L3 NEEDS A HUMAN] no build file, so the receipt cannot be guessed
+    [L5 NEEDS A HUMAN] failure modes are not derivable from a file listing
+
+  === qthe-codec — 18 files, 4 verified limitations ===
+    - there is no CI configuration in this repository, so nothing here is checked automatically on push  _(`(no CI config found)`)_
+    - it ships no automated tests, so the example command is the only check available  _(`(no test files found)`)_
+    - it carries no LICENSE file  _(`(no LICENSE file)`)_
+    - no standard build or test file is present, so there is no canonical command to point a reader at  _(`(no build file found)`)_
+    [L3 NEEDS A HUMAN] no build file, so the receipt cannot be guessed
+    [L5 NEEDS A HUMAN] failure modes are not derivable from a file listing
+
+  === ternary-wiki — 13 files, 4 verified limitations ===
+    - there is no CI configuration in this repository, so nothing here is checked automatically on push  _(`(no CI config found)`)_
+    - it ships no automated tests, so the example command is the only check available  _(`(no test files found)`)_
+    - it carries no LICENSE file  _(`(no LICENSE file)`)_
+    - no standard build or test file is present, so there is no canonical command to point a reader at  _(`(no build file found)`)_
+    [L3 NEEDS A HUMAN] no build file, so the receipt cannot be guessed
+    [L5 NEEDS A HUMAN] failure modes are not derivable from a file listing
+
+  === ropesight — 13 files, 2 verified limitations ===
+    - it ships no automated tests, so the example command is the only check available  _(`(no test files found)`)_
+    - it carries no LICENSE file  _(`(no LICENSE file)`)_
+    [L3 CAN BE DERIVED] its canonical command is defined in `package.json`
+    [L5 NEEDS A HUMAN] failure modes are not derivable from a file listing
+
+  === quilt-fiction — 594 files, 4 verified limitations ===
+    - there is no CI configuration in this repository, so nothing here is checked automatically on push  _(`(no CI config found)`)_
+    - it ships no automated tests, so the example command is the only check available  _(`(no test files found)`)_
+    - it carries no LICENSE file  _(`(no LICENSE file)`)_
+    - no standard build or test file is present, so there is no canonical command to point a reader at  _(`(no build file found)`)_
+    [L3 NEEDS A HUMAN] no build file, so the receipt cannot be guessed
+    [L5 NEEDS A HUMAN] failure modes are not derivable from a file listing
+
+  === SuperInstance.github.io — 24 files, 2 verified limitations ===
+    - it carries no LICENSE file  _(`(no LICENSE file)`)_
+    - no standard build or test file is present, so there is no canonical command to point a reader at  _(`(no build file found)`)_
+    [L3 NEEDS A HUMAN] no build file, so the receipt cannot be guessed
+    [L5 NEEDS A HUMAN] failure modes are not derivable from a file listing
+
+  10 repos analysed; 2 have a derivable L3
