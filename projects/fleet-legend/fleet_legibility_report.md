@@ -1,7 +1,28 @@
 # Fleet legibility report
 
 Produced by `lint_legibility.py`, run over the fleet by a script that had never
-seen it. Regenerate with the command in `../lint_legibility.py`.
+seen it.
+
+## Regenerate this
+
+```
+python3 run_complete2.py
+```
+
+Rewrites this report and `verdicts.json` from live API reads. It reads the GitHub tree
+API only and never clones a repository — a clone of `AI-Writings` exceeded an 80-second
+timeout and took down an entire run.
+
+## What this report does NOT do
+
+- **It is not the whole fleet.** The API enumerates 100 repos of a claimed 1300. Every
+  number here is scoped to those 100 and to the default branch at read time.
+- **It does not judge code quality.** Only whether a stranger can get in and recover.
+- **L3/L4/L5 are keyword heuristics.** A repo can satisfy them by accident, and can fail
+  them while being perfectly legible to a human. The grade is a prompt for a human look,
+  not a verdict.
+- **It does not read the code.** A repository with tests in an unconventional layout reads
+  as having none.
 
 ## The number
 
