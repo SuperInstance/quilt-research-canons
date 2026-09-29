@@ -482,6 +482,177 @@
         "any_safe_k": false,
         "usage_flat": false
       }
+    },
+    {
+      "round": 7,
+      "title": "does the batch collapse hit choice and score, and is it averaging or first-instruction",
+      "registered_at": "2026-09-29T17:05:11.893096+00:00",
+      "predictions": [
+        {
+          "id": "collapse-hits-choice",
+          "kind": "bool",
+          "predict": true,
+          "claim": "`choice` will ALSO collapse in a batch \u2014 two different choice questions in one call will return the same selected option or near-identical probabilities. The collapse is a property of the CALL, not of the noul type.",
+          "result": false
+        },
+        {
+          "id": "collapse-hits-score",
+          "kind": "bool",
+          "predict": true,
+          "claim": "`score` will collapse similarly. NOTE: score is already known to be a constant generator, so this is partly confounded \u2014 the collapse test needs subjects whose STANDALONE scores differ, which for score may be impossible to construct.",
+          "result": false
+        },
+        {
+          "id": "unrelated-topics-still-collapse",
+          "kind": "bool",
+          "predict": true,
+          "claim": "Two questions on COMPLETELY UNRELATED TOPICS (a software registry and a fishing catch log) will still collapse in a batch. That means the collapse is not averaging over related subjects \u2014 it is the call returning one answer.",
+          "result": true
+        }
+      ],
+      "results": null,
+      "debrief": [
+        {
+          "id": "collapse-hits-choice",
+          "kind": "bool",
+          "predicted": true,
+          "actual": false,
+          "status": "REFUTED"
+        },
+        {
+          "id": "collapse-hits-score",
+          "kind": "bool",
+          "predicted": true,
+          "actual": false,
+          "status": "REFUTED"
+        },
+        {
+          "id": "unrelated-topics-still-collapse",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        }
+      ],
+      "data": {
+        "choice_sep": [
+          "verifiable",
+          "bookkeeping"
+        ],
+        "choice_bat": [
+          "verifiable",
+          "bookkeeping"
+        ],
+        "score_sep": [
+          2.59,
+          1.56
+        ],
+        "score_bat": [
+          2.9,
+          1.05
+        ],
+        "unrelated_sep": [
+          0.58,
+          0.55
+        ],
+        "unrelated_bat": [
+          0.43,
+          0.43
+        ]
+      }
+    },
+    {
+      "round": 8,
+      "title": "can a choice question carry the two axes in one call and recover batching",
+      "registered_at": "2026-09-29T17:05:50.636802+00:00",
+      "predictions": [
+        {
+          "id": "choice-carries-two-axes",
+          "kind": "bool",
+          "predict": true,
+          "claim": "A SINGLE `choice` question whose two CRITERIA are 'has a mechanism' and 'is externally verifiable' will correctly separate: a claim with both picks the both-criteria option, a claim with only one picks the single-criteria option, and a bookkeeping claim picks neither.",
+          "result": false
+        },
+        {
+          "id": "choice-probs-are-usable",
+          "kind": "bool",
+          "predict": true,
+          "claim": "The choice question's PROBABILITY DISTRIBUTION will separate the three cases (both / one / neither) with no overlap. If the probabilities collapse to 1.0/0.0 in every case the type discriminates the label but carries no graded signal.",
+          "result": true
+        },
+        {
+          "id": "noul-in-mixed-batch-still-collapses",
+          "kind": "bool",
+          "predict": true,
+          "claim": "A batched call mixing one noul with one choice will still collapse the NOUL to match the batch mean, even though the choice survives. The collapse follows the TYPE, not the call.",
+          "result": true
+        }
+      ],
+      "results": null,
+      "debrief": [
+        {
+          "id": "choice-carries-two-axes",
+          "kind": "bool",
+          "predicted": true,
+          "actual": false,
+          "status": "REFUTED"
+        },
+        {
+          "id": "choice-probs-are-usable",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "noul-in-mixed-batch-still-collapses",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        }
+      ],
+      "data": {
+        "cases": {
+          "both": {
+            "choice": "both_axes",
+            "probs": {
+              "both_axes": 0.77,
+              "externality_only": 0.22,
+              "mechanism_only": 0.01,
+              "neither": 0.0
+            }
+          },
+          "one": {
+            "choice": "mechanism_only",
+            "probs": {
+              "both_axes": 0.0,
+              "mechanism_only": 0.94,
+              "externality_only": 0.05,
+              "neither": 0.01
+            }
+          },
+          "neither": {
+            "choice": "mechanism_only",
+            "probs": {
+              "externality_only": 0.01,
+              "neither": 0.43,
+              "both_axes": 0.0,
+              "mechanism_only": 0.56
+            }
+          }
+        },
+        "mixed_noul": 0.39,
+        "mixed_choice": "both_axes",
+        "sep_nouls": [
+          0.71,
+          0.13
+        ],
+        "sep_spread": 0.58,
+        "ok1": false,
+        "graded": true,
+        "mixed_collapsed": true
+      }
     }
   ],
   "carried": [
@@ -532,6 +703,27 @@
       "id": "three-questions-are-safe",
       "predicted": false,
       "actual": true,
+      "note": "prediction was wrong; the belief it encoded is suspect"
+    },
+    {
+      "from_round": 7,
+      "id": "collapse-hits-choice",
+      "predicted": true,
+      "actual": false,
+      "note": "prediction was wrong; the belief it encoded is suspect"
+    },
+    {
+      "from_round": 7,
+      "id": "collapse-hits-score",
+      "predicted": true,
+      "actual": false,
+      "note": "prediction was wrong; the belief it encoded is suspect"
+    },
+    {
+      "from_round": 8,
+      "id": "choice-carries-two-axes",
+      "predicted": true,
+      "actual": false,
       "note": "prediction was wrong; the belief it encoded is suspect"
     }
   ]
