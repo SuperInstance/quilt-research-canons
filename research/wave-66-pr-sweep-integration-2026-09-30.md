@@ -64,3 +64,11 @@ All **676 PRs merged since 09-12 across 148 repos** → Qwen3-Embedding-0.6B (10
 4. **SmartCRDT example bug**: G-Counter merge of 3+2 shown as 5 (should be 10) — fix README example + add to linter's claim-vs-math checks.
 5. **Embedding-iteration continues**: corpus embeddings (66-3) proved the pipeline; next wave embeds the *READMEs* and the *cluster digests* into one space so frontend gaps and expertise clusters cross-locate (novel property hunt: do the 10/10 READMEs cluster like the receipts-clusters do?).
 6. **canons name resolution**: decide redirect/rename/reference-update, then re-run the audit's NAV dimension to confirm zero dead links.
+
+## 6. LATE-WAVE ADDENDUM (same session, after the receipt above was pushed)
+
+The account kept moving while the sweep ran — a teammate wave landed **13 `LEGIBILITY.md` PRs** (fleet-legend census, L4 "what this does NOT do" / L5 "what to do when it fails" obligations, every finding tree-read with evidence paths). All 13 verified **additive-only** (one new file, zero deletions) and merged with per-PR verification comments — including two on red-main repos (git-agent, CognitiveEngine) where the PR red is inherited and cannot gate a doc-only diff. One genuine science PR merged: **quilt-gpu-lab#4** — the c3 dataset generator now REFUSES non-injective clip generation (t0 grid aliasing: 48 requests → 44 distinct clips; degenerate synth families: `still`/`smpte` collapse N→1) instead of silently shipping train/val overlap; "a generator that quietly changes the dataset size is lying about the dataset" is the receipts discipline applied to data tooling.
+
+**Correction to §1**: the two edge-native-paper PRs could NOT be closed — archived repos are fully read-only (PATCH rejected). They remain open permanently as artifacts of the archived repo. The honesty-marker / Related-Repos extraction into the fleet standard stands.
+
+**Final account state**: 21 open at wave start → **16 merged** (2 consolidated repair+upgrade PRs, 13 legibility, 1 fail-closed data science), **18 closed with PR-specific evidence**, 2 left open by design (PersonalLog #85/#92, gated on issue #96's red-main fix), 2 permanent artifacts (archived repo). Knowledge-vault-rs PR #6 merged at 15/15 green checks; tripartite-rs-archive PR #3 merged green; **dependabot negative-control watch now active on both repos**.
