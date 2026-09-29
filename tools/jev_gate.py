@@ -10,7 +10,12 @@ a replacement. The short version:
   1. The gate is STABLE. Same question, 6 calls: sd 0.005-0.011, zero threshold flips.
      So repeat-calling to reduce noise buys almost nothing. Do not average 10 calls.
 
-  2. The gate is a STEP, not a scale. Bisecting a monotone evidence ladder, the single
+  2. BATCHING IS CATEGORICALLY BROKEN. Two questions in one call return the same number
+     (spread 0.00). Three: 0.01. Four: 0.01. The API scores the whole request and
+     reports it per question. One question per call, always. A 4-question call also
+     costs 4x the tokens at the same wall-clock, so batching is worse on both axes.
+
+  3. The gate is a STEP, not a scale. Bisecting a monotone evidence ladder, the single
      rung that flipped it was "+ the file is append-only" -- the GUARANTEE statement.
      +0.690 in one rung. Everything added after (byte-prefix proof, fail-closed, a second
      implementation) moved p by <=0.02. The gate is a structural completeness test.
@@ -19,7 +24,8 @@ a replacement. The short version:
      append-only?" against a description that merely says "a registry that is append-only"
      returns 0.98. A single-question gate cannot tell a claim from a restatement.
 
-  4. TWO questions, min-aggregated, is strictly better. On the fleet's own five gameable
+  4. TWO questions, min-aggregated, is strictly better -- PROVIDED they are asked in
+     two separate calls. Asking them in one call is not two axes, it is one axis twice. On the fleet's own five gameable
      claims plus two solid controls: composite misclassified 2/7, two-axis misclassified 1/7.
      The two-axis gate promoted the signed-tag claim at 0.760 that the composite capped at
      0.700, and the sub-answers say WHICH half failed.
@@ -93,15 +99,27 @@ def circular(claim):
     return {"circularity_p": p, "verdict": verdict}
 
 def gate(claim, threshold=0.7):
-    """Two axes in ONE call (position noise cancels within a batch, so both axes see the
-    same context). min-aggregated. Fails closed if either axis is missing."""
-    q = {k: {"type": "noul", "instructions": ins, "criteria": {"true": t, "false": f}}
-         for k, (ins, t, f) in AXIS.items()}
-    try:
-        a = _post(claim, q)["answers"]
-    except Exception as e:
-        return {"verdict": "ERROR", "error": str(e), "promotes": False, "threshold": threshold}
-    m, x = a.get("mech", {}).get("noul"), a.get("ext", {}).get("noul")
+    """Two axes, TWO SEPARATE CALLS, min-aggregated.
+
+    ONE QUESTION PER CALL. This is not a style preference. Six pre-registered rounds
+    measured it: with two questions in a single call the per-item spread is 0.00; with
+    three it is 0.01; with four it is 0.01. The API reports one number and repeats it.
+    Asking both axes in one call -- which is what the first version of this gate did --
+    was reporting the same measurement twice and calling it two-axis.
+
+    Batching is also still charged for: a 4-question call costs 617 tokens against 357
+    for one, at the same ~200ms. So batching is strictly worse on both axes.
+
+    Fails closed if either axis is missing."""
+    vals = {}
+    for k, (ins, t, f) in AXIS.items():
+        try:
+            a = _post(claim, {k: {"type": "noul", "instructions": ins,
+                                  "criteria": {"true": t, "false": f}}})["answers"]
+        except Exception as e:
+            return {"verdict": "ERROR", "error": str(e), "promotes": False, "threshold": threshold}
+        vals[k] = a.get(k, {}).get("noul")
+    m, x = vals.get("mech"), vals.get("ext")
     complete = isinstance(m, (int, float)) and isinstance(x, (int, float))
     score = min(m, x) if complete else None
     promotes = bool(complete and score > threshold)
