@@ -1,0 +1,41 @@
+
+  GROUNDING LINT — was the artifact in hand BEFORE the claim was made?
+  ==================================================================================
+  [----] owner  family-expansion           UNSOURCED
+  [ ok ] owner  family-expansion-corrected GROUNDED
+  [ ok ] owner  moth-ramp                  GROUNDED
+  [ ok ] owner  moth-hardcase              GROUNDED
+  [----] owner  torus-4-over-n             UNSOURCED
+  [ ok ] team   gpu-lab-evalbug            GROUNDED
+  [ ok ] team   witness-numerology         GROUNDED
+  [ ok ] team   lane-u-headline            GROUNDED
+  [ ok ] team   engine-stochastic          GROUNDED
+  ----------------------------------------------------------------------------------
+  GROUNDED 7   NARRATIVE_FIRST 0   UNSOURCED 2   (of 9)
+
+  THE UNSOURCED ONES ARE THE INTERESTING ONES. 2 claims have no resolvable
+  receipt at all, and all of them are mine:
+    - the family-expansion prediction (written before the run existed)
+    - the torus 4/196 arithmetic (no artifact, just a formula misapplied)
+  A claim with no receipt is not a wrong claim. It is an UNGROUNDED one, and the
+  linter cannot tell you which. That is the honest limit of this instrument.
+
+  THE HEADLINE CASE IS THE INTERESTING ONE. lane-u-headline cites a receipt that
+  PREDATES it -- so by timestamp it is GROUNDED -- and it is still wrong, because
+  the artifact it cites says the opposite. Timestamps catch ORDER, not SENSE.
+  Only casper-critic's internal-consistency read caught that one, by reading the
+  headline against the body.
+
+  SO THE FLEET NEEDS TWO GATES, AND THEY CATCH DIFFERENT THINGS:
+    GATE 1  grounding lint (this file)  -- catches claims made before evidence
+    GATE 2  internal-consistency read -- catches a headline its own body refutes
+  Neither substitutes for the other. A receipt that predates a claim does not
+  mean the claim agrees with the receipt.
+
+  NEGATIVE CONTROL — the lint must be able to fail:
+    synthetic claim with a FUTURE receipt -> NARRATIVE_FIRST   PASS (lint bites)
+    synthetic claim with NO receipt      -> UNSOURCED   PASS
+    synthetic claim with a PRIOR receipt -> GROUNDED   PASS
+
+  all three controls behaved correctly: True
+
