@@ -1,0 +1,45 @@
+  PROCESS SIGNATURE SWEEP — top 60 non-fork repos by size
+  ======================================================================
+
+  GRADE DISTRIBUTION (path evidence only, reproducible from a tree listing)
+  ======================================================================
+    NARRATIVE-FIRST                 28  ############################
+    PUBLISHABLE                     20  ####################
+    RECEIPTED                        6  ######
+    PROCESS-PRESENT-UNCLASSIFIED     5  #####
+    SELF-AUDITING                    1  #
+
+  PATH EVIDENCE FREQUENCY — how many of these repos leave each trace
+  ======================================================================
+    recipe-grown                    22 / 60  (37%)
+    contract-enforcing              20 / 60  (33%)
+    self-hosting                    20 / 60  (33%)
+    single-command                  17 / 60  (28%)
+    falsification-first             13 / 60  (22%)
+    externally-checkable             4 / 60  (7%)
+    pre-registered                   3 / 60  (5%)
+    witness-chained                  1 / 60  (2%)
+
+  TEXT EVIDENCE FREQUENCY — only counted where content was fetched
+  ============================================================
+    error-surface                   32 / 60 with text  (53%)
+    negative-space                  10 / 60 with text  (17%)
+
+  THE NOVEL PART: repos that describe a rigorous process in PROSE and
+  leave no PATH trace of running one. Those are the NARRATIVE-FIRST rows with
+  text evidence present. They are invisible to a code reviewer and to a reader.
+    count: 12 of 60
+      fleet-coordinate                      2 docs     11 code  text-ev: ['error-surface']
+      fleet-resonance                       3 docs     11 code  text-ev: ['error-surface']
+      murmur-plato-bridge                   3 docs     14 code  text-ev: ['error-surface', 'negative-space']
+      quicunnel                             4 docs     15 code  text-ev: ['error-surface']
+      lau-leverage-singularity              3 docs     13 code  text-ev: ['error-surface']
+      conservation-law-rs                   4 docs     13 code  text-ev: ['error-surface', 'negative-space']
+      si-variational-bayes                  1 docs      1 code  text-ev: ['error-surface']
+      lau-logic-foundations                 3 docs     10 code  text-ev: ['error-surface']
+      beta-test-elena                       4 docs      2 code  text-ev: ['error-surface', 'negative-space']
+      lau-ffi-bindings                      3 docs     11 code  text-ev: ['error-surface']
+      lau-algebraic-geometry                3 docs      9 code  text-ev: ['error-surface', 'negative-space']
+      lau-computer-graphics                 3 docs      9 code  text-ev: ['error-surface']
+
+  wrote fleet_sweep.json
