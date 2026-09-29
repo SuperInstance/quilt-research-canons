@@ -1,0 +1,26 @@
+
+  QUILT WIDENING — self-decomposition into wider arrays, every step rewindable
+                                                            
+  question: Is this element a distinct, non-redundant part of the whole, or a restatement of its neighbours?
+
+  round 0  array width = 3
+          spread across 3 named subjec  round 1  array width = 4   (+2)   level=None  control=None  discrimination=0.00  spread=0.00
+          array is REDUNDANT -- this decomposition added restatement, not structure
+          nudge: rewound to seed, 4 -> 3 live cells, 4 actions retained
+  round 2  array width = 5   (+2)   level=None  control=None  discrimination=0.00  spread=0.00
+          array is REDUNDANT -- this decomposition added restatement, not structure
+      array is REDUNDANT -- this decomposition added restatement, not structure
+            0.720  seed-0.0.0
+            0.540  seed-0.1
+            0.450  seed-2
+  round 3  array width = 6   (+2)   level=0.488  control=0.282  discrimination=0.21  spread=0.40
+          array carries INFORMATION
+            0.750  seed-0.0.0.0
+            0.530  seed-0.0.0.1
+            0.490  seed-0.1
+
+  trail: 7 actions, head at seq 7, nothing deleted
+  final live width: 6
+
+  wrote widening_trace.json -- this trace IS the seed-state material for gen+1
+
