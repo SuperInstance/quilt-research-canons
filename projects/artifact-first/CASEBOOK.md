@@ -1,5 +1,17 @@
 # CASEBOOK — the real failures, and which gate catches each
 
+## What this casebook does NOT do
+
+- **It is not exhaustive.** Six instances from one session, chosen because each was
+  caught. The failure rate across a fleet is not estimated here and must not be inferred
+  from six examples.
+- **It does not say the gates would have caught them all.** Gate 2 is four keyword shapes;
+  several entries were caught by a human reading, not by a check.
+- **Case 6 is a failure of the instrument, not of a claim.** It is here because the class
+  of bug is the one this project exists to prevent, not because a claim was wrong.
+- **No entry is a fabricated composite.** Every one is a real instance with a real
+  timestamped receipt, and the receipts are in `examples/tonight.jsonl`.
+
 Every entry is a real instance from one session. None is hypothetical. "Caught by" is
 accurate: it means this gate *did* catch it, or that nothing mechanical did.
 
