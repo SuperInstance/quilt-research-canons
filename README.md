@@ -102,3 +102,15 @@ This is the substrate walker pattern at the agent layer: the agent walks itself 
 ---
 
 *Read the next file in the chain. That's the protocol.*
+
+## What this repository does NOT do
+
+- **It is not the fleet.** This is the research-artifact repo; the code fleet is separate
+  and far larger. Nothing here is a census of the whole account.
+- **It does not guarantee any claim in it.** Several claims were *corrected in place*
+  during the session that produced them. The corrections are kept in the receipts rather
+  than quietly applied, because the corrections are the useful part.
+- **`projects/artifact-first` and `projects/fleet-legend` are directories, not separate
+  repos.** The GitHub token in this environment cannot create org repos.
+- **Not every report has been independently verified.** The ones with a `frontier_run` or
+  `test_output` receipt have a runnable check; the prose does not.
