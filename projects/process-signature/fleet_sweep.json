@@ -1,0 +1,1143 @@
+[
+ {
+  "repo": "AI-Writings",
+  "grade": "SELF-AUDITING",
+  "path": [
+   "contract-enforcing",
+   "falsification-first",
+   "recipe-grown",
+   "self-hosting",
+   "single-command",
+   "witness-chained"
+  ],
+  "text": [
+   "negative-space"
+  ],
+  "files": 20115,
+  "code": 290,
+  "docs": 16183,
+  "tests": 20,
+  "ci": 6,
+  "jsonl": 23,
+  "gap": []
+ },
+ {
+  "repo": "lucineer-system",
+  "grade": "PROCESS-PRESENT-UNCLASSIFIED",
+  "path": [
+   "recipe-grown"
+  ],
+  "text": [
+   "error-surface",
+   "negative-space"
+  ],
+  "files": 338,
+  "code": 19,
+  "docs": 273,
+  "tests": 8,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "fleet-coordinate",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [
+   "error-surface"
+  ],
+  "files": 18,
+  "code": 11,
+  "docs": 2,
+  "tests": 3,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "fleet-resonance",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [
+   "error-surface"
+  ],
+  "files": 19,
+  "code": 11,
+  "docs": 3,
+  "tests": 3,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "sailor-workspace",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "contract-enforcing",
+   "recipe-grown",
+   "self-hosting"
+  ],
+  "text": [],
+  "files": 1221,
+  "code": 230,
+  "docs": 456,
+  "tests": 22,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "murmur-plato-bridge",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [
+   "error-surface",
+   "negative-space"
+  ],
+  "files": 3785,
+  "code": 14,
+  "docs": 3,
+  "tests": 6,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "lau-constellation",
+  "grade": "RECEIPTED",
+  "path": [
+   "contract-enforcing"
+  ],
+  "text": [],
+  "files": 21,
+  "code": 10,
+  "docs": 2,
+  "tests": 0,
+  "ci": 0,
+  "jsonl": 0,
+  "gap": [
+   "no CI",
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "flux-isa-edge",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [],
+  "files": 2732,
+  "code": 17,
+  "docs": 1,
+  "tests": 2,
+  "ci": 0,
+  "jsonl": 0,
+  "gap": [
+   "no CI",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "forgemaster",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "contract-enforcing",
+   "externally-checkable",
+   "falsification-first",
+   "recipe-grown",
+   "self-hosting",
+   "single-command"
+  ],
+  "text": [
+   "error-surface"
+  ],
+  "files": 2585,
+  "code": 613,
+  "docs": 1118,
+  "tests": 43,
+  "ci": 3,
+  "jsonl": 4,
+  "gap": []
+ },
+ {
+  "repo": "plato-training",
+  "grade": "PROCESS-PRESENT-UNCLASSIFIED",
+  "path": [
+   "single-command"
+  ],
+  "text": [],
+  "files": 149,
+  "code": 103,
+  "docs": 28,
+  "tests": 45,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "flux-tensor-midi",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "contract-enforcing",
+   "externally-checkable",
+   "falsification-first",
+   "recipe-grown",
+   "self-hosting",
+   "single-command"
+  ],
+  "text": [
+   "error-surface"
+  ],
+  "files": 6041,
+  "code": 1655,
+  "docs": 2243,
+  "tests": 217,
+  "ci": 1,
+  "jsonl": 10,
+  "gap": []
+ },
+ {
+  "repo": "plato-engine",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "recipe-grown",
+   "self-hosting"
+  ],
+  "text": [],
+  "files": 2034,
+  "code": 4,
+  "docs": 1,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "realtime-core",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "recipe-grown",
+   "self-hosting"
+  ],
+  "text": [
+   "error-surface"
+  ],
+  "files": 1897,
+  "code": 9,
+  "docs": 8,
+  "tests": 0,
+  "ci": 0,
+  "jsonl": 0,
+  "gap": [
+   "no CI",
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "lau-twistor-agents",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [],
+  "files": 1102,
+  "code": 14,
+  "docs": 8,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "constraint-theory-core",
+  "grade": "RECEIPTED",
+  "path": [
+   "contract-enforcing",
+   "recipe-grown",
+   "single-command"
+  ],
+  "text": [
+   "error-surface"
+  ],
+  "files": 96,
+  "code": 43,
+  "docs": 37,
+  "tests": 3,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "quilt-gpu-lab",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "contract-enforcing",
+   "falsification-first",
+   "recipe-grown",
+   "self-hosting"
+  ],
+  "text": [
+   "error-surface",
+   "negative-space"
+  ],
+  "files": 338,
+  "code": 120,
+  "docs": 81,
+  "tests": 2,
+  "ci": 0,
+  "jsonl": 3,
+  "gap": [
+   "no CI",
+   "no LICENSE"
+  ]
+ },
+ {
+  "repo": "flux-vm-v3",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "externally-checkable",
+   "single-command"
+  ],
+  "text": [
+   "error-surface",
+   "negative-space"
+  ],
+  "files": 36,
+  "code": 24,
+  "docs": 4,
+  "tests": 6,
+  "ci": 2,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "fm-research",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "falsification-first",
+   "recipe-grown",
+   "self-hosting"
+  ],
+  "text": [
+   "error-surface"
+  ],
+  "files": 960,
+  "code": 125,
+  "docs": 600,
+  "tests": 1,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "plato-room-configs",
+  "grade": "RECEIPTED",
+  "path": [
+   "contract-enforcing"
+  ],
+  "text": [
+   "error-surface"
+  ],
+  "files": 48,
+  "code": 10,
+  "docs": 6,
+  "tests": 4,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "quicunnel",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [
+   "error-surface"
+  ],
+  "files": 27,
+  "code": 15,
+  "docs": 4,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "readme-generator",
+  "grade": "PROCESS-PRESENT-UNCLASSIFIED",
+  "path": [
+   "recipe-grown"
+  ],
+  "text": [
+   "error-surface"
+  ],
+  "files": 14,
+  "code": 7,
+  "docs": 2,
+  "tests": 1,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "fabric-mcp",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "contract-enforcing",
+   "falsification-first",
+   "pre-registered",
+   "recipe-grown",
+   "self-hosting",
+   "single-command"
+  ],
+  "text": [],
+  "files": 5239,
+  "code": 1535,
+  "docs": 1725,
+  "tests": 436,
+  "ci": 0,
+  "jsonl": 0,
+  "gap": [
+   "no CI",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "fleet-gateway",
+  "grade": "PROCESS-PRESENT-UNCLASSIFIED",
+  "path": [
+   "single-command"
+  ],
+  "text": [
+   "error-surface"
+  ],
+  "files": 17,
+  "code": 6,
+  "docs": 4,
+  "tests": 1,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "observation-primitive-rs",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [],
+  "files": 6,
+  "code": 1,
+  "docs": 1,
+  "tests": 0,
+  "ci": 0,
+  "jsonl": 0,
+  "gap": [
+   "no CI",
+   "no LICENSE",
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "lau-dynamical-algebra",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [],
+  "files": 19,
+  "code": 11,
+  "docs": 3,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "Lucineer",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "contract-enforcing",
+   "recipe-grown",
+   "self-hosting",
+   "single-command"
+  ],
+  "text": [
+   "error-surface"
+  ],
+  "files": 2877,
+  "code": 408,
+  "docs": 786,
+  "tests": 8,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "lau-noether-agents",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [],
+  "files": 19,
+  "code": 11,
+  "docs": 3,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "lau-self-modeling",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [],
+  "files": 18,
+  "code": 10,
+  "docs": 3,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "cargo-line-tycoon",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "externally-checkable",
+   "falsification-first",
+   "recipe-grown",
+   "self-hosting",
+   "single-command"
+  ],
+  "text": [
+   "error-surface",
+   "negative-space"
+  ],
+  "files": 369,
+  "code": 109,
+  "docs": 59,
+  "tests": 26,
+  "ci": 3,
+  "jsonl": 0,
+  "gap": [
+   "no LICENSE",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "lau-leverage-singularity",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [
+   "error-surface"
+  ],
+  "files": 21,
+  "code": 13,
+  "docs": 3,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "lau-construct-integration",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [],
+  "files": 10,
+  "code": 2,
+  "docs": 3,
+  "tests": 1,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "lau-cryptography",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [],
+  "files": 17,
+  "code": 10,
+  "docs": 3,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "fleet-edge-worker",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "contract-enforcing",
+   "falsification-first",
+   "recipe-grown",
+   "self-hosting",
+   "single-command"
+  ],
+  "text": [],
+  "files": 2373,
+  "code": 1546,
+  "docs": 165,
+  "tests": 52,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "fleet-vector-api",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "contract-enforcing",
+   "falsification-first",
+   "recipe-grown",
+   "self-hosting",
+   "single-command"
+  ],
+  "text": [],
+  "files": 2459,
+  "code": 1598,
+  "docs": 168,
+  "tests": 54,
+  "ci": 2,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "lau-construct-integration-v2",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [],
+  "files": 9,
+  "code": 1,
+  "docs": 3,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "fleet-static-host",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "contract-enforcing",
+   "recipe-grown",
+   "self-hosting"
+  ],
+  "text": [
+   "error-surface"
+  ],
+  "files": 310,
+  "code": 41,
+  "docs": 32,
+  "tests": 2,
+  "ci": 0,
+  "jsonl": 0,
+  "gap": [
+   "no CI",
+   "no LICENSE",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "rc-20260824-01",
+  "grade": "RECEIPTED",
+  "path": [
+   "contract-enforcing"
+  ],
+  "text": [
+   "error-surface"
+  ],
+  "files": 228,
+  "code": 21,
+  "docs": 12,
+  "tests": 0,
+  "ci": 0,
+  "jsonl": 0,
+  "gap": [
+   "no CI",
+   "no LICENSE",
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "lau-stochastic-processes",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "self-hosting"
+  ],
+  "text": [],
+  "files": 17,
+  "code": 9,
+  "docs": 3,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "mist-game",
+  "grade": "RECEIPTED",
+  "path": [
+   "contract-enforcing"
+  ],
+  "text": [
+   "error-surface"
+  ],
+  "files": 269,
+  "code": 82,
+  "docs": 5,
+  "tests": 12,
+  "ci": 0,
+  "jsonl": 0,
+  "gap": [
+   "no CI",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "recovered-copy-20260824-mist-game",
+  "grade": "RECEIPTED",
+  "path": [
+   "contract-enforcing"
+  ],
+  "text": [
+   "error-surface"
+  ],
+  "files": 269,
+  "code": 82,
+  "docs": 5,
+  "tests": 12,
+  "ci": 0,
+  "jsonl": 0,
+  "gap": [
+   "no CI",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "conservation-law-rs",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [
+   "error-surface",
+   "negative-space"
+  ],
+  "files": 22,
+  "code": 13,
+  "docs": 4,
+  "tests": 1,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "hermes-cloudflare",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [],
+  "files": 39,
+  "code": 16,
+  "docs": 2,
+  "tests": 3,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "si-variational-bayes",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [
+   "error-surface"
+  ],
+  "files": 5,
+  "code": 1,
+  "docs": 1,
+  "tests": 0,
+  "ci": 0,
+  "jsonl": 0,
+  "gap": [
+   "no CI",
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "lau-logic-foundations",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [
+   "error-surface"
+  ],
+  "files": 17,
+  "code": 10,
+  "docs": 3,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "insight-engine",
+  "grade": "PROCESS-PRESENT-UNCLASSIFIED",
+  "path": [
+   "recipe-grown"
+  ],
+  "text": [],
+  "files": 774,
+  "code": 24,
+  "docs": 1,
+  "tests": 0,
+  "ci": 0,
+  "jsonl": 0,
+  "gap": [
+   "no CI",
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "lau-number-theory",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [],
+  "files": 17,
+  "code": 9,
+  "docs": 3,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "beta-test-elena",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [
+   "error-surface",
+   "negative-space"
+  ],
+  "files": 11,
+  "code": 2,
+  "docs": 4,
+  "tests": 1,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "plato-room-wasm",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [],
+  "files": 11,
+  "code": 5,
+  "docs": 1,
+  "tests": 2,
+  "ci": 0,
+  "jsonl": 0,
+  "gap": [
+   "no CI",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "quilt-verilog",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "falsification-first",
+   "pre-registered",
+   "self-hosting",
+   "single-command"
+  ],
+  "text": [
+   "negative-space"
+  ],
+  "files": 1613,
+  "code": 196,
+  "docs": 796,
+  "tests": 4,
+  "ci": 1,
+  "jsonl": 11,
+  "gap": [
+   "no LICENSE"
+  ]
+ },
+ {
+  "repo": "lau-ffi-bindings",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [
+   "error-surface"
+  ],
+  "files": 19,
+  "code": 11,
+  "docs": 3,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "lau-landauer-meter",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [],
+  "files": 9,
+  "code": 1,
+  "docs": 3,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "forge-memory",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [],
+  "files": 9,
+  "code": 1,
+  "docs": 3,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "lau-algebraic-geometry",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [
+   "error-surface",
+   "negative-space"
+  ],
+  "files": 17,
+  "code": 9,
+  "docs": 3,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "makerlog-ai",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "contract-enforcing",
+   "falsification-first",
+   "pre-registered",
+   "recipe-grown",
+   "self-hosting",
+   "single-command"
+  ],
+  "text": [
+   "error-surface"
+  ],
+  "files": 2360,
+  "code": 1594,
+  "docs": 184,
+  "tests": 51,
+  "ci": 3,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "oracle1-workspace",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "contract-enforcing",
+   "recipe-grown",
+   "self-hosting",
+   "single-command"
+  ],
+  "text": [
+   "error-surface"
+  ],
+  "files": 8087,
+  "code": 1306,
+  "docs": 3517,
+  "tests": 86,
+  "ci": 1,
+  "jsonl": 151,
+  "gap": []
+ },
+ {
+  "repo": "edge-conservation-worker",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "contract-enforcing",
+   "falsification-first",
+   "recipe-grown",
+   "self-hosting",
+   "single-command"
+  ],
+  "text": [],
+  "files": 1671,
+  "code": 1030,
+  "docs": 115,
+  "tests": 51,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "lau-computer-graphics",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [
+   "error-surface"
+  ],
+  "files": 17,
+  "code": 9,
+  "docs": 3,
+  "tests": 0,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no tests",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "flux-isa-std",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [],
+  "files": 696,
+  "code": 12,
+  "docs": 1,
+  "tests": 2,
+  "ci": 0,
+  "jsonl": 0,
+  "gap": [
+   "no CI",
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "educationgamecocapn",
+  "grade": "PUBLISHABLE",
+  "path": [
+   "contract-enforcing",
+   "falsification-first",
+   "recipe-grown",
+   "self-hosting",
+   "single-command"
+  ],
+  "text": [
+   "error-surface"
+  ],
+  "files": 2065,
+  "code": 1387,
+  "docs": 135,
+  "tests": 80,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ },
+ {
+  "repo": "flux-genome-rs",
+  "grade": "NARRATIVE-FIRST",
+  "path": [],
+  "text": [],
+  "files": 17,
+  "code": 10,
+  "docs": 1,
+  "tests": 1,
+  "ci": 1,
+  "jsonl": 0,
+  "gap": [
+   "no append-only ledger (.jsonl)"
+  ]
+ }
+]
