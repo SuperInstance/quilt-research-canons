@@ -1,0 +1,538 @@
+{
+  "rounds": [
+    {
+      "round": 1,
+      "title": "three questions about the gate that were worth asking",
+      "registered_at": "2026-09-29T16:49:26.413021+00:00",
+      "predictions": [
+        {
+          "id": "inert-axis-responsiveness",
+          "predict": 0.3,
+          "tolerance": 0.25,
+          "claim": "An axis asking SPECIFICALLY about independent reproduction will score the 'mech only' rung (0.95 on the generic mechanism axis) BELOW 0.30, because it asks about something the composite is provably insensitive to.",
+          "result": 0.25
+        },
+        {
+          "id": "preview-agreements",
+          "predict": 0.2,
+          "tolerance": 0.2,
+          "claim": "jev-preview will disagree with jev-latest on at least 2 of 4 borderline claims by more than 0.15, so cross-model agreement is a real constraint and not free.",
+          "result": 0
+        },
+        {
+          "id": "axis-complementarity",
+          "predict": 0.6,
+          "tolerance": 0.3,
+          "claim": "The reproduction axis and the externality axis will NOT be redundant \u2014 their min over the mech+guar control will be within 0.15 of the externality axis alone, meaning reproduction carries little independent signal there.",
+          "result": 0.18
+        }
+      ],
+      "results": null,
+      "debrief": [
+        {
+          "id": "inert-axis-responsiveness",
+          "predicted": 0.3,
+          "actual": 0.25,
+          "delta": -0.05,
+          "tolerance": 0.25,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "preview-agreements",
+          "predicted": 0.2,
+          "actual": 0,
+          "delta": -0.2,
+          "tolerance": 0.2,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "axis-complementarity",
+          "predicted": 0.6,
+          "actual": 0.18,
+          "delta": -0.42,
+          "tolerance": 0.3,
+          "status": "REFUTED"
+        }
+      ],
+      "data": {
+        "axes_by_evidence": {
+          "mech_only": {
+            "generic_mech": 0.61,
+            "reproduction": 0.25,
+            "externality": 0.55
+          },
+          "mech+guar": {
+            "generic_mech": 0.65,
+            "reproduction": 0.18,
+            "externality": 0.64
+          },
+          "guar_only": {
+            "generic_mech": 0.46,
+            "reproduction": 0.12,
+            "externality": 0.19
+          },
+          "repro_heavy": {
+            "generic_mech": 0.65,
+            "reproduction": 0.47,
+            "externality": 0.59
+          }
+        },
+        "cross_model": {
+          "latest": {
+            "c1": 0.19,
+            "c2": 0.19,
+            "c3": 0.18,
+            "c4": 0.19
+          },
+          "preview": {
+            "c1": 0.18,
+            "c2": 0.19,
+            "c3": 0.18,
+            "c4": 0.19
+          }
+        }
+      }
+    },
+    {
+      "round": 2,
+      "title": "what the reproduction axis measures, and why batched state collapses",
+      "registered_at": "2026-09-29T16:50:04.488816+00:00",
+      "predictions": [
+        {
+          "id": "repro-is-vestigial",
+          "predict": 0.4,
+          "tolerance": 0.25,
+          "claim": "The reproduction axis will score the repro_heavy evidence NO HIGHER than the mech+guar evidence (delta < 0.10), i.e. it does not respond to actual independent reproduction and is vestigial rather than a real signal.",
+          "result": 0.63,
+          "kind": "num"
+        },
+        {
+          "id": "batching-is-a-dilution",
+          "predict": 0.4,
+          "tolerance": 0.3,
+          "claim": "As the number of claims in the state grows 1 -> 2 -> 4, the per-claim score will DECREASE monotonically. Batching dilutes.",
+          "result": 1,
+          "kind": "bool"
+        },
+        {
+          "id": "separation-is-the-remedy",
+          "predict": 0.25,
+          "tolerance": 0.25,
+          "claim": "Presenting each claim in its OWN state (4 separate calls) will recover the single-claim score, i.e. the dilution is caused by sharing state, not by asking multiple questions.",
+          "result": 0.74,
+          "kind": "num"
+        }
+      ],
+      "results": null,
+      "debrief": [
+        {
+          "id": "repro-is-vestigial",
+          "kind": "num",
+          "predicted": 0.4,
+          "actual": 0.63,
+          "delta": 0.23,
+          "tolerance": 0.25,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "batching-is-a-dilution",
+          "kind": "bool",
+          "predicted": true,
+          "actual": 1,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "separation-is-the-remedy",
+          "kind": "num",
+          "predicted": 0.25,
+          "actual": 0.74,
+          "delta": 0.49,
+          "tolerance": 0.25,
+          "status": "REFUTED"
+        }
+      ],
+      "data": {
+        "meg": {
+          "repro": 0.17,
+          "ext": 0.55
+        },
+        "repro_heavy": {
+          "repro": 0.8,
+          "ext": 0.64
+        },
+        "alone": 0.71,
+        "batch2": 0.29,
+        "batch4": 0.25,
+        "separate4": [
+          0.74,
+          0.33,
+          0.34,
+          0.31
+        ]
+      }
+    },
+    {
+      "round": 3,
+      "title": "was the 0.74/0.33 split the model being right, or the setup being broken",
+      "registered_at": "2026-09-29T16:51:49.620783+00:00",
+      "predictions": [
+        {
+          "id": "externality-not-position",
+          "kind": "bool",
+          "predict": true,
+          "claim": "A substantively identical claim that is EXTERNALLY checkable will score at least 0.30 HIGHER than the same claim framed as internal bookkeeping. If position or ordering were responsible, the twin would score the same.",
+          "result": false
+        },
+        {
+          "id": "order-is-not-the-cause",
+          "kind": "bool",
+          "predict": true,
+          "claim": "Asking the four claims in the OPPOSITE order (worst-first) will leave each claim's own score within 0.10. If first-position mattered, the scores would move.",
+          "result": false
+        },
+        {
+          "id": "batch-scores-the-batch",
+          "kind": "bool",
+          "predict": true,
+          "claim": "Asking an explicit question about the batch AS A WHOLE will return a number close to the MEAN of the per-claim scores, not close to any single one. That is the signature of a model scoring its whole input rather than each part.",
+          "result": true
+        }
+      ],
+      "results": null,
+      "debrief": [
+        {
+          "id": "externality-not-position",
+          "kind": "bool",
+          "predicted": true,
+          "actual": false,
+          "status": "REFUTED"
+        },
+        {
+          "id": "order-is-not-the-cause",
+          "kind": "bool",
+          "predicted": true,
+          "actual": false,
+          "status": "REFUTED"
+        },
+        {
+          "id": "batch-scores-the-batch",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        }
+      ],
+      "data": {
+        "internal": 0.5,
+        "external": 0.52,
+        "delta": 0.020000000000000018,
+        "forward": [
+          0.51,
+          0.54,
+          0.41,
+          0.31
+        ],
+        "reversed": [
+          0.31,
+          0.39,
+          0.55,
+          0.51
+        ],
+        "max_move": 0.2,
+        "per_claim": [
+          0.44,
+          0.44,
+          0.44,
+          0.45
+        ],
+        "whole": 0.43,
+        "mean_per": 0.4425
+      }
+    },
+    {
+      "round": 4,
+      "title": "is the batch limit about question count or state volume",
+      "registered_at": "2026-09-29T16:52:24.988451+00:00",
+      "predictions": [
+        {
+          "id": "count-is-the-culprit",
+          "kind": "bool",
+          "predict": true,
+          "claim": "With TINY state (one short line per claim) and 4 questions in one call, the per-claim scores will STILL be indistinguishable. The limit is the question count, not the state volume, so shrinking state will not restore discrimination.",
+          "result": true
+        },
+        {
+          "id": "two-questions-are-safe",
+          "kind": "bool",
+          "predict": false,
+          "claim": "With 2 questions in one call the per-claim scores WILL be distinguishable from each other. If true, small batches are usable and only 3+ collapses.",
+          "result": false
+        },
+        {
+          "id": "separate-beats-batch",
+          "kind": "bool",
+          "predict": true,
+          "claim": "For a pair of claims that genuinely differ in quality, the spread across separate calls will be at least 0.20 larger than the spread in one batched call.",
+          "result": true
+        }
+      ],
+      "results": null,
+      "debrief": [
+        {
+          "id": "count-is-the-culprit",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "two-questions-are-safe",
+          "kind": "bool",
+          "predicted": false,
+          "actual": false,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "separate-beats-batch",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        }
+      ],
+      "data": {
+        "tiny4": [
+          0.28,
+          0.28,
+          0.28,
+          0.27
+        ],
+        "tiny4_spread": 0.010000000000000009,
+        "two": [
+          0.26,
+          0.26
+        ],
+        "two_spread": 0.0,
+        "sep_pair": [
+          0.62,
+          0.31
+        ],
+        "sep_spread": 0.31,
+        "bigger_by": 0.31,
+        "quality_pair_batched_spread": 0.0,
+        "quality_pair_separate_spread": 0.14,
+        "delta2": 0.14
+      }
+    },
+    {
+      "round": 5,
+      "title": "is the two-axis gate valid, and can lens-batching be made safe",
+      "registered_at": "2026-09-29T16:52:52.028885+00:00",
+      "predictions": [
+        {
+          "id": "lens-batching-is-valid",
+          "kind": "bool",
+          "predict": true,
+          "claim": "When questions are DIFFERENT LENSES on ONE state (not different subjects), the answers will differ from each other. Batching collapses only when the questions are about DIFFERENT subjects, because then the model is averaging over them.",
+          "result": false
+        },
+        {
+          "id": "two-axis-gate-is-honest",
+          "kind": "bool",
+          "predict": true,
+          "claim": "The two-axis gate (mechanism + externality, min-aggregated) will give different numbers for the two axes on a claim where only one holds. If batching collapsed the axes together, the gate has been reporting one value twice.",
+          "result": true
+        },
+        {
+          "id": "agreement-under-repetition",
+          "kind": "bool",
+          "predict": true,
+          "claim": "Asking the SAME axis in two separate calls on the same state will agree within 0.10, so a min-of-two-axes computed across separate calls equals the min-of-two computed in one call.",
+          "result": true
+        }
+      ],
+      "results": null,
+      "debrief": [
+        {
+          "id": "lens-batching-is-valid",
+          "kind": "bool",
+          "predicted": true,
+          "actual": false,
+          "status": "REFUTED"
+        },
+        {
+          "id": "two-axis-gate-is-honest",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "agreement-under-repetition",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        }
+      ],
+      "data": {
+        "lens": {
+          "a": 0.59,
+          "b": 0.79
+        },
+        "lens_spread": 0.20000000000000007,
+        "subj": {
+          "a": 0.61,
+          "b": 0.73
+        },
+        "subj_spread": 0.12,
+        "one_axis": {
+          "a": 0.66,
+          "b": 0.1
+        },
+        "one_axis_spread": 0.56,
+        "sep_m": 0.56,
+        "sep_e": 0.81,
+        "batched_m": 0.59,
+        "batched_e": 0.79,
+        "mins_match": true
+      }
+    },
+    {
+      "round": 6,
+      "title": "the cost of the one-question rule, and whether any batching is safe",
+      "registered_at": "2026-09-29T16:53:15.402075+00:00",
+      "predictions": [
+        {
+          "id": "n-questions-cost-is-flat",
+          "kind": "bool",
+          "predict": true,
+          "claim": "Wall-clock per CALL is flat regardless of how many questions it carries, so a batched call is cheaper in time even though it is useless for discrimination. That means the batching collapse is a correctness problem, not a cost problem.",
+          "result": true
+        },
+        {
+          "id": "usage-reports-per-question",
+          "kind": "bool",
+          "predict": true,
+          "claim": "The response's usage block will report the SAME input/output token count for a 1-question and a 4-question call with identical state. If it reports more, the batched call is being charged for and is worth using for throughput.",
+          "result": false
+        },
+        {
+          "id": "three-questions-are-safe",
+          "kind": "bool",
+          "predict": false,
+          "claim": "Some batch size between 2 and 4 is safe -- there will be a k where the per-item spread is still >= 0.15. If no such k exists the rule is absolute, not a guideline.",
+          "result": true
+        }
+      ],
+      "results": null,
+      "debrief": [
+        {
+          "id": "n-questions-cost-is-flat",
+          "kind": "bool",
+          "predicted": true,
+          "actual": true,
+          "status": "CONFIRMED"
+        },
+        {
+          "id": "usage-reports-per-question",
+          "kind": "bool",
+          "predicted": true,
+          "actual": false,
+          "status": "REFUTED"
+        },
+        {
+          "id": "three-questions-are-safe",
+          "kind": "bool",
+          "predicted": false,
+          "actual": true,
+          "status": "REFUTED"
+        }
+      ],
+      "data": {
+        "times_ms": {
+          "1": 228.56402397155762,
+          "2": 216.91083908081055,
+          "3": 191.56853357950845,
+          "4": 198.6964543660482
+        },
+        "usage": {
+          "1": {
+            "input_tokens": 336,
+            "output_tokens": 21
+          },
+          "2": {
+            "input_tokens": 410,
+            "output_tokens": 38
+          },
+          "3": {
+            "input_tokens": 477,
+            "output_tokens": 55
+          },
+          "4": {
+            "input_tokens": 545,
+            "output_tokens": 72
+          }
+        },
+        "spreads": {
+          "2": 0.0,
+          "3": 0.009999999999999981,
+          "4": 0.009999999999999981
+        },
+        "any_safe_k": false,
+        "usage_flat": false
+      }
+    }
+  ],
+  "carried": [
+    {
+      "from_round": 1,
+      "id": "axis-complementarity",
+      "predicted": 0.6,
+      "actual": 0.18,
+      "note": "prediction was wrong; the belief it encoded is suspect"
+    },
+    {
+      "from_round": 2,
+      "id": "separation-is-the-remedy",
+      "predicted": 0.25,
+      "actual": 0.74,
+      "note": "prediction was wrong; the belief it encoded is suspect"
+    },
+    {
+      "from_round": 3,
+      "id": "externality-not-position",
+      "predicted": true,
+      "actual": false,
+      "note": "prediction was wrong; the belief it encoded is suspect"
+    },
+    {
+      "from_round": 3,
+      "id": "order-is-not-the-cause",
+      "predicted": true,
+      "actual": false,
+      "note": "prediction was wrong; the belief it encoded is suspect"
+    },
+    {
+      "from_round": 5,
+      "id": "lens-batching-is-valid",
+      "predicted": true,
+      "actual": false,
+      "note": "prediction was wrong; the belief it encoded is suspect"
+    },
+    {
+      "from_round": 6,
+      "id": "usage-reports-per-question",
+      "predicted": true,
+      "actual": false,
+      "note": "prediction was wrong; the belief it encoded is suspect"
+    },
+    {
+      "from_round": 6,
+      "id": "three-questions-are-safe",
+      "predicted": false,
+      "actual": true,
+      "note": "prediction was wrong; the belief it encoded is suspect"
+    }
+  ]
+}
