@@ -1,0 +1,57 @@
+{
+ "e5b_orthogonality": {
+  "claim_source": "R1|inclusionAI/Ling-3.0-flash (judge novelty 2.89)",
+  "displacement_sets": {
+   "route": 28,
+   "glyph": 28,
+   "weight": 28,
+   "buzz": 28
+  },
+  "cross_field": {
+   "routexglyph": {
+    "mean_abs_cos": 0.2219,
+    "max_abs_cos": 0.8108
+   },
+   "routexweight": {
+    "mean_abs_cos": 0.2858,
+    "max_abs_cos": 0.8033
+   },
+   "routexbuzz": {
+    "mean_abs_cos": 0.2833,
+    "max_abs_cos": 0.8235
+   },
+   "glyphxweight": {
+    "mean_abs_cos": 0.2352,
+    "max_abs_cos": 0.7982
+   },
+   "glyphxbuzz": {
+    "mean_abs_cos": 0.2321,
+    "max_abs_cos": 0.8354
+   },
+   "weightxbuzz": {
+    "mean_abs_cos": 0.4007,
+    "max_abs_cos": 0.8773
+   }
+  },
+  "orthogonal_within_0.15": false
+ },
+ "e5a_route_locality": {
+  "claim_source": "R1|deepseek-ai/DeepSeek-V4-Flash-Vision-Exp (judge novelty 2.99, promote 0.70)",
+  "design": "100 cells (5 routes x 20), mutate cell 0's route (3->17) vs weight; second embed of originals = batch-noise control",
+  "latency_ms": {
+   "A": 8401,
+   "B": 2589,
+   "C": 2184,
+   "D": 2422
+  },
+  "metrics": {
+   "baseline_noise_mean": 0.00576,
+   "route_mut_cell0_shift": 0.11503,
+   "route_mut_sharing_mean": 0.00514,
+   "route_mut_nonsharing_mean": 0.00512,
+   "weight_mut_cell0_shift": 0.05337,
+   "weight_mut_others_mean": 0.00513
+  },
+  "claim_holds": false
+ }
+}

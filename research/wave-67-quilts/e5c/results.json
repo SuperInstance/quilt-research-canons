@@ -1,0 +1,28 @@
+{
+ "clean_scenario": {
+  "PR_fired": false,
+  "kl_max": 0.5241,
+  "negative_control": "PASS (no PR without drift)"
+ },
+ "drift_scenario": {
+  "PR_fired": true,
+  "fire": {
+   "tick_idx": 58,
+   "route": 17,
+   "kl": 4.7235,
+   "sample_words": [
+    "00772242",
+    "00632242",
+    "00642242",
+    "006D2242"
+   ]
+  },
+  "positive": "PASS (drift promoted to PR)"
+ },
+ "t2_whatif": {
+  "u16_naive_diff": -65535,
+  "v2_serial_delta": 1,
+  "u16_would_false_fire_reorder_check": true,
+  "v2_sees_monotone": true
+ }
+}

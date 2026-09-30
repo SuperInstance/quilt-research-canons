@@ -168,10 +168,34 @@ for f in fields:
 js += ["  };", "}"]
 (ROOT / "out/cellword.js").write_text("\n".join(js) + "\n")
 
+# ------------------------------------------------------------ emit Python
+py = ['"""GENERATED from spec.json by bitlaw — do not edit by hand.',
+      'Law: superinstance.cellword v2 — the u32 cell word IS the contract.',
+      'Emitted 2026-09-30 (wave-67) so the dissent loop and any Python-side',
+      'consumer import the SINGLE SOURCE instead of scattering a fourth copy."""',
+      "FIELDS = " + json.dumps([{k: f[k] for k in ('name', 'bits', 'shift')} for f in fields]) , ""]
+py += ["def pack_cellword(glyph: int, route: int, weight: int, flags: int, buzz: int) -> int:",
+       "    w = 0"]
+for f in fields:
+    m = f"0x{mask_for(f['bits']):X}"
+    py.append(f"    w |= (glyph & {m}) << {f['shift']}" if f["name"] == "glyph" else
+              f"    w |= (route & {m}) << {f['shift']}" if f["name"] == "route" else
+              f"    w |= (weight & {m}) << {f['shift']}" if f["name"] == "weight" else
+              f"    w |= (flags & {m}) << {f['shift']}" if f["name"] == "flags" else
+              f"    w |= (buzz & {m}) << {f['shift']}")
+py += ["    return w & 0xFFFFFFFF", "",
+       "def unpack_cellword(w: int) -> dict:"]
+py.append("    return {")
+for f in fields:
+    m = f"0x{mask_for(f['bits']):X}"
+    py.append(f"        '{f['name']}': (w >> {f['shift']}) & {m},")
+py.append("    }")
+(ROOT / "out/cellword.py").write_text("\n".join(py) + "\n")
+
 # ------------------------------------------------------------ emit conformance
 (ROOT / "out/conformance.json").write_text(json.dumps(
     {"law": spec["law"], "version": spec["version"], "vectors": vectors}, indent=1))
 
 print(f"[bitlaw] occupied {occupied}/{word_bits} bits, top field ends at bit {top} "
       f"({'FULL' if top == word_bits else 'PARTIAL'} word coverage)")
-print("[bitlaw] wrote out/cellword.rs out/cellword.wgsl out/cellword.js out/conformance.json")
+print("[bitlaw] wrote out/cellword.rs out/cellword.wgsl out/cellword.js out/cellword.py out/conformance.json")

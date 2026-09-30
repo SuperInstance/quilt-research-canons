@@ -1,0 +1,46 @@
+{
+ "pre_registered": "2026-09-30, after C1 fail; hypothesis + prediction fixed before call",
+ "per_model": {
+  "Qwen/Qwen3-Embedding-0.6B": {
+   "orig_comp": 0.9914,
+   "orig_naive": 0.9684,
+   "orig_unrel": 0.7798,
+   "orig_minpair": 0.953,
+   "comp_minpair": 0.9642,
+   "C1b_holds": true
+  },
+  "Qwen/Qwen3-Embedding-4B": {
+   "orig_comp": 0.9805,
+   "orig_naive": 0.9496,
+   "orig_unrel": 0.8224,
+   "orig_minpair": 0.934,
+   "comp_minpair": 0.957,
+   "C1b_holds": true
+  },
+  "Qwen/Qwen3-Embedding-8B": {
+   "orig_comp": 0.9837,
+   "orig_naive": 0.9504,
+   "orig_unrel": 0.8541,
+   "orig_minpair": 0.9294,
+   "comp_minpair": 0.9513,
+   "C1b_holds": true
+  },
+  "nvidia/llama-nemotron-embed-vl-1b-v2": {
+   "orig_comp": 0.9533,
+   "orig_naive": 0.9309,
+   "orig_unrel": 0.6776,
+   "orig_minpair": 0.8941,
+   "comp_minpair": 0.9442,
+   "C1b_holds": true
+  },
+  "google/embeddinggemma-300m": {
+   "orig_comp": 0.9582,
+   "orig_naive": 0.9145,
+   "orig_unrel": 0.7624,
+   "orig_minpair": 0.8978,
+   "comp_minpair": 0.9204,
+   "C1b_holds": true
+  }
+ },
+ "verdict": "C1b holds 5/5 models"
+}

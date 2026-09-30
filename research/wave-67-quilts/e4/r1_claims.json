@@ -1,0 +1,94 @@
+{
+ "thinkingmachines/Inkling-Small": {
+  "claim": {
+   "raw": "{\"ok\": false, \"ms\": 5574, \"content\": \"\", \"channel\": \"reasoning_only\", \"usage\": {\"prompt_tokens\": 608, \"total_tokens\": 1708, \"completion_tokens\": 1100, \"estimated_cost\": 0.001414399999488, \"prompt_tokens_details\": {\"cached_tokens\": 512, \"cache_write_tokens\": null}, \"reasoning_tokens\": 1102}}"
+  },
+  "parse_ok": false,
+  "channel": "reasoning_only",
+  "ms": 5574
+ },
+ "ibm-granite/granite-4.2-30b": {
+  "claim": {
+   "raw": "{\"ok\": false, \"ms\": 13471, \"content\": \"\", \"channel\": \"reasoning_only\", \"usage\": {\"prompt_tokens\": 643, \"total_tokens\": 1743, \"completion_tokens\": 1100, \"estimated_cost\": 0.0007410800000000001, \"prompt_tokens_details\": {\"cached_tokens\": 640, \"cache_write_tokens\": null}}}"
+  },
+  "parse_ok": false,
+  "channel": "reasoning_only",
+  "ms": 13471
+ },
+ "deepseek-ai/DeepSeek-V4-Flash-Vision-Exp": {
+  "claim": {
+   "property": "Route edits are non-local: mutating a cell's route byte shifts the embeddings of every cell sharing the old/new route, whereas weight edits remain local to the mutated cell.",
+   "prediction": "In an embedding memory, changing one cell's route from R1 to R2 moves all cells with route R1 away and all cells with route R2 toward it (mean cosine shift >0.1), while changing one cell's weight moves only that cell (<0.05 shift for others).",
+   "test": "Embed 100 synthetic cells, mutate one cell's route byte vs weight byte, re-embed, and compare mean cosine shift for cells sharing the old/new route vs unrelated cells; kill if route mutation is as local as weight mutation.",
+   "tool": "A route-diff patch linter that uses embeddings to flag which neighboring cells a proposed route change will affect before the patch is applied."
+  },
+  "parse_ok": true,
+  "channel": "reasoning_extracted",
+  "ms": 14715,
+  "rescued": true
+ },
+ "inclusionAI/Ling-3.0-flash": {
+  "claim": {
+   "property": "The (R,F,P) triple decomposes embedding space into geometrically orthogonal axes \u2014 routing, filtering, and projection perturbations are linearly independent directions, not merely ranked in salience (law 3) but independently controllable.",
+   "prediction": "If R, F, P are orthogonal, then embedding displacement vectors for single-field cell-word edits (one field changed, others held fixed) will show near-90\u00b0 pairwise angles; if they are NOT orthogonal, changing route will systematically confound projection in the displacement space.",
+   "test": "For any embeddable model, generate 30 cell-word pairs each varying in exactly one of R, F, or P (\u5176\u4f59\u5b57\u6bb5 fixed). Compute the 30 displacement vectors per field. Report pairwise mean cosine similarity across the three displacement sets. Orthogonality holds if all three cross-set cosines fall within \u00b10.15 of 0; a single set of 90 embeddings suffices to kill it at p<0.01 via Hotelling's T\u00b2.",
+   "tool": "A relational slider UI \u2014 three independent knobs for route/weight/glyph that each tune a live system with zero crosstalk, because each knob maps to an orthogonal direction in the learned space; routing weights distilled from judgment (law 6) become per-axis gain controls instead of a monolithic black box."
+  },
+  "parse_ok": true,
+  "channel": "visible",
+  "ms": 12036
+ },
+ "XiaomiMiMo/MiMo-V2.6-Flash": {
+  "claim": {
+   "raw": "{\"ok\": false, \"ms\": 90433, \"error\": \"ReadTimeout\", \"attempt\": 2}"
+  },
+  "parse_ok": false,
+  "channel": null,
+  "ms": 90433
+ },
+ "Qwen/Qwen3.8-Flash": {
+  "claim": {
+   "property": "Buzz-weighted dissent propagation as a topological invariant independent of projection glyph",
+   "prediction": "Cells with identical routing/filtering but divergent buzz histograms will exhibit higher inter-model agreement (RSA) on 'who dissents to whom' than on 'what is the correct output', with the disagreement magnitude correlating to the KL divergence of buzz distributions.",
+   "test": "Generate three cell variants: (A) same route/filter/glyph, different buzz; (B) same route/filter/buzz, different glyph; (C) random baseline. Embed descriptions of each using 3 models. Check if RSA(A) > RSA(B) and if RSA(A) correlates with buzz-KL. If RSA(A) < RSA(B), prediction fails.",
+   "tool": "A 'dissent auditor' that computes KL divergence between buzz histograms of adjacent cells in a compiled stack and flags non-convergent routing paths for auto-PR against the contract."
+  },
+  "parse_ok": true,
+  "channel": "visible",
+  "ms": 4958
+ },
+ "nvidia/NVIDIA-Nemotron-3.5-Lightning": {
+  "claim": {
+   "property": "Filter weight decay invariance: The 'weight' field in the u32 cell word decays at a rate independent of glyph or route fields across training steps.",
+   "prediction": "Weight magnitudes will show a consistent exponential decay curve across all model scales, uncorrelated with glyph projection shifts or route address changes.",
+   "test": "Plot weight field histograms every 1000 training steps; verify the decay half-life is constant regardless of glyph/route perturbations.",
+   "tool": "A lightweight histogram tracker attached to the cell word export hook, visualizing weight decay alongside glyph/route drift."
+  },
+  "parse_ok": true,
+  "channel": "visible",
+  "ms": 1166
+ },
+ "meta-models/Muse-Glimmer-30B": {
+  "claim": {
+   "property": "...",
+   "prediction": "...",
+   "test": "...",
+   "tool": "..."
+  },
+  "parse_ok": true,
+  "channel": "reasoning_extracted",
+  "ms": 13853,
+  "rescued": true
+ },
+ "ByteDance/Seed-2.0-mini": {
+  "claim": {
+   "property": "Buzz (non-authoritative dissent) values of relational cells correlate positively with the angular distance between a cell\u2019s stated projection (glyph) embedding and the mean projection embedding of its direct routing neighbors",
+   "prediction": "Fleets of 7B-13B open models will show a Spearman correlation \u2265 0.4 between cell buzz scores and the angular distance between their glyph embedding and their routing neighbors\u2019 mean projection embedding",
+   "test": "Sample 200 random cells from two public open model fleets (e.g., Mistral 7B, Llama 2 7B), retrieve each cell\u2019s route list, compute the mean glyph embedding of all routed cells, calculate cosine similarity between the cell\u2019s own glyph and that mean, then compute the Spearman correlation between those similarity scores and the cell\u2019s buzz values; total compute time <2 hours with standard Hugging Face tools",
+   "tool": "A real-time cell compliance tool that flags high-dissent cells by cross-referencing buzz scores with routing neighbor projection misalignment, and suggests targeted glyph edits to align with the local routing graph\u2019s dominant projection frame"
+  },
+  "parse_ok": true,
+  "channel": "visible",
+  "ms": 22380
+ }
+}

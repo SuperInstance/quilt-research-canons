@@ -1,0 +1,298 @@
+{
+ "e3a": {
+  "route": [
+   [
+    "route",
+    0,
+    "Cellword token: glyph 'A', routed to channel 0, neutral weight, no flags, buzz silent."
+   ],
+   [
+    "route",
+    17,
+    "Cellword token: glyph 'A', routed to channel 17, neutral weight, no flags, buzz silent."
+   ],
+   [
+    "route",
+    42,
+    "Cellword token: glyph 'A', routed to channel 42, neutral weight, no flags, buzz silent."
+   ],
+   [
+    "route",
+    63,
+    "Cellword token: glyph 'A', routed to channel 63, neutral weight, no flags, buzz silent."
+   ],
+   [
+    "route",
+    84,
+    "Cellword token: glyph 'A', routed to channel 84, neutral weight, no flags, buzz silent."
+   ],
+   [
+    "route",
+    127,
+    "Cellword token: glyph 'A', routed to channel 127, neutral weight, no flags, buzz silent."
+   ],
+   [
+    "route",
+    200,
+    "Cellword token: glyph 'A', routed to channel 200, neutral weight, no flags, buzz silent."
+   ],
+   [
+    "route",
+    255,
+    "Cellword token: glyph 'A', routed to channel 255, neutral weight, no flags, buzz silent."
+   ]
+  ],
+  "glyph": [
+   [
+    "glyph",
+    "A",
+    "Cellword token: displays glyph 'A', fixed on channel 3, neutral weight, no flags, buzz silent."
+   ],
+   [
+    "glyph",
+    "B",
+    "Cellword token: displays glyph 'B', fixed on channel 3, neutral weight, no flags, buzz silent."
+   ],
+   [
+    "glyph",
+    "X",
+    "Cellword token: displays glyph 'X', fixed on channel 3, neutral weight, no flags, buzz silent."
+   ],
+   [
+    "glyph",
+    "k",
+    "Cellword token: displays glyph 'k', fixed on channel 3, neutral weight, no flags, buzz silent."
+   ],
+   [
+    "glyph",
+    "7",
+    "Cellword token: displays glyph '7', fixed on channel 3, neutral weight, no flags, buzz silent."
+   ],
+   [
+    "glyph",
+    "#",
+    "Cellword token: displays glyph '#', fixed on channel 3, neutral weight, no flags, buzz silent."
+   ],
+   [
+    "glyph",
+    "~",
+    "Cellword token: displays glyph '~', fixed on channel 3, neutral weight, no flags, buzz silent."
+   ],
+   [
+    "glyph",
+    "%",
+    "Cellword token: displays glyph '%', fixed on channel 3, neutral weight, no flags, buzz silent."
+   ]
+  ],
+  "weight": [
+   [
+    "weight",
+    0,
+    "Cellword token: glyph 'A', channel 3, signal weight 0 of 255, no flags, buzz silent."
+   ],
+   [
+    "weight",
+    8,
+    "Cellword token: glyph 'A', channel 3, signal weight 8 of 255, no flags, buzz silent."
+   ],
+   [
+    "weight",
+    32,
+    "Cellword token: glyph 'A', channel 3, signal weight 32 of 255, no flags, buzz silent."
+   ],
+   [
+    "weight",
+    64,
+    "Cellword token: glyph 'A', channel 3, signal weight 64 of 255, no flags, buzz silent."
+   ],
+   [
+    "weight",
+    96,
+    "Cellword token: glyph 'A', channel 3, signal weight 96 of 255, no flags, buzz silent."
+   ],
+   [
+    "weight",
+    128,
+    "Cellword token: glyph 'A', channel 3, signal weight 128 of 255, no flags, buzz silent."
+   ],
+   [
+    "weight",
+    192,
+    "Cellword token: glyph 'A', channel 3, signal weight 192 of 255, no flags, buzz silent."
+   ],
+   [
+    "weight",
+    255,
+    "Cellword token: glyph 'A', channel 3, signal weight 255 of 255, no flags, buzz silent."
+   ]
+  ],
+  "buzz": [
+   [
+    "buzz",
+    0,
+    "Cellword token: glyph 'A', channel 3, neutral weight, no flags, buzz resonance 0 of 15."
+   ],
+   [
+    "buzz",
+    1,
+    "Cellword token: glyph 'A', channel 3, neutral weight, no flags, buzz resonance 1 of 15."
+   ],
+   [
+    "buzz",
+    3,
+    "Cellword token: glyph 'A', channel 3, neutral weight, no flags, buzz resonance 3 of 15."
+   ],
+   [
+    "buzz",
+    5,
+    "Cellword token: glyph 'A', channel 3, neutral weight, no flags, buzz resonance 5 of 15."
+   ],
+   [
+    "buzz",
+    7,
+    "Cellword token: glyph 'A', channel 3, neutral weight, no flags, buzz resonance 7 of 15."
+   ],
+   [
+    "buzz",
+    9,
+    "Cellword token: glyph 'A', channel 3, neutral weight, no flags, buzz resonance 9 of 15."
+   ],
+   [
+    "buzz",
+    12,
+    "Cellword token: glyph 'A', channel 3, neutral weight, no flags, buzz resonance 12 of 15."
+   ],
+   [
+    "buzz",
+    15,
+    "Cellword token: glyph 'A', channel 3, neutral weight, no flags, buzz resonance 15 of 15."
+   ]
+  ],
+  "chimera": [
+   [
+    "chimera",
+    0,
+    "Cellword: glyph '%', routed to channel 200, weight 255, flags critical+learn, buzz 13."
+   ],
+   [
+    "chimera",
+    1,
+    "Cellword: glyph '7', routed to channel 17, weight 8, flags human-driving, buzz 9."
+   ],
+   [
+    "chimera",
+    2,
+    "Cellword: glyph '~', routed to channel 255, weight 96, flags blink+critical, buzz 1."
+   ],
+   [
+    "chimera",
+    3,
+    "Cellword: glyph 'X', routed to channel 0, weight 128, flags learn, buzz 15."
+   ],
+   [
+    "chimera",
+    4,
+    "Cellword: glyph 'k', routed to channel 84, weight 0, flags blink+human-driving, buzz 5."
+   ],
+   [
+    "chimera",
+    5,
+    "Cellword: glyph 'B', routed to channel 127, weight 192, flags critical, buzz 3."
+   ],
+   [
+    "chimera",
+    6,
+    "Cellword: glyph '#', routed to channel 63, weight 32, flags human-driving+learn, buzz 7."
+   ],
+   [
+    "chimera",
+    7,
+    "Cellword: glyph 'A', routed to channel 42, weight 255, flags blink, buzz 12."
+   ]
+  ]
+ },
+ "e3b": {
+  "cells": [
+   [
+    "C1",
+    "EWMA gate over input magnitudes with recency half-life 8 ticks; encodes in a 64-d rotate-k frame, k=3.",
+    "Reads C2 and C3; attenuates C3 by recency; writes into C7 and C9; shares its basis frame with C5."
+   ],
+   [
+    "C2",
+    "Magnitude gate with hard threshold 0.5 and hysteresis 0.05; encodes in raw token basis.",
+    "Fed by the token stream; passes only strong edges to C1 and C4; isolated from C7."
+   ],
+   [
+    "C3",
+    "Variance gate, per-channel z-score clipping at 2.5; encodes in a frequency basis (FFT bins 0..31).",
+    "Tap on C2's output; forwards anomalies to C1 only; subscribes to C6's drift channel."
+   ],
+   [
+    "C4",
+    "Recency gate with exponential forgetting 0.9; encodes in a learned 128-d residual basis.",
+    "Consumes C2's edges and C9's rollups; suppresses stale inputs; feeds C10 and the audit sink."
+   ],
+   [
+    "C5",
+    "Linear projection, orthonormal 64x64 Hadamard-like basis, no gating.",
+    "Pure junction: relays C1's frame to C8 and C12 unchanged; no filtering of its own."
+   ],
+   [
+    "C6",
+    "Drift gate: slope estimator over 32-tick window; encodes delta in a compact 16-d basis.",
+    "Watches C4's audit stream; broadcasts drift deltas to C3 and C11; no direct payload path."
+   ],
+   [
+    "C7",
+    "Softmax gate over input scores, temperature 0.7; encodes in the shared residual basis.",
+    "Aggregates C1 and C8; routes the argmax to C12; backs off to C5's frame on tie."
+   ],
+   [
+    "C8",
+    "Dampening gate, per-edge gain 0.3; encodes in rotate-k frame, k=7.",
+    "Sits between C5's relay and C7's aggregation; damps everything it forwards to C9."
+   ],
+   [
+    "C9",
+    "Threshold gate at 0.8 with single-sample latch; encodes in raw token basis.",
+    "Collects C1 and C8; latches first crossing; alerts C4 and the audit sink."
+   ],
+   [
+    "C10",
+    "Gain gate with saturating tanh; encodes in a 128-d learned basis shared with C4.",
+    "Only consumer of C4's forward path; mirrors its output to C12 for cross-check."
+   ],
+   [
+    "C11",
+    "Band-stop filter gate, notch at bin 7; encodes in frequency basis (FFT bins 0..31).",
+    "Intercepts C6's drift channel; removes the 7-bin oscillation; forwards cleaned drift to C12."
+   ],
+   [
+    "C12",
+    "Consensus gate: weighted vote of inputs, weights from reliability history; raw token basis out.",
+    "Terminal collector: C7 argmax, C10 mirror, C11 cleaned drift; emits the cell's final verdict."
+   ]
+  ]
+ },
+ "e3c": {
+  "configs": [
+   [
+    "original",
+    "Config: cell A projects into basis P1 and writes to port 1; cell B projects into basis P2 and writes to port 2. A's output feeds B's input directly."
+   ],
+   [
+    "compensated",
+    "Re-stitch: cells A and B SWAP bases (A now uses P2, B uses P1) and their output ports are re-routed to compensate, so A's expression still arrives at B's input in B's expected frame. Function unchanged by construction."
+   ],
+   [
+    "naive",
+    "Re-stitch: cells A and B SWAP bases (A now uses P2, B uses P1) but their ports are left untouched, so each output lands in the other's frame with no reroute compensation."
+   ],
+   [
+    "unrelated",
+    "Config: cell M projects into basis P9 and writes to port 5; cell N projects into basis P4 and writes to port 6. M and N do not interact."
+   ]
+  ]
+ }
+}

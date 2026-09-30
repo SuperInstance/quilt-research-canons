@@ -1,0 +1,27 @@
+{
+ "Qwen/Qwen3-Embedding-0.6B": {
+  "ok": true,
+  "dim": 1024,
+  "latency_ms": 2926
+ },
+ "Qwen/Qwen3-Embedding-4B": {
+  "ok": true,
+  "dim": 2560,
+  "latency_ms": 4763
+ },
+ "Qwen/Qwen3-Embedding-8B": {
+  "ok": true,
+  "dim": 4096,
+  "latency_ms": 33729
+ },
+ "nvidia/llama-nemotron-embed-vl-1b-v2": {
+  "ok": true,
+  "dim": 2048,
+  "latency_ms": 2528
+ },
+ "google/embeddinggemma-300m": {
+  "ok": true,
+  "dim": 768,
+  "latency_ms": 1765
+ }
+}

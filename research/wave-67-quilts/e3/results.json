@@ -1,0 +1,134 @@
+{
+ "e3a": {
+  "Qwen/Qwen3-Embedding-0.6B": {
+   "route": 0.993,
+   "glyph": 0.9149,
+   "weight": 0.9983,
+   "buzz": 0.9979,
+   "chimera": 0.8915
+  },
+  "Qwen/Qwen3-Embedding-4B": {
+   "route": 0.9763,
+   "glyph": 0.8531,
+   "weight": 0.9875,
+   "buzz": 0.983,
+   "chimera": 0.848
+  },
+  "Qwen/Qwen3-Embedding-8B": {
+   "route": 0.9646,
+   "glyph": 0.9128,
+   "weight": 0.9934,
+   "buzz": 0.9967,
+   "chimera": 0.8559
+  },
+  "nvidia/llama-nemotron-embed-vl-1b-v2": {
+   "route": 0.9643,
+   "glyph": 0.9271,
+   "weight": 0.9936,
+   "buzz": 0.9967,
+   "chimera": 0.7981
+  },
+  "google/embeddinggemma-300m": {
+   "route": 0.9027,
+   "glyph": 0.9126,
+   "weight": 0.9734,
+   "buzz": 0.9569,
+   "chimera": 0.7574
+  }
+ },
+ "e3b": {
+  "Qwen/Qwen3-Embedding-0.6B": {
+   "matched_crossview_diag": 0.5389
+  },
+  "Qwen/Qwen3-Embedding-4B": {
+   "matched_crossview_diag": 0.4737
+  },
+  "Qwen/Qwen3-Embedding-8B": {
+   "matched_crossview_diag": 0.517
+  },
+  "nvidia/llama-nemotron-embed-vl-1b-v2": {
+   "matched_crossview_diag": 0.2769
+  },
+  "google/embeddinggemma-300m": {
+   "matched_crossview_diag": 0.3854
+  },
+  "rsa": {
+   "relational": {
+    "Qwen/Qwen3-Embedding-0.6B|Qwen/Qwen3-Embedding-4B": 0.6757,
+    "Qwen/Qwen3-Embedding-0.6B|Qwen/Qwen3-Embedding-8B": 0.6438,
+    "Qwen/Qwen3-Embedding-0.6B|nvidia/llama-nemotron-embed-vl-1b-v2": 0.5374,
+    "Qwen/Qwen3-Embedding-0.6B|google/embeddinggemma-300m": 0.6033,
+    "Qwen/Qwen3-Embedding-4B|Qwen/Qwen3-Embedding-8B": 0.7558,
+    "Qwen/Qwen3-Embedding-4B|nvidia/llama-nemotron-embed-vl-1b-v2": 0.6776,
+    "Qwen/Qwen3-Embedding-4B|google/embeddinggemma-300m": 0.709,
+    "Qwen/Qwen3-Embedding-8B|nvidia/llama-nemotron-embed-vl-1b-v2": 0.4899,
+    "Qwen/Qwen3-Embedding-8B|google/embeddinggemma-300m": 0.556,
+    "nvidia/llama-nemotron-embed-vl-1b-v2|google/embeddinggemma-300m": 0.6263
+   },
+   "internal": {
+    "Qwen/Qwen3-Embedding-0.6B|Qwen/Qwen3-Embedding-4B": 0.695,
+    "Qwen/Qwen3-Embedding-0.6B|Qwen/Qwen3-Embedding-8B": 0.6327,
+    "Qwen/Qwen3-Embedding-0.6B|nvidia/llama-nemotron-embed-vl-1b-v2": 0.6976,
+    "Qwen/Qwen3-Embedding-0.6B|google/embeddinggemma-300m": 0.7255,
+    "Qwen/Qwen3-Embedding-4B|Qwen/Qwen3-Embedding-8B": 0.7592,
+    "Qwen/Qwen3-Embedding-4B|nvidia/llama-nemotron-embed-vl-1b-v2": 0.4423,
+    "Qwen/Qwen3-Embedding-4B|google/embeddinggemma-300m": 0.422,
+    "Qwen/Qwen3-Embedding-8B|nvidia/llama-nemotron-embed-vl-1b-v2": 0.4375,
+    "Qwen/Qwen3-Embedding-8B|google/embeddinggemma-300m": 0.4148,
+    "nvidia/llama-nemotron-embed-vl-1b-v2|google/embeddinggemma-300m": 0.6969
+   },
+   "shuffled_control": {
+    "Qwen/Qwen3-Embedding-0.6B|Qwen/Qwen3-Embedding-4B": -0.0907,
+    "Qwen/Qwen3-Embedding-0.6B|Qwen/Qwen3-Embedding-8B": -0.0239,
+    "Qwen/Qwen3-Embedding-0.6B|nvidia/llama-nemotron-embed-vl-1b-v2": 0.2096,
+    "Qwen/Qwen3-Embedding-0.6B|google/embeddinggemma-300m": -0.143,
+    "Qwen/Qwen3-Embedding-4B|Qwen/Qwen3-Embedding-8B": -0.05,
+    "Qwen/Qwen3-Embedding-4B|nvidia/llama-nemotron-embed-vl-1b-v2": -0.1296,
+    "Qwen/Qwen3-Embedding-4B|google/embeddinggemma-300m": 0.0254,
+    "Qwen/Qwen3-Embedding-8B|nvidia/llama-nemotron-embed-vl-1b-v2": 0.2198,
+    "Qwen/Qwen3-Embedding-8B|google/embeddinggemma-300m": -0.0263,
+    "nvidia/llama-nemotron-embed-vl-1b-v2|google/embeddinggemma-300m": 0.3295
+   }
+  },
+  "rsa_mean": {
+   "relational": 0.6275,
+   "internal": 0.5923,
+   "shuffled_control": 0.0321
+  },
+  "B1_holds": true,
+  "B2_control_ok": true
+ },
+ "e3c": {
+  "Qwen/Qwen3-Embedding-0.6B": {
+   "orig_compensated": 0.674,
+   "orig_naive": 0.6707,
+   "orig_unrelated": 0.9054,
+   "C1_holds": false
+  },
+  "Qwen/Qwen3-Embedding-4B": {
+   "orig_compensated": 0.6478,
+   "orig_naive": 0.5962,
+   "orig_unrelated": 0.9086,
+   "C1_holds": false
+  },
+  "Qwen/Qwen3-Embedding-8B": {
+   "orig_compensated": 0.6173,
+   "orig_naive": 0.5543,
+   "orig_unrelated": 0.8703,
+   "C1_holds": false
+  },
+  "nvidia/llama-nemotron-embed-vl-1b-v2": {
+   "orig_compensated": 0.5629,
+   "orig_naive": 0.5694,
+   "orig_unrelated": 0.7593,
+   "C1_holds": false
+  },
+  "google/embeddinggemma-300m": {
+   "orig_compensated": 0.5646,
+   "orig_naive": 0.6013,
+   "orig_unrelated": 0.8448,
+   "C1_holds": false
+  }
+ },
+ "receipt_note": "all embeddings L2-normalized; matrices are cosine similarities"
+}

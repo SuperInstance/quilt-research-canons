@@ -1,0 +1,68 @@
+# L0 gate: the bit-law and frame-law conformance vectors must pass on every push
+# that touches the single source. Generated artifacts are never hand-edited;
+# regen determinism is asserted (two runs, identical bytes).
+name: bitlaw-conformance
+
+on:
+  push:
+    paths: ['research/superinstance-bitlaw/**']
+  workflow_dispatch:
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Generate codecs from the single source (cell word + frame envelope)
+        working-directory: research/superinstance-bitlaw
+        run: |
+          python3 gen.py
+          python3 frame_gen.py
+
+      - name: Regenerate and assert byte-identical outputs (determinism)
+        working-directory: research/superinstance-bitlaw
+        run: |
+          sha256sum out/* > /tmp/hash1.txt
+          python3 gen.py
+          python3 frame_gen.py
+          sha256sum out/* > /tmp/hash2.txt
+          diff /tmp/hash1.txt /tmp/hash2.txt
+
+      - name: Node conformance — cell word (243 shared vectors)
+        working-directory: research/superinstance-bitlaw
+        run: node conformance.test.mjs
+
+      - name: Node conformance — frame envelope v2 (wrap-boundary vectors)
+        working-directory: research/superinstance-bitlaw
+        run: node frame.test.mjs
+
+      - name: Python module conformance — emitted codecs against shared vectors
+        working-directory: research/superinstance-bitlaw
+        run: |
+          python3 - <<'EOF'
+          import json, sys
+          sys.path.insert(0, 'out')
+          from cellword import pack_cellword, unpack_cellword
+          from frame import tick_delta, parse_frame
+          cw = json.load(open('out/conformance.json'))
+          for v in cw['vectors']:
+              w = pack_cellword(v['glyph'], v['route'], v['weight'], v['flags'], v['buzz'])
+              assert w == v['word'], f"cellword pack mismatch: {v}"
+              back = unpack_cellword(w)
+              assert all(back[k] == v[k] for k in ('glyph','route','weight','flags','buzz')), f"unpack mismatch: {v}"
+          fr = json.load(open('out/frame_conformance.json'))
+          for f in fr['frames']:
+              assert parse_frame(bytes.fromhex(f['hex']))['tick'] == f['expect']['tick']
+          for d in fr['tick_deltas']:
+              assert tick_delta(int(d['a'],16), int(d['b'],16)) == d['delta_s32']
+          print(f"python emitted-codec conformance: {len(cw['vectors'])} cellword + {len(fr['frames'])} frame + {len(fr['tick_deltas'])} delta vectors PASS")
+          EOF

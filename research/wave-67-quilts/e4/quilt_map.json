@@ -1,0 +1,90 @@
+{
+ "stitch_order": [
+  "thinkingmachines/Inkling-Small",
+  "ibm-granite/granite-4.2-30b",
+  "deepseek-ai/DeepSeek-V4-Flash-Vision-Exp",
+  "inclusionAI/Ling-3.0-flash",
+  "XiaomiMiMo/MiMo-V2.6-Flash",
+  "Qwen/Qwen3.8-Flash",
+  "nvidia/NVIDIA-Nemotron-3.5-Lightning",
+  "meta-models/Muse-Glimmer-30B",
+  "ByteDance/Seed-2.0-mini"
+ ],
+ "certified_by": "moth comet-qrng-v1 job a59a4c66-67fa-4545-9a8c-6d0cff6c1bf7",
+ "claims_embedded": 11,
+ "mean_pairwise_cos": 0.6236,
+ "convergence_pairs_gt_0.82": [
+  {
+   "a": "R1|Qwen/Qwen3.8-Flash",
+   "b": "R1|ByteDance/Seed-2.0-mini",
+   "cos": 0.8523
+  },
+  {
+   "a": "R1|Qwen/Qwen3.8-Flash",
+   "b": "R2|nvidia/NVIDIA-Nemotron-3.5-Lightning",
+   "cos": 0.8476
+  }
+ ],
+ "judge_board": {
+  "R1|deepseek-ai/DeepSeek-V4-Flash-Vision-Exp": {
+   "novelty_score": 2.99,
+   "promote_p": 0.7,
+   "stranger_p": 0.4
+  },
+  "R1|inclusionAI/Ling-3.0-flash": {
+   "novelty_score": 2.89,
+   "promote_p": 0.57,
+   "stranger_p": 0.51
+  },
+  "R1|Qwen/Qwen3.8-Flash": {
+   "novelty_score": 2.5,
+   "promote_p": 0.37,
+   "stranger_p": 0.48
+  },
+  "R1|nvidia/NVIDIA-Nemotron-3.5-Lightning": {
+   "novelty_score": 2.47,
+   "promote_p": 0.43,
+   "stranger_p": 0.34
+  },
+  "R1|meta-models/Muse-Glimmer-30B": {
+   "novelty_score": 0.06,
+   "promote_p": 0.34,
+   "stranger_p": 0.34
+  },
+  "R1|ByteDance/Seed-2.0-mini": {
+   "novelty_score": 2.59,
+   "promote_p": 0.53,
+   "stranger_p": 0.37
+  },
+  "R2|inclusionAI/Ling-3.0-flash": {
+   "novelty_score": 2.2,
+   "promote_p": 0.49,
+   "stranger_p": 0.37
+  },
+  "R2|XiaomiMiMo/MiMo-V2.6-Flash": {
+   "novelty_score": 2.86,
+   "promote_p": 0.39,
+   "stranger_p": 0.25
+  },
+  "R2|Qwen/Qwen3.8-Flash": {
+   "novelty_score": 2.66,
+   "promote_p": 0.45,
+   "stranger_p": 0.29
+  },
+  "R2|nvidia/NVIDIA-Nemotron-3.5-Lightning": {
+   "novelty_score": 2.51,
+   "promote_p": 0.46,
+   "stranger_p": 0.33
+  },
+  "R2|ByteDance/Seed-2.0-mini": {
+   "novelty_score": 2.07,
+   "promote_p": 0.5,
+   "stranger_p": 0.37
+  }
+ },
+ "top3": [
+  "R1|deepseek-ai/DeepSeek-V4-Flash-Vision-Exp",
+  "R1|inclusionAI/Ling-3.0-flash",
+  "R2|XiaomiMiMo/MiMo-V2.6-Flash"
+ ]
+}

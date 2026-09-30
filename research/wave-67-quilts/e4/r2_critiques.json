@@ -1,0 +1,125 @@
+{
+ "thinkingmachines/Inkling-Small": {
+  "critique": {
+   "raw": "{\"ok\": false, \"ms\": 4987, \"content\": \"\", \"reasoning\": \"The user wants a JSON response evaluating two claims from \\\"stitch neighbors\\\" based on the architecture brief. I need to choose which claim is stronger, identify its weakest point, propose a refinement, and provide a negative control that would kill the refinement.\\n\\nClaim 1 (ByteDance/Seed-2.0-mini): Correlation between buzz (non-authoritat"
+  },
+  "parse_ok": false,
+  "neighbors": [
+   "ByteDance/Seed-2.0-mini",
+   "ibm-granite/granite-4.2-30b"
+  ],
+  "channel": "reasoning_only",
+  "ms": 4987
+ },
+ "ibm-granite/granite-4.2-30b": {
+  "critique": {
+   "raw": "{\"ok\": false, \"ms\": 13433, \"content\": \"\", \"reasoning\": \"We are given two claims from stitch neighbors in the fabric, both returning {\\\"ok\\\": false, ...} with no content.\\n The verdict must be: which claim is stronger and why, in one sentence.\\n\\n However, note that both claims have \\\"ok\\\": false. So we cannot rely on the content being present.\\n\\n Looking at the raw data:\\n\\n For \\\"thinkingmachine"
+  },
+  "parse_ok": false,
+  "neighbors": [
+   "thinkingmachines/Inkling-Small",
+   "deepseek-ai/DeepSeek-V4-Flash-Vision-Exp"
+  ],
+  "channel": "reasoning_only",
+  "ms": 13433
+ },
+ "deepseek-ai/DeepSeek-V4-Flash-Vision-Exp": {
+  "critique": {
+   "raw": "{\"ok\": true, \"ms\": 17351, \"content\": \"{\\\"verdict\\\":\\\"The Ling-3.0-flash claim is stronger because it supplies a falsifiable geometric prediction and test, while the IBM Granite claim is an empty failed response with no content.\\\",\\\"attack\\\":\\\"The weakest point is the leap from 'linearly independent directions' to 'orthogonality' in high-dimensional embedding space: random displacement vectors are "
+  },
+  "parse_ok": false,
+  "neighbors": [
+   "ibm-granite/granite-4.2-30b",
+   "inclusionAI/Ling-3.0-flash"
+  ],
+  "channel": "visible",
+  "ms": 17351
+ },
+ "inclusionAI/Ling-3.0-flash": {
+  "critique": {
+   "verdict": "The DeepSeek claim is stronger because it returns a structured failure envelope with usage telemetry (reasoning tokens, prompt tokens, timing) that enables diagnostic inference, whereas the MiMo claim is a raw ReadTimeout providing zero insight into internal model behavior.",
+   "attack": "The empty content on a reasoning_only channel with 1100 reasoning tokens is ambiguous \u2014 it may reflect a server-side content filter or safety interrupt rather than a genuine capability boundary, so the failure mode cannot be confidently attributed to model limitation.",
+   "refinement": "Require the reasoning trace to contain an explicit auditable statement (e.g., the model verbalizes its inability to solve or identifies a specific obstruction) encoded in the flags/buzz nibbles of the u32 cell word, converting silent failure into a verifiable capability signal.",
+   "negative_control": "A re-run of the same prompt returns ok:true with non-empty content, demonstrating the original failure was a transient suppression/filter event rather than a stable capability boundary, which would invalidate the refinement."
+  },
+  "parse_ok": true,
+  "neighbors": [
+   "deepseek-ai/DeepSeek-V4-Flash-Vision-Exp",
+   "XiaomiMiMo/MiMo-V2.6-Flash"
+  ],
+  "channel": "visible",
+  "ms": 6299
+ },
+ "XiaomiMiMo/MiMo-V2.6-Flash": {
+  "critique": {
+   "verdict": "The inclusionAI claim is stronger because it makes a precise, quantitatively falsifiable prediction (\u00b10.15 cosine, Hotelling's T\u00b2 at p<0.01) using a well-defined test, whereas the Qwen claim rests on representational similarity between models embedding textual 'descriptions' \u2014 a soft, heavily confounded measurement where RSA(A) > RSA(B) could trivially reflect lexical overlap rather than any topological invariant.",
+   "attack": "The test conflates orthogonality of the (R,F,P) decomposition with orthogonality of the particular embedding function used: displacement-vector angles are a property of the encoder, not of the triple, and single-field edits in one model's tokenizer space could appear orthogonal simply because field values are encoded in disjoint token regions \u2014 an artifact that would vanish under a different but equally valid embedder, so near-90\u00b0 angles would not establish that the axes are 'independently controllable' in the learned system itself.",
+   "refinement": "Replace raw angle measurement with cross-decoding invariance: train a linear probe to predict R-edits from displacement vectors while holding out F/P variations, then (a) verify the probe generalizes to unseen R values with F/P freely varying (separability) and (b) verify the same probe's predictions are statistically unchanged when F or P is perturbed (independence) \u2014 and repeat this across at least 3 independently trained embedding models, requiring the separability-independence pair to hold in all 3, which tests the decomposition rather than one encoder's geometry.",
+   "negative_control": "Apply the same cross-decoding procedure after randomly permuting which of the three fields each cell-word byte maps to (a sham (R,F,P) labeling): if the sham labeling achieves separability and independence comparable to the true labeling, the observed orthogonality is an artifact of byte-disjoint encoding and the refinement is killed."
+  },
+  "parse_ok": true,
+  "neighbors": [
+   "inclusionAI/Ling-3.0-flash",
+   "Qwen/Qwen3.8-Flash"
+  ],
+  "channel": "visible",
+  "ms": 74071
+ },
+ "Qwen/Qwen3.8-Flash": {
+  "critique": {
+   "verdict": "The Nemotron 'filter weight decay invariance' claim is stronger because it posits a testable physical law about the computational substrate, whereas the MiMo entry is merely a transient infrastructure failure with no theoretical content.",
+   "attack": "The assumption that weight decay is independent of routing ignores the likelihood of gradient coupling, where changes in the routing field (attention distribution) inherently alter the loss landscape and thus the optimal update rate for the filter weights.",
+   "refinement": "Reformulate the property as 'Decay-Routing Orthogonality under Static Topology': verify that weight decay rates remain constant only when the routing field is frozen or perturbed within a low-entropy subspace, decoupling the optimization trajectory from dynamic pathfinding noise.",
+   "negative_control": "If histogram plots reveal that the weight decay half-life shifts synchronously with phase transitions in the routing field's entropy or distance distribution, the invariance claim is falsified."
+  },
+  "parse_ok": true,
+  "neighbors": [
+   "XiaomiMiMo/MiMo-V2.6-Flash",
+   "nvidia/NVIDIA-Nemotron-3.5-Lightning"
+  ],
+  "channel": "visible",
+  "ms": 5360
+ },
+ "nvidia/NVIDIA-Nemotron-3.5-Lightning": {
+  "critique": {
+   "verdict": "Qwen/Qwen3.8-Flash claim is stronger, because it offers a precise, testable mathematical prediction (KL divergence correlation) grounded in the defined 'buzz' contract, whereas the meta-models claim is truncated and lacks a testable mechanism.",
+   "attack": "The prediction assumes buzz distributions are meaningfully comparable across independent model runs, but buzz bits are defined as 'non-authoritative dissent' which may be randomly initialized or saturated, rendering KL divergence uncorrelated with actual routing disagreement.",
+   "refinement": "Restrict the claim to cells where buzz histograms exceed a sparsity threshold (e.g., >30% non-zero bits), ensuring KL divergence measures structural dissent rather than noise.",
+   "negative_control": "If two cells share identical routing/filtering/buzz but divergent glyphs, and RSA(A) is lower than RSA(B), the buzz-based topology is decoupled from projection identity, invalidating the invariant."
+  },
+  "parse_ok": true,
+  "neighbors": [
+   "Qwen/Qwen3.8-Flash",
+   "meta-models/Muse-Glimmer-30B"
+  ],
+  "channel": "visible",
+  "ms": 1406
+ },
+ "meta-models/Muse-Glimmer-30B": {
+  "critique": {
+   "raw": "{\"ok\": false, \"ms\": 90432, \"error\": \"ReadTimeout\", \"attempt\": 2}"
+  },
+  "parse_ok": false,
+  "neighbors": [
+   "nvidia/NVIDIA-Nemotron-3.5-Lightning",
+   "ByteDance/Seed-2.0-mini"
+  ],
+  "channel": null,
+  "ms": 90432
+ },
+ "ByteDance/Seed-2.0-mini": {
+  "critique": {
+   "verdict": "The thinkingmachines/Inkling-Small claim is stronger because it includes concrete, measurable runtime API metrics and a clear error state, while the meta-models/Muse-Glimmer-30B claim only provides placeholder, unsubstantiated structured fields without empirical results.",
+   "attack": "The weakest point of the stronger Inkling-Small claim is that its provided data only documents a failed, non-functional API request with no validation that the model adheres to the relational cell (R,F,P) framework or empirical fleet laws specified in the architecture brief.",
+   "refinement": "Refine the claim to retain the original runtime error metrics and add post-deployment test results demonstrating that successful Inkling-Small inferences produce valid u32 cell words matching the glyph:8|route:8|weight:8|flags:4|buzz:4 format, comply with bit-law conformance vectors, and follow frame-law envelope tick rules.",
+   "negative_control": "A negative control observation that would invalidate this refinement would be if all subsequent test runs of Inkling-Small consistently fail to generate valid (R,F,P) relational cell structures, do not meet bit-law or frame-law conformance requirements, and produce non-compliant u32 cell words."
+  },
+  "parse_ok": true,
+  "neighbors": [
+   "meta-models/Muse-Glimmer-30B",
+   "thinkingmachines/Inkling-Small"
+  ],
+  "channel": "visible",
+  "ms": 17500
+ }
+}

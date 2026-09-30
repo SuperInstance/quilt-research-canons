@@ -1,0 +1,50 @@
+{
+ "r1": [
+  {
+   "model": "deepseek-ai/DeepSeek-V4-Flash-Vision-Exp",
+   "rescue": true,
+   "ms": 14715,
+   "channel": "reasoning_extracted"
+  }
+ ],
+ "r2": [],
+ "judge": [
+  {
+   "claim": "R1 deepseek-ai/DeepSeek-V4-Flash-Vision-Exp",
+   "latency_ms": 265,
+   "usage": {
+    "input_tokens": 710,
+    "output_tokens": 53
+   },
+   "answers": {
+    "novelty": {
+     "type": "score",
+     "score": 2.99,
+     "confidence": 0.87,
+     "legend": {
+      "0": "0: vacuous or unfalsifiable",
+      "1": "1: marginal, test vague",
+      "2": "2: real but test impractical",
+      "3": "3: novel + cheap decisive test",
+      "4": "4: exemplary \u2014 would change how we build quilts"
+     },
+     "probabilities": {
+      "0": 0.01,
+      "1": 0.02,
+      "2": 0.02,
+      "3": 0.88,
+      "4": 0.07
+     }
+    },
+    "promote": {
+     "type": "noul",
+     "noul": 0.7
+    },
+    "stranger": {
+     "type": "noul",
+     "noul": 0.4
+    }
+   }
+  }
+ ]
+}
