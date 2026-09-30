@@ -1,0 +1,97 @@
+{
+ "A_verbatim": {
+  "verify_substrate.py": {
+   "exit": 0,
+   "stdout_tail": [
+    " * Extracted Signal Weight  : 200 / 255",
+    " * Extracted Invariant Flag : 1",
+    " * Extracted Sub-Symbolic Buzz: 8 / 15",
+    "========================================================================"
+   ],
+   "stderr_head": []
+  },
+  "prove_memory_layout.py": {
+   "exit": 0,
+   "stdout_tail": [
+    "Payload Size Match: True (7696 bytes)",
+    "Header: (42, 115, 5, 0)",
+    "Cell Row 21 -> Symbol: ~, Color: 2, Weight: 200, Flags: 1, Buzz: 8"
+   ],
+   "stderr_head": []
+  }
+ },
+ "B_rederivation": {
+  "gift_word": "0x81C8027E",
+  "law_codec": {
+   "glyph": 126,
+   "route": 2,
+   "weight": 200,
+   "flags": 1,
+   "buzz": 8
+  },
+  "gift_expected": {
+   "glyph": 126,
+   "route": 2,
+   "weight": 200,
+   "flags": 1,
+   "buzz": 8
+  },
+  "field_order_identical": true,
+  "values_match": true,
+  "note": "gift names bit 8-15 'colorTag'; law names it 'route' \u2014 same bits, same order: the gift independently re-derived the cell word"
+ },
+ "C_header_conflict": {
+  "frame_law_on_gift_header": "REJECTED: bad magic (endianness or corruption \u2014 T3 class guard)",
+  "gift_eyes_on_law_header": {
+   "first_4_bytes_as_LE_u32": 843470161,
+   "expected_tick_if_LE": 843470161,
+   "tick_42_visible": false,
+   "note": "law header is magic+version+rows+BE-tick; gift eyes see garbage, gift header has no magic for law eyes \u2014 two contracts for one concept"
+  }
+ },
+ "D_crossruntime": {
+  "geometry": "gift's 80x24x4B grid, gift's exact special word 0x81C8027E at row 21 col 10",
+  "wire": "frame-law v2 (magic QUF2, BE, u32 ticks started at 0xFFFFFFF0 = wrap mid-run)",
+  "python_parse_ok": true,
+  "node_parse_ok": true,
+  "special_cell_node_view": {
+   "word": 2177368702,
+   "glyph": 126,
+   "route": 2,
+   "weight": 200,
+   "flags": 1,
+   "buzz": 8
+  },
+  "wrap_note": "row 21 tick = 0x00000005 in BOTH runtimes: the u32 wrap is shared behavior, not a coincidence",
+  "boundary_crossed": "python -> wire -> node (two runtimes, one law)",
+  "gpu_boundary": "STILL OPEN \u2014 no GPU in this sandbox; the honest residual (debrief next-step)",
+  "note": "the gift's proof round-tripped python through python (zero boundaries crossed); this one crosses a runtime boundary the data did not originate in"
+ },
+ "E_glsl": {
+  "undefined_identifier": "floatUnpackedBuzz (used in mix() at the decomposition-tint line; never declared) \u2014 shader will not compile",
+  "dead_code": "dynamicCoords: the 'high-frequency ripple' writes into dynamicCoords.x but the sampler reads v_texCoord \u2014 the ripple has zero effect on output",
+  "cosmetic": "color_tag 2 labeled 'Electric Cyan' decodes to (0.0, 0.0, 0.66) = pure blue under the gift's own 2-bit/channel decode",
+  "suspects": {
+   "floatBuzz": {
+    "declared": true,
+    "uses": 2
+   },
+   "floatUnpackedBuzz": {
+    "declared": false,
+    "uses": 1
+   },
+   "dynamicCoords": {
+    "declared": true,
+    "uses": 2
+   },
+   "weightVal": {
+    "declared": true,
+    "uses": 2
+   },
+   "colorIndex": {
+    "declared": true,
+    "uses": 4
+   }
+  }
+ }
+}

@@ -1,0 +1,52 @@
+{
+ "candidate": {
+  "novelty": {
+   "type": "score",
+   "score": 1.85,
+   "confidence": 0.27,
+   "legend": {
+    "0": "0: vacuous",
+    "1": "1: aspirational, not enforceable",
+    "2": "2: enforceable but obvious",
+    "3": "3: enforceable + catches the documented failure classes",
+    "4": "4: exemplary \u2014 would change review workflow"
+   },
+   "probabilities": {
+    "0": 0.01,
+    "1": 0.45,
+    "2": 0.23,
+    "3": 0.29,
+    "4": 0.02
+   }
+  },
+  "promote": {
+   "type": "noul",
+   "noul": 0.31
+  }
+ },
+ "gift_claim": {
+  "novelty": {
+   "type": "score",
+   "score": 0.4,
+   "confidence": 0.67,
+   "legend": {
+    "0": "0: vacuous",
+    "1": "1: aspirational, not enforceable",
+    "2": "2: enforceable but obvious",
+    "3": "3: enforceable + catches the documented failure classes",
+    "4": "4: exemplary \u2014 would change review workflow"
+   },
+   "probabilities": {
+    "0": 0.61,
+    "1": 0.39,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0
+   }
+  },
+  "promote": {
+   "type": "noul",
+   "noul": 0.07
+  }
+ }
+}
