@@ -1,0 +1,10 @@
+name = "wheel-index"
+main = "vectorize_worker.js"
+compatibility_date = "2024-11-06"
+
+# Vectorize is deliberately NOT bound. It returns unknown_content_type (1005) on this
+# account, and a binding that does not work is worse than a binding that is absent
+# because the worker reports which backend is live at /health.
+[[kv_namespaces]]
+binding = "WHEEL_INDEX"
+id = "REPLACE_AFTER_running_upload_index.py"
