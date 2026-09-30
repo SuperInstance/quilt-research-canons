@@ -1,0 +1,64 @@
+{
+ "schema": "jev-lite/weights@v1",
+ "n_features": 15,
+ "features": [
+  "specific_number",
+  "named_artifact",
+  "falsifiable",
+  "universal_quant",
+  "hedge",
+  "vague_praise",
+  "vague_quant",
+  "absolutist",
+  "self_reference",
+  "measured_past",
+  "negation",
+  "concrete_noun"
+ ],
+ "weights": [
+  -1.903535035934133,
+  -0.0007644852345461682,
+  -0.24922848066469877,
+  -0.06026849092864815,
+  -0.13025658239042437,
+  -0.9369055273267196,
+  0.8883582823919651,
+  -0.628866327216659,
+  -0.22879319113068858,
+  -1.1837233971032421,
+  -0.2064688462482394,
+  0.021518333225624693,
+  2.3149182649780284,
+  0.2069244048373863,
+  0.9406596609924673,
+  0.8562534191635695
+ ],
+ "provenance": {
+  "recalibration": "none \u2014 two attempts measured and reverted, see train.py",
+  "corpus": "corpus.json",
+  "collected_from": "typesafe.ai /v1/systemone, model jev-latest",
+  "collected": "2026-09-30",
+  "seed": 20260930,
+  "holdout": 0.25,
+  "l2": 0.15
+ },
+ "metrics": {
+  "train_mse": 0.03952332708369984,
+  "heldout_mse": 0.04138196004299292,
+  "heldout_brier": 0.04138196004299292,
+  "heldout_bands": {
+   "strong": 0.44184726510486383,
+   "weak": 0.20988367635828983,
+   "false": 0.22115322117449607
+  },
+  "train_bands": {
+   "strong": 0.37965537868797966,
+   "weak": 0.2057766702861522,
+   "false": 0.26169738063588127
+  },
+  "heldout_not_true": 0.2170552048776938,
+  "discrimination_spread": 0.22479206022717002,
+  "ship_gate": "PASS",
+  "known_limit": "weak vs false are not separated, by this model or by the oracle it was distilled from"
+ }
+}
