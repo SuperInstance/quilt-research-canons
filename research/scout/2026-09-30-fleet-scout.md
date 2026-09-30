@@ -170,3 +170,26 @@ emergent hope. Relevant to any multi-agent fleet.
 - Two of my own verification attempts produced false positives (wrong constructor kwargs,
   wrong result attribute). Both were caught by re-reading the actual signature before
   reporting. Cheap check, worth keeping.
+
+---
+
+## Provenance — what is new vs. what prior scouts already covered
+
+I checked this repo's own `research/scout/` history before reporting, to avoid
+re-reporting. Result:
+
+- **`quality-gate-stream` was already scouted** (`SCOUT-2026-09-30-gems.md`) — that run
+  tested the library's *behaviour* and independently found the install claim is false
+  (`pip install quality-gate-stream` -> PyPI HTTP 404; not published). My contribution is
+  **not** the library verdict, it is the credential exposure, which no prior scout looked
+  for. The repo being known is exactly why the leak survived: it had been read for
+  behaviour and never grepped for secrets. **The negative finding is new.**
+- **`quilt-gpu-lab` appears in 7 prior files.** My contribution is the **executed** result:
+  the receipt suite is RED on `main` (2/6), with both failures named. Prior passes described
+  the layer; none ran it.
+- **`polln` appears in 2 prior scouts.** My contribution is the executed defect list
+  (113 committed `.pyc`; the flattened Windows-path filename) rather than its architecture.
+- **`cns-substrate` appears in no prior scout.** Entirely new, including the canary finding.
+- The `superinstance-api` `.wrangler` exposure was found by `gems-2026-09-30T0030Z.md`.
+  **I could not re-verify it this run** (rate limit + `master` not `main`) and it is
+  **not** claimed as fixed.
