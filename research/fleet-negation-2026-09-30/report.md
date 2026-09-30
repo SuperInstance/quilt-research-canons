@@ -76,3 +76,11 @@ request_id `req_01a0ef9c6cb17d2296c7731e9a299708` banked in judge_receipt.json. 
 - English-only, synthetic short sentences, one seed. The 65-A negation finding used natural fleet vocabulary; this round's probes are stylized variants of the same axes.
 - Costs: 11 embedding batch calls + 1 System One call. Embeddings ≈ $0.00–0.01 total; judge ~1.2k input tokens (output free).
 - No keys in any artifact (keyscan clean at close).
+
+## Edge deployment receipt (wave-66 cloudflare lane)
+
+The quilt artifact is served live at the fleet's edge: **https://wave66-quilt.casey-digennaro.workers.dev/**
+- Worker `wave66-quilt` on Casey's account, no bindings (a static receipt needs no state), x-quilt-receipt header identifies the lane.
+- Deploy script: `deploy_wave66_quilt.py` (workers modules API, multipart upload + subdomain enable).
+- First GET after enable returned 403 (propagation), then 200 ×2 with full artifact verified (doctype…</html>, content grep 2/2).
+- Complements gpu-lab's precedent: Vectorize stays unbound (upstream error 1005); static receipts need nothing at all.
