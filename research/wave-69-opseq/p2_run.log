@@ -1,0 +1,50 @@
+census: {"oporder": 27, "rolecode": 27}
+[oporder] bigram: L1 +0.0309 (p 0.002) | L2 gap +0.4204 | C1-cell -0.1340 (ranks [12, 12, 15, 15]) | C1-trace -0.0743 (p 0.002)  [0.0s]
+[oporder] trigram: L1 +0.0204 (p 0.002) | L2 gap +0.6201 | C1-cell -0.1321 (ranks [14, 14, 14, 14]) | C1-trace -0.0681 (p 0.002)  [0.0s]
+[oporder] levenshtein: L1 +0.0343 (p 0.002) | L2 gap +0.5527 | C1-cell -0.0679 (ranks [15, 15, 15, 17]) | C1-trace +0.0404 (p 0.002)  [0.0s]
+[oporder] nw: L1 +0.1633 (p 0.002) | L2 gap +0.9013 | C1-cell +0.0236 (ranks [10, 10, 12, 9]) | C1-trace +0.0530 (p 0.002)  [0.0s]
+[oporder] sw: L1 +0.0209 (p 0.002) | L2 gap +0.4133 | C1-cell -0.0812 (ranks [11, 11, 18, 14]) | C1-trace +0.0101 (p 0.002)  [0.0s]
+[rolecode] bigram: L1 +0.0286 (p 0.002) | L2 gap +0.4204 | C1-cell +0.0000 (ranks [5, 5, 5, 5]) | C1-trace -0.0743 (p 0.002)  [0.0s]
+[rolecode] trigram: L1 +0.0206 (p 0.002) | L2 gap +0.6201 | C1-cell +0.0000 (ranks [5, 5, 5, 1]) | C1-trace -0.0681 (p 0.002)  [0.0s]
+[rolecode] levenshtein: L1 +0.0119 (p 0.002) | L2 gap +0.5527 | C1-cell +0.0000 (ranks [5, 5, 5, 5]) | C1-trace +0.0404 (p 0.002)  [0.0s]
+[rolecode] nw: L1 +0.0370 (p 0.002) | L2 gap +0.9013 | C1-cell +0.1667 (ranks [10, 10, 10, 10]) | C1-trace +0.0530 (p 0.002)  [0.0s]
+[rolecode] sw: L1 +0.0192 (p 0.002) | L2 gap +0.4133 | C1-cell +0.0000 (ranks [5, 5, 5, 5]) | C1-trace +0.0101 (p 0.002)  [0.0s]
+{
+ "oporder": {
+  "liveness_L1_ge3": true,
+  "liveness_L1": [
+   "bigram",
+   "trigram",
+   "levenshtein",
+   "nw",
+   "sw"
+  ],
+  "c1_cell_rank1_all_scheds": [],
+  "c1_trace_p05": [
+   "levenshtein",
+   "nw",
+   "sw"
+  ],
+  "dialect_ge3_both": false,
+  "both": []
+ },
+ "rolecode": {
+  "liveness_L1_ge3": true,
+  "liveness_L1": [
+   "bigram",
+   "trigram",
+   "levenshtein",
+   "nw",
+   "sw"
+  ],
+  "c1_cell_rank1_all_scheds": [],
+  "c1_trace_p05": [
+   "levenshtein",
+   "nw",
+   "sw"
+  ],
+  "dialect_ge3_both": false,
+  "both": []
+ }
+}
+receipt written

@@ -1,0 +1,113 @@
+{
+ "A1_opsonly": {
+  "Qwen/Qwen3-Embedding-8B": {
+   "sched_acc_per_cell": {
+    "route": 0.45,
+    "crdt": 0.35,
+    "time": 0.95,
+    "quf": 0.95,
+    "world": 0.95,
+    "proof": 0.225,
+    "engine": 0.975
+   },
+   "sched_acc_mean": 0.692857142857143,
+   "T1_opsonly": 0.31487737461577114
+  },
+  "Qwen/Qwen3-Embedding-0.6B": {
+   "sched_acc_per_cell": {
+    "route": 0.425,
+    "crdt": 0.35,
+    "time": 0.95,
+    "quf": 0.95,
+    "world": 0.95,
+    "proof": 0.225,
+    "engine": 0.95
+   },
+   "sched_acc_mean": 0.6857142857142857,
+   "T1_opsonly": 0.3415897463943056
+  },
+  "BAAI/bge-m3": {
+   "sched_acc_per_cell": {
+    "route": 0.425,
+    "crdt": 0.475,
+    "time": 0.95,
+    "quf": 0.95,
+    "world": 0.95,
+    "proof": 0.225,
+    "engine": 0.95
+   },
+   "sched_acc_mean": 0.7035714285714285,
+   "T1_opsonly": 0.2957100485864791
+  },
+  "intfloat/multilingual-e5-large-instruct": {
+   "sched_acc_per_cell": {
+    "route": 0.425,
+    "crdt": 0.425,
+    "time": 0.95,
+    "quf": 0.95,
+    "world": 0.95,
+    "proof": 0.225,
+    "engine": 0.975
+   },
+   "sched_acc_mean": 0.7000000000000001,
+   "T1_opsonly": 0.09144133171829782
+  },
+  "sentence-transformers/all-mpnet-base-v2": {
+   "sched_acc_per_cell": {
+    "route": 0.475,
+    "crdt": 0.475,
+    "time": 0.95,
+    "quf": 0.95,
+    "world": 0.95,
+    "proof": 0.2,
+    "engine": 0.95
+   },
+   "sched_acc_mean": 0.7071428571428572,
+   "T1_opsonly": 0.4979886551180708
+  }
+ },
+ "A2_decomposition": {
+  "op-2gram": {
+   "within_cell_selfsim": {
+    "route": 0.952446085855854,
+    "crdt": 0.9744503739415823,
+    "time": 0.5052688463649043,
+    "quf": 0.41099732728486943,
+    "world": 0.31978923257955527,
+    "proof": 1.0000000000000002,
+    "engine": 0.5513291089983816
+   },
+   "C1_full": -0.14184244900516996,
+   "C1_noproof": -0.02421571675869294,
+   "C1_richonly": 0.13834385424533152
+  },
+  "op-3gram": {
+   "within_cell_selfsim": {
+    "route": 0.9465577724975006,
+    "crdt": 0.9086511869363213,
+    "time": 0.3574193078477052,
+    "quf": 0.23556543286780396,
+    "world": 0.2141025641025641,
+    "proof": 1.0,
+    "engine": 0.317230446711002
+   },
+   "C1_full": -0.19440374594195842,
+   "C1_noproof": -0.04819603778177273,
+   "C1_richonly": 0.08238980625519052
+  },
+  "edit": {
+   "within_cell_selfsim": {
+    "route": 0.935897435897436,
+    "crdt": 0.7041420118343196,
+    "time": 0.6010256410256409,
+    "quf": 0.607051282051282,
+    "world": 0.47606837606837604,
+    "proof": 1.0,
+    "engine": 0.47976190476190483
+   },
+   "C1_full": -0.01207867630944548,
+   "C1_noproof": 0.1245529257067719,
+   "C1_richonly": 0.12797008547008548
+  }
+ }
+}

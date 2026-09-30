@@ -1,0 +1,23 @@
+{
+ "Qwen/Qwen3.8-Flash": {
+  "error": "HTTPError: HTTP Error 422: Unprocessable Entity"
+ },
+ "ibm-granite/granite-4.2-30b": {
+  "error": "HTTPError: HTTP Error 422: Unprocessable Entity"
+ },
+ "inclusionAI/Ling-3.0-flash": {
+  "error": "HTTPError: HTTP Error 422: Unprocessable Entity"
+ },
+ "meta-models/Muse-Glimmer-30B": {
+  "error": "HTTPError: HTTP Error 422: Unprocessable Entity"
+ },
+ "nvidia/NVIDIA-Nemotron-3.5-Lightning": {
+  "error": "HTTPError: HTTP Error 422: Unprocessable Entity"
+ },
+ "thinkingmachines/Inkling-Small": {
+  "error": "HTTPError: HTTP Error 422: Unprocessable Entity"
+ },
+ "deepseek-ai/DeepSeek-V4-Flash-Vision-Exp": {
+  "error": "HTTPError: HTTP Error 422: Unprocessable Entity"
+ }
+}

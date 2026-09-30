@@ -1,0 +1,634 @@
+{
+ "pre_registered": "README.md (before any call)",
+ "amendments": [
+  "AMEND-1 liveness pair class (see docstring)",
+  "AMEND-2 C1-trace = same-cell CROSS-SCHEDULE pairs"
+ ],
+ "census": {
+  "oporder": {
+   "unique_per_cell_sched": {
+    "route:A": 1,
+    "route:B": 1,
+    "route:C": 1,
+    "route:D": 1,
+    "crdt:A": 1,
+    "crdt:B": 1,
+    "crdt:C": 1,
+    "crdt:D": 1,
+    "time:A": 1,
+    "time:B": 1,
+    "time:C": 1,
+    "time:D": 1,
+    "quf:A": 1,
+    "quf:B": 1,
+    "quf:C": 1,
+    "quf:D": 1,
+    "world:A": 1,
+    "world:B": 1,
+    "world:C": 1,
+    "world:D": 1,
+    "proof:A": 1,
+    "proof:B": 1,
+    "proof:C": 1,
+    "proof:D": 1,
+    "engine:A": 1,
+    "engine:B": 1,
+    "engine:C": 1,
+    "engine:D": 1
+   },
+   "n_unique_total": 27
+  },
+  "rolecode": {
+   "unique_per_cell_sched": {
+    "route:A": 1,
+    "route:B": 1,
+    "route:C": 1,
+    "route:D": 1,
+    "crdt:A": 1,
+    "crdt:B": 1,
+    "crdt:C": 1,
+    "crdt:D": 1,
+    "time:A": 1,
+    "time:B": 1,
+    "time:C": 1,
+    "time:D": 1,
+    "quf:A": 1,
+    "quf:B": 1,
+    "quf:C": 1,
+    "quf:D": 1,
+    "world:A": 1,
+    "world:B": 1,
+    "world:C": 1,
+    "world:D": 1,
+    "proof:A": 1,
+    "proof:B": 1,
+    "proof:C": 1,
+    "proof:D": 1,
+    "engine:A": 1,
+    "engine:B": 1,
+    "engine:C": 1,
+    "engine:D": 1
+   },
+   "n_unique_total": 27
+  }
+ },
+ "encodings": {
+  "oporder": {
+   "determinism_recompute_ok": true,
+   "bigram": {
+    "instrument": "bigram",
+    "n_docs": 280,
+    "n_unique_docs": 28,
+    "compute_s": 0.0,
+    "L1_cross_cell": {
+     "same_sched_mean": 0.2563239732713854,
+     "diff_sched_mean": 0.22546879160194316,
+     "gap": 0.030855181669442233,
+     "p": 0.001996007984031936,
+     "null_mean": 0.23317474870160948
+    },
+    "L2_within_cell": {
+     "same_sched_mean": 0.9999999999987812,
+     "diff_sched_mean": 0.579611920334,
+     "gap": 0.4203880796647812
+    },
+    "c1_cell": {
+     "per_sched": [
+      -0.0696,
+      -0.0696,
+      -0.2263,
+      -0.1706
+     ],
+     "mean": -0.13403541440677383,
+     "ranks": [
+      12,
+      12,
+      15,
+      15
+     ],
+     "between_mean": 0.11562661865122059,
+     "incell_mean": 0.24966203305799445
+    },
+    "c1_trace": {
+     "between_mean": 0.5221679597414007,
+     "incell_mean": 0.5964602780017936,
+     "value": -0.07429231826039284,
+     "p": 0.001996007984031936,
+     "null_mean": 0.2753672429534698,
+     "null_sd": 0.01780290355033366
+    }
+   },
+   "trigram": {
+    "instrument": "trigram",
+    "n_docs": 280,
+    "n_unique_docs": 28,
+    "compute_s": 0.0,
+    "L1_cross_cell": {
+     "same_sched_mean": 0.11816198455067599,
+     "diff_sched_mean": 0.09776343756122587,
+     "gap": 0.020398546989450123,
+     "p": 0.001996007984031936,
+     "null_mean": 0.10286435063764374
+    },
+    "L2_within_cell": {
+     "same_sched_mean": 0.9999999999985273,
+     "diff_sched_mean": 0.3798865642495888,
+     "gap": 0.6201134357489385
+    },
+    "c1_cell": {
+     "per_sched": [
+      -0.1874,
+      -0.1874,
+      -0.1091,
+      -0.0447
+     ],
+     "mean": -0.13217083665282564,
+     "ranks": [
+      14,
+      14,
+      14,
+      14
+     ],
+     "between_mean": 0.0,
+     "incell_mean": 0.13217083665282564
+    },
+    "c1_trace": {
+     "between_mean": 0.34014905478933827,
+     "incell_mean": 0.40828594027271886,
+     "value": -0.0681368854833806,
+     "p": 0.001996007984031936,
+     "null_mean": 0.137232377922251,
+     "null_sd": 0.017244126500676145
+    }
+   },
+   "levenshtein": {
+    "instrument": "levenshtein",
+    "n_docs": 280,
+    "n_unique_docs": 28,
+    "compute_s": 0.0,
+    "L1_cross_cell": {
+     "same_sched_mean": 0.24195447409733123,
+     "diff_sched_mean": 0.20763416477702187,
+     "gap": 0.034320309320309356,
+     "p": 0.001996007984031936,
+     "null_mean": 0.21621635095063665
+    },
+    "L2_within_cell": {
+     "same_sched_mean": 1.0,
+     "diff_sched_mean": 0.4473181580324438,
+     "gap": 0.5526818419675562
+    },
+    "c1_cell": {
+     "per_sched": [
+      -0.0615,
+      -0.0615,
+      -0.0872,
+      -0.0615
+     ],
+     "mean": -0.06794871794871801,
+     "ranks": [
+      15,
+      15,
+      15,
+      17
+     ],
+     "between_mean": 0.17777777777777773,
+     "incell_mean": 0.24572649572649574
+    },
+    "c1_trace": {
+     "between_mean": 0.48055555555555557,
+     "incell_mean": 0.4401709401709402,
+     "value": 0.04038461538461535,
+     "p": 0.001996007984031936,
+     "null_mean": 0.24180279853489253,
+     "null_sd": 0.005679423387259646
+    }
+   },
+   "nw": {
+    "instrument": "nw",
+    "n_docs": 280,
+    "n_unique_docs": 28,
+    "compute_s": 0.0,
+    "L1_cross_cell": {
+     "same_sched_mean": -1.3897457701029132,
+     "diff_sched_mean": -1.5530292458863888,
+     "gap": 0.16328347578347557,
+     "p": 0.001996007984031936,
+     "null_mean": -1.5122255089394734
+    },
+    "L2_within_cell": {
+     "same_sched_mean": 1.0,
+     "diff_sched_mean": 0.09871794871794871,
+     "gap": 0.9012820512820513
+    },
+    "c1_cell": {
+     "per_sched": [
+      0.0722,
+      0.0722,
+      -0.1222,
+      0.0722
+     ],
+     "mean": 0.023611111111111027,
+     "ranks": [
+      10,
+      10,
+      12,
+      9
+     ],
+     "between_mean": -1.6708333333333334,
+     "incell_mean": -1.6944444444444444
+    },
+    "c1_trace": {
+     "between_mean": 0.15555555555555556,
+     "incell_mean": 0.10256410256410257,
+     "value": 0.052991452991452984,
+     "p": 0.001996007984031936,
+     "null_mean": -1.319918995737159,
+     "null_sd": 0.04708180879775424
+    }
+   },
+   "sw": {
+    "instrument": "sw",
+    "n_docs": 280,
+    "n_unique_docs": 28,
+    "compute_s": 0.0,
+    "L1_cross_cell": {
+     "same_sched_mean": 0.451449938949939,
+     "diff_sched_mean": 0.4305893511250654,
+     "gap": 0.0208605878248736,
+     "p": 0.001996007984031936,
+     "null_mean": 0.43580191258939477
+    },
+    "L2_within_cell": {
+     "same_sched_mean": 1.0,
+     "diff_sched_mean": 0.5867085295656724,
+     "gap": 0.41329147043432757
+    },
+    "c1_cell": {
+     "per_sched": [
+      -0.0194,
+      -0.0194,
+      -0.2111,
+      -0.075
+     ],
+     "mean": -0.08125,
+     "ranks": [
+      11,
+      11,
+      18,
+      14
+     ],
+     "between_mean": 0.39791666666666664,
+     "incell_mean": 0.47916666666666663
+    },
+    "c1_trace": {
+     "between_mean": 0.6101851851851852,
+     "incell_mean": 0.600071225071225,
+     "value": 0.010113960113960152,
+     "p": 0.001996007984031936,
+     "null_mean": 0.4528720532278156,
+     "null_sd": 0.006074266319720602
+    }
+   }
+  },
+  "rolecode": {
+   "determinism_recompute_ok": true,
+   "bigram": {
+    "instrument": "bigram",
+    "n_docs": 280,
+    "n_unique_docs": 28,
+    "compute_s": 0.0,
+    "L1_cross_cell": {
+     "same_sched_mean": 0.03549783108194352,
+     "diff_sched_mean": 0.006850920212244199,
+     "gap": 0.028646910869699324,
+     "p": 0.001996007984031936,
+     "null_mean": 0.014008919188472945
+    },
+    "L2_within_cell": {
+     "same_sched_mean": 0.9999999999987812,
+     "diff_sched_mean": 0.579611920334,
+     "gap": 0.4203880796647812
+    },
+    "c1_cell": {
+     "per_sched": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "mean": 0.0,
+     "ranks": [
+      5,
+      5,
+      5,
+      5
+     ],
+     "between_mean": 0.0,
+     "incell_mean": 0.0
+    },
+    "c1_trace": {
+     "between_mean": 0.5221679597414007,
+     "incell_mean": 0.5964602780017936,
+     "value": -0.07429231826039284,
+     "p": 0.001996007984031936,
+     "null_mean": 0.08851487309487421,
+     "null_sd": 0.006567691911897585
+    }
+   },
+   "trigram": {
+    "instrument": "trigram",
+    "n_docs": 280,
+    "n_unique_docs": 28,
+    "compute_s": 0.0,
+    "L1_cross_cell": {
+     "same_sched_mean": 0.020619652471011142,
+     "diff_sched_mean": 0.0,
+     "gap": 0.020619652471011142,
+     "p": 0.001996007984031936,
+     "null_mean": 0.005150239329859355
+    },
+    "L2_within_cell": {
+     "same_sched_mean": 0.9999999999985273,
+     "diff_sched_mean": 0.3798865642495888,
+     "gap": 0.6201134357489385
+    },
+    "c1_cell": {
+     "per_sched": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "mean": 0.0,
+     "ranks": [
+      5,
+      5,
+      5,
+      1
+     ],
+     "between_mean": 0.0,
+     "incell_mean": 0.0
+    },
+    "c1_trace": {
+     "between_mean": 0.3401490547893383,
+     "incell_mean": 0.40828594027271886,
+     "value": -0.06813688548338054,
+     "p": 0.001996007984031936,
+     "null_mean": 0.054050854854374296,
+     "null_sd": 0.007273304256068837
+    }
+   },
+   "levenshtein": {
+    "instrument": "levenshtein",
+    "n_docs": 280,
+    "n_unique_docs": 28,
+    "compute_s": 0.0,
+    "L1_cross_cell": {
+     "same_sched_mean": 0.02857142857142857,
+     "diff_sched_mean": 0.016666666666666666,
+     "gap": 0.011904761904761904,
+     "p": 0.001996007984031936,
+     "null_mean": 0.019643857142857143
+    },
+    "L2_within_cell": {
+     "same_sched_mean": 1.0,
+     "diff_sched_mean": 0.4473181580324438,
+     "gap": 0.5526818419675562
+    },
+    "c1_cell": {
+     "per_sched": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "mean": 0.0,
+     "ranks": [
+      5,
+      5,
+      5,
+      5
+     ],
+     "between_mean": 0.0,
+     "incell_mean": 0.0
+    },
+    "c1_trace": {
+     "between_mean": 0.48055555555555557,
+     "incell_mean": 0.4401709401709402,
+     "value": 0.04038461538461535,
+     "p": 0.001996007984031936,
+     "null_mean": 0.0783292432375737,
+     "null_sd": 0.004690505729249742
+    }
+   },
+   "nw": {
+    "instrument": "nw",
+    "n_docs": 280,
+    "n_unique_docs": 28,
+    "compute_s": 0.0,
+    "L1_cross_cell": {
+     "same_sched_mean": -2.388199895342752,
+     "diff_sched_mean": -2.4252369323797893,
+     "gap": 0.0370370370370372,
+     "p": 0.001996007984031936,
+     "null_mean": -2.4159775937554504
+    },
+    "L2_within_cell": {
+     "same_sched_mean": 1.0,
+     "diff_sched_mean": 0.09871794871794871,
+     "gap": 0.9012820512820513
+    },
+    "c1_cell": {
+     "per_sched": [
+      0.1667,
+      0.1667,
+      0.1667,
+      0.1667
+     ],
+     "mean": 0.16666666666666696,
+     "ranks": [
+      10,
+      10,
+      10,
+      10
+     ],
+     "between_mean": -2.6666666666666665,
+     "incell_mean": -2.8333333333333335
+    },
+    "c1_trace": {
+     "between_mean": 0.15555555555555556,
+     "incell_mean": 0.10256410256410257,
+     "value": 0.052991452991452984,
+     "p": 0.001996007984031936,
+     "null_mean": -2.0676066732366145,
+     "null_sd": 0.049471772095295005
+    }
+   },
+   "sw": {
+    "instrument": "sw",
+    "n_docs": 280,
+    "n_unique_docs": 28,
+    "compute_s": 0.0,
+    "L1_cross_cell": {
+     "same_sched_mean": 0.04563492063492064,
+     "diff_sched_mean": 0.02645502645502645,
+     "gap": 0.01917989417989419,
+     "p": 0.001996007984031936,
+     "null_mean": 0.03124912698412698
+    },
+    "L2_within_cell": {
+     "same_sched_mean": 1.0,
+     "diff_sched_mean": 0.5867085295656724,
+     "gap": 0.41329147043432757
+    },
+    "c1_cell": {
+     "per_sched": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "mean": 0.0,
+     "ranks": [
+      5,
+      5,
+      5,
+      5
+     ],
+     "between_mean": 0.0,
+     "incell_mean": 0.0
+    },
+    "c1_trace": {
+     "between_mean": 0.6101851851851852,
+     "incell_mean": 0.600071225071225,
+     "value": 0.010113960113960152,
+     "p": 0.001996007984031936,
+     "null_mean": 0.1067507078641867,
+     "null_sd": 0.006601103418145138
+    }
+   }
+  }
+ },
+ "notes": [],
+ "embedding_comparator": {
+  "Qwen/Qwen3-Embedding-8B": {
+   "oporder": {
+    "C1": 0.014502286911010742,
+    "C1_p": 0.023952095808383235,
+    "S1": 0.08263957500457764,
+    "S1_p": 0.001996007984031936,
+    "T1": 0.1828094720840454
+   },
+   "rolecode": {
+    "C1": -0.0031561851501464844,
+    "C1_p": 0.6846307385229541,
+    "S1": 0.036547720432281494,
+    "S1_p": 0.001996007984031936,
+    "T1": 0.3012996315956116
+   }
+  },
+  "Qwen/Qwen3-Embedding-0.6B": {
+   "oporder": {
+    "C1": 0.0229303240776062,
+    "C1_p": 0.001996007984031936,
+    "S1": 0.07154977321624756,
+    "S1_p": 0.001996007984031936,
+    "T1": 0.1748131513595581
+   },
+   "rolecode": {
+    "C1": 0.022638380527496338,
+    "C1_p": 0.017964071856287425,
+    "S1": 0.04588121175765991,
+    "S1_p": 0.001996007984031936,
+    "T1": 0.36770766973495483
+   }
+  },
+  "BAAI/bge-m3": {
+   "oporder": {
+    "C1": 0.0005603432655334473,
+    "C1_p": 0.4750499001996008,
+    "S1": 0.047718822956085205,
+    "S1_p": 0.001996007984031936,
+    "T1": 0.17830383777618408
+   },
+   "rolecode": {
+    "C1": -0.010392427444458008,
+    "C1_p": 0.9640718562874252,
+    "S1": 0.029223263263702393,
+    "S1_p": 0.001996007984031936,
+    "T1": 0.23761069774627686
+   }
+  },
+  "intfloat/multilingual-e5-large-instruct": {
+   "oporder": {
+    "C1": -0.0008854866027832031,
+    "C1_p": 0.6946107784431138,
+    "S1": 0.008135735988616943,
+    "S1_p": 0.001996007984031936,
+    "T1": 0.0629149079322815
+   },
+   "rolecode": {
+    "C1": -0.0001131296157836914,
+    "C1_p": 0.562874251497006,
+    "S1": 0.002859771251678467,
+    "S1_p": 0.001996007984031936,
+    "T1": 0.08402794599533081
+   }
+  },
+  "sentence-transformers/all-mpnet-base-v2": {
+   "oporder": {
+    "C1": -0.0033355355262756348,
+    "C1_p": 0.6067864271457086,
+    "S1": 0.04078030586242676,
+    "S1_p": 0.001996007984031936,
+    "T1": 0.36626100540161133
+   },
+   "rolecode": {
+    "C1": 0.011062085628509521,
+    "C1_p": 0.21157684630738524,
+    "S1": 0.030523061752319336,
+    "S1_p": 0.001996007984031936,
+    "T1": 0.538256824016571
+   }
+  }
+ },
+ "verdict": {
+  "oporder": {
+   "liveness_L1_ge3": true,
+   "liveness_L1": [
+    "bigram",
+    "trigram",
+    "levenshtein",
+    "nw",
+    "sw"
+   ],
+   "c1_cell_rank1_all_scheds": [],
+   "c1_trace_p05": [
+    "levenshtein",
+    "nw",
+    "sw"
+   ],
+   "dialect_ge3_both": false,
+   "both": []
+  },
+  "rolecode": {
+   "liveness_L1_ge3": true,
+   "liveness_L1": [
+    "bigram",
+    "trigram",
+    "levenshtein",
+    "nw",
+    "sw"
+   ],
+   "c1_cell_rank1_all_scheds": [],
+   "c1_trace_p05": [
+    "levenshtein",
+    "nw",
+    "sw"
+   ],
+   "dialect_ge3_both": false,
+   "both": []
+  }
+ }
+}

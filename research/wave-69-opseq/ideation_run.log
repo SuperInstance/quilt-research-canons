@@ -1,0 +1,7 @@
+Qwen3.8-Flash (340s, 9262 tok): 1448 chars | judge {'error': 'HTTPError: HTTP Error 422: Unprocessable Entity'}
+granite-4.2-30b (49s, 4000 tok): 0 chars | judge {'error': 'HTTPError: HTTP Error 422: Unprocessable Entity'}
+Ling-3.0-flash (114s, 3593 tok): 3803 chars | judge {'error': 'HTTPError: HTTP Error 422: Unprocessable Entity'}
+Muse-Glimmer-30B (21s, 3087 tok): 1265 chars | judge {'error': 'HTTPError: HTTP Error 422: Unprocessable Entity'}
+NVIDIA-Nemotron-3.5-Lightning (9s, 360 tok): 1484 chars | judge {'error': 'HTTPError: HTTP Error 422: Unprocessable Entity'}
+Inkling-Small (16s, 4000 tok): 0 chars | judge {'error': 'HTTPError: HTTP Error 422: Unprocessable Entity'}
+DeepSeek-V4-Flash-Vision-Exp (27s, 4000 tok): 0 chars | judge {'error': 'HTTPError: HTTP Error 422: Unprocessable Entity'}

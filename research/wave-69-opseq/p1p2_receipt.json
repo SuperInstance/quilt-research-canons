@@ -1,0 +1,169 @@
+{
+ "pre_registered": "research/wave-69-opseq/README.md (S1-S5)",
+ "neural": {
+  "Qwen/Qwen3-Embedding-8B": {
+   "T1_full": 0.4282923648311622,
+   "sched_acc_per_cell": {
+    "route": 0.35,
+    "crdt": 0.375,
+    "time": 0.95,
+    "quf": 0.85,
+    "world": 0.85,
+    "proof": 0.225,
+    "engine": 0.875
+   },
+   "sched_acc_mean": 0.6392857142857142,
+   "proof_floor": 0.225
+  },
+  "Qwen/Qwen3-Embedding-0.6B": {
+   "T1_full": 0.4036376059171838,
+   "sched_acc_per_cell": {
+    "route": 0.325,
+    "crdt": 0.475,
+    "time": 0.95,
+    "quf": 0.9,
+    "world": 0.875,
+    "proof": 0.225,
+    "engine": 0.925
+   },
+   "sched_acc_mean": 0.6678571428571428,
+   "proof_floor": 0.225
+  },
+  "BAAI/bge-m3": {
+   "T1_full": 0.34901033921490165,
+   "sched_acc_per_cell": {
+    "route": 0.475,
+    "crdt": 0.325,
+    "time": 0.95,
+    "quf": 0.9,
+    "world": 0.925,
+    "proof": 0.225,
+    "engine": 0.925
+   },
+   "sched_acc_mean": 0.675,
+   "proof_floor": 0.225
+  },
+  "intfloat/multilingual-e5-large-instruct": {
+   "T1_full": 0.09280523764025439,
+   "sched_acc_per_cell": {
+    "route": 0.475,
+    "crdt": 0.25,
+    "time": 0.95,
+    "quf": 0.9,
+    "world": 0.925,
+    "proof": 0.2,
+    "engine": 0.85
+   },
+   "sched_acc_mean": 0.65,
+   "proof_floor": 0.2
+  },
+  "sentence-transformers/all-mpnet-base-v2": {
+   "T1_full": 0.5111300819458428,
+   "sched_acc_per_cell": {
+    "route": 0.325,
+    "crdt": 0.325,
+    "time": 0.95,
+    "quf": 0.95,
+    "world": 0.9,
+    "proof": 0.2,
+    "engine": 0.95
+   },
+   "sched_acc_mean": 0.6571428571428571,
+   "proof_floor": 0.2
+  }
+ },
+ "noise_self_cos": {
+  "Qwen/Qwen3-Embedding-8B": [
+   0.9999999999990001,
+   0.9999999999990001,
+   0.9999999999989999,
+   0.999999999999
+  ],
+  "Qwen/Qwen3-Embedding-0.6B": [
+   0.9997939110522011,
+   0.9999999999989999,
+   0.999999999999,
+   0.999999999999
+  ],
+  "BAAI/bge-m3": [
+   0.9999989364874785,
+   0.9999971361656863,
+   0.9999983923480947,
+   0.9999999999990001
+  ],
+  "intfloat/multilingual-e5-large-instruct": [
+   0.9999999999990014,
+   0.9999999999989979,
+   0.9999999999989937,
+   0.9999999999989949
+  ],
+  "sentence-transformers/all-mpnet-base-v2": [
+   0.9999999999989024,
+   0.9999999999988715,
+   0.9999999999988957,
+   0.9999999999988398
+  ]
+ },
+ "tf": {
+  "op-1gram": {
+   "name": "op-1gram",
+   "sched_acc_per_cell": {
+    "route": 0.225,
+    "crdt": 0.225,
+    "time": 0.225,
+    "quf": 0.225,
+    "world": 0.225,
+    "proof": 0.225,
+    "engine": 0.225
+   },
+   "sched_acc_mean": 0.22500000000000003,
+   "C1_seq": 0.0,
+   "perm_p": 1.0
+  },
+  "op-2gram": {
+   "name": "op-2gram",
+   "sched_acc_per_cell": {
+    "route": 0.475,
+    "crdt": 0.475,
+    "time": 0.95,
+    "quf": 0.95,
+    "world": 0.95,
+    "proof": 0.225,
+    "engine": 0.925
+   },
+   "sched_acc_mean": 0.7071428571428571,
+   "C1_seq": -0.14184244900516996,
+   "perm_p": 1.0
+  },
+  "op-3gram": {
+   "name": "op-3gram",
+   "sched_acc_per_cell": {
+    "route": 0.475,
+    "crdt": 0.475,
+    "time": 0.95,
+    "quf": 0.95,
+    "world": 0.95,
+    "proof": 0.225,
+    "engine": 0.95
+   },
+   "sched_acc_mean": 0.7107142857142856,
+   "C1_seq": -0.19440374594195842,
+   "perm_p": 1.0
+  },
+  "edit": {
+   "name": "edit-dist",
+   "sched_acc_per_cell": {
+    "route": 0.475,
+    "crdt": 0.475,
+    "time": 0.95,
+    "quf": 0.95,
+    "world": 0.95,
+    "proof": 0.225,
+    "engine": 0.925
+   },
+   "sched_acc_mean": 0.7071428571428571,
+   "C1_seq": -0.01207867630944548,
+   "perm_p": 0.927
+  }
+ }
+}

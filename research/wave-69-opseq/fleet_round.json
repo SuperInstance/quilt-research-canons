@@ -1,0 +1,61 @@
+{
+ "Qwen/Qwen3.8-Flash": {
+  "error": "HTTP Error 429: Too Many Requests"
+ },
+ "ibm-granite/granite-4.2-30b": {
+  "text": "[reasoning-only response; rescued below]\nWe are given a specific context about relational cells, opcode sequences, and audit results. The question asks two concrete points.\n\n1) For the adversarial kill-round: We must name the relational structure opcode-sequence features (n-grams, edit distance, embeddings) that provably CANNOT capture, and how to falsify with one cheap probe.\n\nLooking at the RESULTS:\n- \"opcode 1-gram TF: 0.225 (chance, structural control)\" -> chance level, so 1-grams don't capture structural differences beyond chance.\n- \"opcode 2-gram TF / edit distance: 0.707 / 0.707 (zero model calls; TIES best embedder)\" -> 2-grams and edit distance achieve 0.707, which is above chance (0.25) but note that the structural control for 1-gram was chance, but 2-gram and edit distance are better.\n\nHowever, the key point is in the dialect-role recovery: \n\"raw NEGATIVE (p=1.0) = instrument artifact (proof cell has 1 fixed sequence, selfsim 1.0); drop-proof -0.02..+0.12; schedule-rich-only +0.08..+0.14 (exploratory, unconfirmed).\"\n\nAlso, prior waves: \"interface-embedding dialect recovery KILLED 3/5; encoder route-locality KILLED; buzz semantically silent.\"\n\nBut the question is about what features (n-grams, edit distance, embeddings) cannot capture.\n\nNote: The RESULTS say for schedule-class recovery:\n- neural embeddings on FULL telemetry: 0.64-0.68\n- neural embeddings on OPSONLY: 0.69-0.71\n- opcode 1-gram TF: 0.225 (chance)\n- opcode 2-gram TF / edit distance: 0.707 / 0.707\n\nSo 1-grams are at chance, meaning they don't ca",
+  "novelty": 2.25,
+  "soundness": 0.98,
+  "promote": 0.27,
+  "latency_s": 24.2
+ },
+ "inclusionAI/Ling-3.0-flash": {
+  "text": "1) Kill-round: opcode n-grams, edit distance, and embeddings provably cannot capture cross-cell relational coupling topology (which organs route to which, payload-typed binding targets) \u2014 they see only local opcode succession, confirmed by 1-gram TF at chance (0.225) while dialect-role recovery is negative (p=1.0). Falsify with one cheap probe: globally permute opcode labels across cells while preserving each cell's 1-gram multiset and 2-gram profile; if schedule-class recovery (currently 0.707) collapses to chance, the signal was genuinely relational/positional, not structural. If it survives, the claim is falsified \u2014 features were label-invariant.\n\n2) Next probe: Replace proof cells in the schedule-rich-only subset with synthetic fixed-sequence placeholders and re-run dialect-role recovery; persistence \u22650.10 above chance confirms the negative was artifact, refuting it in one run.",
+  "novelty": 2.8,
+  "soundness": 2.97,
+  "promote": 0.54,
+  "latency_s": 12.5
+ },
+ "meta-models/Muse-Glimmer-30B": {
+  "text": "1) ADVERSARIAL KILL-ROUND: Opcode n-grams, edit distance and opcode-only embeddings cannot capture payload-bound relational semantics: which entities are BIND/LINKed, filter predicates, projection shapes, and cross-organ dataflow, nor organ-role dialect independent of schedule order. Evidence: OPSONLY 0.69-0.71 > FULL 0.64-0.68, opcode 1-gram TF 0.225 at chance, proof cell fixed sequence artifact. Falsify cheaply with opcode-preserving payload permutation: randomly permute payload arguments across events within each trace keeping the opcode sequence identical, then re-evaluate schedule-class and dialect-role recovery; invariance proves order-only capture.\n\n2) NEXT PROBE: Train a payload-only graph encoder to predict between-organ vs in-cell dialect role from BIND/LINK argument graphs with opcode sequence ablated, and test if accuracy exceeds the 0.20-0.23 proof-cell noise floor.",
+  "novelty": 2.8,
+  "soundness": 3.54,
+  "promote": 0.7,
+  "latency_s": 7.3
+ },
+ "nvidia/NVIDIA-Nemotron-3.5-Lightning": {
+  "text": "1) Opcode n-grams and embeddings cannot capture **temporal ordering** or **causal chain dependencies** (e.g., BIND must precede LINK). Falsify by injecting a trace where opcode frequencies are identical but order is reversed; if recovery drops to chance, ordering is the signal.  \n2) Inject reversed-opcode traces across all seeds; if 1-NN recovery collapses to ~0.25, temporal order is the falsifiable feature.",
+  "novelty": 2.22,
+  "soundness": 3.15,
+  "promote": 0.54,
+  "latency_s": 1.3
+ },
+ "thinkingmachines/Inkling-Small": {
+  "text": "1) N-grams, edit distance, and embeddings (opcode-only or full-telemetry) cannot capture: (a) cross-cell routing/binding topology (BIND/LINK targets, graph), (b) filter/projection semantics (predicates, fields, payload values), (c) dialect-role architecture (route/quf/time vs crdt/proof/world; proof fixed-sequence is artifact), (d) state-dependent relational effects (VIEW\u2192EFFECT, conditional FORGET). Falsify cheaply: synthesize isomorphic traces\u2014identical opcode 2-grams/edit-distance but randomized binding targets, swapped filter payloads, relabeled dialect roles\u2014then confirm schedule recovery stays ~0.70 while a downstream binding-target/output-equivalence task crashes to chance (\u22640.25); sequence-invariance to payload proves blindness.\n\n2) Fix opcode 2-grams across seeds while permuting BIND targets and FILTER payloads, then test if relational-output divergence predicts schedule-class embeddings; if recovery stays high while relational metrics collapse to noise, relational structure is unrepresented.",
+  "novelty": 2.9,
+  "soundness": 3.37,
+  "promote": 0.65,
+  "latency_s": 8.5
+ },
+ "deepseek-ai/DeepSeek-V4-Flash-Vision-Exp": {
+  "text": "1) Opcode-sequence features cannot capture relational structure: the binding graph\u2014which operand is bound to which, which link connects which ports, which fields are projected/filtered. These features are functions of opcode order only; any two traces with identical opcode sequences but different BIND/LINK operands have identical n-grams, edit distance, and embeddings. Falsify cheaply: generate two traces with same opcode sequence but swapped operands (A\u2192B vs B\u2192A); show their sequence features are identical, yet relational structure differs.\n\n2) Next probe: Train a classifier on opcode-sequence features to predict the operand identity of each BIND/LINK; if accuracy is chance, sequence-only structure is confirmed.",
+  "novelty": 2.3,
+  "soundness": 3.41,
+  "promote": 0.68,
+  "latency_s": 8.1
+ },
+ "ByteDance/Seed-2.0-mini": {
+  "text": "1) ADVERSARIAL KILL-ROUND: Cannot capture fixed singleton opcode-sequence cells (e.g., proof cells) and their in-cell/between-organ dialect roles when their full opcode sequences are identical across distinct roles. Falsify probe: Engineer two cells with identical fixed trace sequences but distinct roles (route vs proof); if all tested feature sets fail to distinguish their roles, the claim holds.\n2) NEXT PROBE: Re-run schedule-class leave-one-out recovery with the single-fixed-sequence proof cell excluded, to validate if prior accuracy stems from variable-sequence cells.",
+  "novelty": 2.47,
+  "soundness": 2.99,
+  "promote": 0.58,
+  "latency_s": 13.7
+ },
+ "XiaomiMiMo/MiMo-V2.6-Flash": {
+  "text": "**1) ADVERSARIAL KILL-ROUND:** Opcode-sequence features are single-string statistics; they provably cannot capture *cross-trace* relational structure: which cell a BIND/LINK actually targets (inter-cell adjacency/topology), payload identity (filter keys, projection fields), or cross-cell happens-before causality. **Falsification probe:** strip cell IDs and payloads, fit a linear probe predicting the ground-truth routing adjacency matrix from 2-gram features; AUC significantly > chance (with rewired-label null) kills the claim.\n\n**2) NEXT PROBE:** Payload-swap ablation \u2014 hold every opcode sequence fixed, permute filter/projection payloads between cells, and test whether cross-cell link/effect-target recovery (and schedule-class accuracy) collapses.",
+  "novelty": 2.67,
+  "soundness": 3.49,
+  "promote": 0.67,
+  "latency_s": 58.4
+ }
+}

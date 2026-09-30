@@ -1,0 +1,23 @@
+{
+ "n_traces": 280,
+ "n_docs": 560,
+ "s1_distinct_per_cell": {
+  "route": 2,
+  "crdt": 2,
+  "time": 5,
+  "quf": 5,
+  "world": 5,
+  "proof": 1,
+  "engine": 13
+ },
+ "s1b_violations": [],
+ "middle_phase_counts": {
+  "route": 2,
+  "crdt": 2,
+  "time": 3,
+  "quf": 3,
+  "world": 3,
+  "proof": 1,
+  "engine": 6
+ }
+}

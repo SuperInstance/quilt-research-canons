@@ -1,0 +1,45 @@
+corpus: 560 runs in 0s; steps/run 3..15
+multiset schedule-invariance: OK (0 violations)
+docs: 1540
+unique-text census per (cell, 4 scheds; max 40): {'full': [4, 12, 36, 40], 'opsonly': [3, 4], 'oporder': [3, 4], 'rolecode': [3, 4]}
+Qwen/Qwen3-Embedding-8B: cache hit
+Qwen/Qwen3-Embedding-0.6B: cache hit
+BAAI/bge-m3: cache hit
+intfloat/multilingual-e5-large-instruct: cache hit
+sentence-transformers/all-mpnet-base-v2: cache hit
+/home/z/my-project/quilt-research-canons/research/wave-69-opseq/p1_schedule_rerun.py:232: RuntimeWarning: Mean of empty slice.
+  return float(cos[M].mean() - cos[X].mean())
+/home/z/.venv/lib/python3.12/site-packages/numpy/_core/_methods.py:147: RuntimeWarning: invalid value encountered in divide
+  ret = ret.dtype.type(ret / rcount)
+Qwen/Qwen3-Embedding-8B:
+  full: T1 +0.4111 (z +191.8) | C1 -0.0057 (p 0.836) | S1 +0.0389 (p 0.002)
+  opsonly: T1 +0.3093 (z +182.8) | C1 +0.0025 (p 0.261) | S1 +0.0470 (p 0.002)
+  oporder: T1 +0.1828 (z +135.9) | C1 +0.0145 (p 0.024) | S1 +0.0826 (p 0.002)
+  rfull: T1 +0.4176 (z +96.0) | C1 -0.0111 (p 0.846) | S1 +0.0481 (p 0.002)
+  order-twin cos: full 0.9476 oporder 0.9134 | T1_shuf +0.4217
+Qwen/Qwen3-Embedding-0.6B:
+  full: T1 +0.4053 (z +188.8) | C1 -0.0028 (p 0.619) | S1 +0.0516 (p 0.002)
+  opsonly: T1 +0.3258 (z +182.9) | C1 +0.0086 (p 0.114) | S1 +0.0578 (p 0.002)
+  oporder: T1 +0.1748 (z +129.1) | C1 +0.0229 (p 0.002) | S1 +0.0715 (p 0.002)
+  rfull: T1 +0.4096 (z +96.2) | C1 +0.0011 (p 0.473) | S1 +0.0568 (p 0.002)
+  order-twin cos: full 0.9396 oporder 0.9240 | T1_shuf +0.4391
+BAAI/bge-m3:
+  full: T1 +0.3504 (z +189.7) | C1 -0.0143 (p 0.986) | S1 +0.0269 (p 0.002)
+  opsonly: T1 +0.2913 (z +183.8) | C1 -0.0008 (p 0.581) | S1 +0.0206 (p 0.002)
+  oporder: T1 +0.1783 (z +142.7) | C1 +0.0006 (p 0.475) | S1 +0.0477 (p 0.002)
+  rfull: T1 +0.3533 (z +96.4) | C1 -0.0145 (p 0.914) | S1 +0.0347 (p 0.002)
+  order-twin cos: full 0.9613 oporder 0.9478 | T1_shuf +0.3504
+intfloat/multilingual-e5-large-instruct:
+  full: T1 +0.0926 (z +189.8) | C1 -0.0010 (p 0.750) | S1 +0.0033 (p 0.002)
+  opsonly: T1 +0.0903 (z +185.2) | C1 -0.0002 (p 0.601) | S1 +0.0020 (p 0.002)
+  oporder: T1 +0.0629 (z +135.6) | C1 -0.0009 (p 0.695) | S1 +0.0081 (p 0.002)
+  rfull: T1 +0.0933 (z +95.2) | C1 -0.0010 (p 0.665) | S1 +0.0047 (p 0.002)
+  order-twin cos: full 0.9947 oporder 0.9922 | T1_shuf +0.0925
+sentence-transformers/all-mpnet-base-v2:
+  full: T1 +0.5110 (z +180.5) | C1 +0.0037 (p 0.337) | S1 +0.0258 (p 0.002)
+  opsonly: T1 +0.4850 (z +187.0) | C1 +0.0084 (p 0.156) | S1 +0.0227 (p 0.002)
+  oporder: T1 +0.3663 (z +146.9) | C1 -0.0033 (p 0.607) | S1 +0.0408 (p 0.002)
+  rfull: T1 +0.5179 (z +91.8) | C1 +0.0065 (p 0.337) | S1 +0.0336 (p 0.002)
+  order-twin cos: full 0.9657 oporder 0.9582 | T1_shuf +0.5106
+TF: T1 +0.8791 C1 -0.0114 | full|full 1.0000 full|opsonly 0.0666 full|oporder 0.1962 full|statesonly 0.8170 | order-twin A|B min 1.000000
+receipt written: /home/z/my-project/quilt-research-canons/research/wave-69-opseq/p1_receipt.json
