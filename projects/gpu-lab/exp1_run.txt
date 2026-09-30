@@ -1,0 +1,50 @@
+
+==============================================================================
+  EXP 1 — the aperture trap, swept
+==============================================================================
+  How much of a real change does a content matcher fail to see, and where?
+  BACKEND: CPU  -- FALLBACK: torch not installed
+  ==============================================================================
+
+  grid 24x12 = 288 cells. The scene pans ONE CELL; some cells really
+  change, some are periodic stand-ins that look unchanged while the scene moved.
+
+  MISSED = cells that really changed AND the matcher found a match for.
+  That is the dangerous direction: a wrong answer that looks right.
+
+   period  radius  noise   really changed    MISSED   miss rate
+  ----------------------------------------------------------------
+        2       0    0.0            0.500       144       1.000
+        2       0   0.05            0.500        66       0.458
+        2       1    0.0            0.500       144       1.000
+        2       1   0.05            0.500       144       1.000
+        2       2    0.0            0.500       144       1.000
+        2       2   0.05            0.500       144       1.000
+        3       0    0.0            0.333        96       1.000
+        3       0   0.05            0.333        43       0.448
+        3       1    0.0            0.333        96       1.000
+        3       1   0.05            0.333        96       1.000
+        3       2    0.0            0.333        96       1.000
+        3       2   0.05            0.333        96       1.000
+        4       0    0.0            0.250        72       1.000
+        4       0   0.05            0.250        35       0.486
+        4       1    0.0            0.250        72       1.000
+        4       1   0.05            0.250        72       1.000
+        4       2    0.0            0.250        72       1.000
+        4       2   0.05            0.250        72       1.000
+        6       0    0.0            0.167        48       1.000
+        6       0   0.05            0.167        25       0.521
+        6       1    0.0            0.167        48       1.000
+        6       1   0.05            0.167        48       1.000
+        6       2    0.0            0.167        48       1.000
+        6       2   0.05            0.167        48       1.000
+
+  worst miss rate across the sweep: 1.000
+
+  REFUTED   A content matcher can be trusted to notice that a periodic scene changed.
+  It cannot. On a texture with period p there are p exact matches available and
+  nearest-first search takes the first one, so the reported cost approaches zero
+  while the true cost is 1.0. The escape is a MOTION VECTOR, not a better search:
+  a displacement is unambiguous on a periodic texture, a nearest match is not.
+  ==============================================================================
+
