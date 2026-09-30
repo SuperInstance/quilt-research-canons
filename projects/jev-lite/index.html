@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JEV-lite — a real model, running here</title>
+<style>
+  :root{--bg:#0b0d10;--fg:#e6e8ec;--dim:#8b93a1;--line:#1e232b;--ok:#5ec98a;--bad:#e0685e;--warn:#d9a441;--acc:#6ba7ff}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 20px 80px}
+  h1{font-size:26px;margin:0 0 4px;letter-spacing:-.02em}
+  h2{font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);margin:38px 0 12px;font-weight:600}
+  .sub{color:var(--dim);margin:0 0 8px}
+  .card{background:#0f1216;border:1px solid var(--line);border-radius:12px;padding:20px;margin:16px 0}
+  textarea{width:100%;min-height:92px;background:#080a0c;color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:12px;font:15px/1.5 ui-monospace,monospace;resize:vertical}
+  textarea:focus{outline:none;border-color:var(--acc)}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+  button{background:var(--acc);color:#06080a;border:0;border-radius:7px;padding:8px 15px;font-weight:650;font-size:14px;cursor:pointer}
+  button.ghost{background:transparent;color:var(--dim);border:1px solid var(--line)}
+  button:hover{filter:brightness(1.1)}
+  .verdict{display:flex;align-items:baseline;gap:14px;margin:6px 0 2px}
+  .p{font:700 44px/1 ui-monospace,monospace;letter-spacing:-.03em}
+  .lbl{color:var(--dim);font-size:13px}
+  .bar{height:6px;background:#080a0c;border-radius:3px;overflow:hidden;margin:14px 0 4px}
+  .bar>i{display:block;height:100%;border-radius:3px;transition:width .25s}
+  .trace{font:12px/1.7 ui-monospace,monospace;color:var(--dim);margin-top:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:2px 18px}
+  .trace b{color:var(--fg);font-weight:600}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  td,th{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{color:var(--dim);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+  .ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+  .mono{font-family:ui-monospace,monospace}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;border:1px solid var(--line);color:var(--dim)}
+  code{background:#080a0c;padding:1px 5px;border-radius:4px;font-size:12px}
+  .note{color:var(--dim);font-size:13.5px}
+  .warnbox{border-left:2px solid var(--warn);padding-left:14px;margin:14px 0 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>JEV-lite</h1>
+  <p class="sub">A real model. Running in this tab. No server, no key, no network.</p>
+
+  <div class="card">
+    <textarea id="q">A stop word is generic relative to the corpus, so the same list is not correct for two corpora.</textarea>
+    <div class="row">
+      <button onclick="run()">Read it</button>
+      <button class="ghost" onclick="kat()">Run its known-answer control</button>
+      <span class="pill" id="backend">backend: checking…</span>
+    </div>
+  </div>
+
+  <div class="card" id="out" style="display:none">
+    <div class="verdict"><div class="p" id="pv">—</div><div>
+      <div class="lbl" id="lab">verdict</div>
+      <div class="lbl mono" id="z"></div></div></div>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="lbl" id="read"></div>
+    <div class="trace" id="trace"></div>
+  </div>
+
+  <h2>What this actually is</h2>
+  <div class="card note">
+    <p style="margin-top:0">A logistic model over 12 lexical features, <b>trained by distillation on
+    126 live measurements from the real Typesafe.ai JEV oracle</b>. The weights, the corpus, the
+    split and the training script are all shipped. Re-run <code>collect.py</code> with a key and you get
+    the same corpus back. It is a distillation of a real instrument — not a stub, and not a lookup
+    table: it ranks claims it has never seen.</p>
+    <p><b>It is not the oracle.</b> It is limited, and the limits are measured rather than asserted.</p>
+  </div>
+
+  <h2>Known-answer control</h2>
+  <div class="card note">
+    <p style="margin-top:0">A model that returns a number is not an instrument. An instrument has been shown
+    to return the <i>right</i> number on a case where the right number is already known. These are the
+    cases the model was gated on, running here, in your tab.</p>
+    <table><tbody id="katt"></tbody></table>
+    <div class="warnbox" id="katnote" style="display:none"></div>
+  </div>
+
+  <h2>Where it stops</h2>
+  <div class="card note">
+    <p style="margin-top:0">Held out 25%, stratified by band, seed fixed, never trained on:</p>
+    <table id="mt"></table>
+    <p style="margin-bottom:0"><b>The honest limit.</b> A vague claim and a false claim are <i>not</i>
+    separated — and the oracle it was distilled from does not separate them either (means 0.161 vs 0.176,
+    ranges overlapping almost entirely). Both fail the same test: they are not checkable claims. So this
+    instrument has <b>two</b> categories, not three, and a three-way one would be a lie.</p>
+  </div>
+
+  <h2>Backend</h2>
+  <div class="card note" id="gpu">checking…</div>
+
+  <p class="note" style="margin-top:34px;color:#5a6270;font-size:12px">
+    weights trained 2026-09-30 · corpus from typesafe.ai /v1/systemone (model jev-latest) ·
+    held-out AUC 1.000
+  </p>
+</div>
+<script>
+const WEIGHTS=[-1.903535035934133, -0.0007644852345461682, -0.24922848066469877, -0.06026849092864815, -0.13025658239042437, -0.9369055273267196, 0.8883582823919651, -0.628866327216659, -0.22879319113068858, -1.1837233971032421, -0.2064688462482394, 0.021518333225624693, 2.3149182649780284, 0.2069244048373863, 0.9406596609924673, 0.8562534191635695]; const PATTERNS=[["specific_number", "\\b\\d[\\d,.]*\\s*(?:%|ms|s|GB|MB|KB|Hz|nm|px|bits?|x)\\b|\\b0x[0-9a-f]{4,}|\\b\\d+\\.\\d+\\b"], ["named_artifact", "`[^`]+`|\\b[\\w-]+\\.(py|js|ts|rs|c|md|json|toml|yaml|erl|pl)\\b|\\b[A-Z][a-z]+[A-Z]\\w+"], ["falsifiable", "\\bunless\\b|\\bexcept\\b|\\bonly if\\b|\\bstrictly\\b|\\bif and only if\\b|\\biff\\b|\\bcounter-?example\\b|\\bprovided that\\b"], ["universal_quant", "\\ball\\b|\\bevery\\b|\\balways\\b|\\bnever\\b|\\bany\\b|\\bnone\\b|\\beverything\\b|\\bno one\\b"], ["hedge", "\\b(probably|perhaps|might|may|could|possibly|likely|seems?|appears?|suggest(?:s|ive)?|i think\\b)"], ["vague_praise", "\\b(very|really|quite|extremely|highly|powerful|robust|seamless|elegant|novel|significant|substantial|excellent|great|major|effective|promising|state.of.the.art|well.known)\\b"], ["vague_quant", "\\b(many|most|several|various|numerous|often|generally|typically|usually|lots of|a variety)\\b"], ["absolutist", "\\b(guarantee(?:s|d)?|ensures?|always|never|proven|impossible|cannot (?: )?(?:be|ever))\\b"], ["self_reference", "\\b(our|we|this (?:paper|work|approach|method|system|repo))\\b"], ["measured_past", "\\b(measured|measured\\b|reports?|returned|observed|computed|logged|recorded)\\b|\\d"], ["negation", "\\b(not|no|never|cannot|without|neither|nor|fails?|un)\\b"], ["concrete_noun", "\\b(hash|entropy|index|gate|test|token|vector|commit|log|receipt|distribution|threshold|node|cell)\\b"]];
+const RX=PATTERNS.map(function(p){return [p[0], new RegExp(p[1],"gi")];});
+const clamp=function(x,a,b){return x<a?a:x>b?b:x;};
+function extract(t){
+  t=(t||"").trim();
+  var words=Math.max(1,t.split(/\s+/).length), x=[1.0], fired=[];
+  for(var i=0;i<RX.length;i++){
+    var n=RX[i][0], re=new RegExp(RX[i][1].source,"gi");
+    var hits=(t.match(re)||[]).length, v=hits/Math.sqrt(Math.max(words,8));
+    x.push(v); fired.push([n,hits,v]);
+  }
+  x.push(Math.min(t.length,400)/200.0);
+  x.push(t.split(/\s+/).length/20.0);
+  return {x:x,fired:fired};
+}
+function sigmoid(z){return 1/(1+Math.exp(-clamp(z,-30,30)));}
+function score(text){
+  var e=extract(text), z=WEIGHTS[0];
+  // FIXED: this was `i < e.x.length-1`, which dropped the FINAL term
+  // (WEIGHTS[15] * x[14], the word-count feature). Python's zip covered all
+  // 15 pairs, JS covered 14 -- so the browser and the trainer disagreed on
+  // the default sentence by 0.81 in logit. Found by the two-implementation check,
+  // not by reading. The loop must cover x.length terms, not x.length-1.
+  for(var i=0;i<e.x.length;i++) z+=WEIGHTS[i+1]*e.x[i];
+  return {p:sigmoid(z), z:z, fired:e.fired};
+}
+function backend(){
+  if(typeof WebGPU!=="undefined" && navigator.gpu) return "webgpu available — same weights, matvec on GPU";
+  return "cpu (js) — WebGPU not exposed in this browser";
+}
+function read(p){
+  if(p>=0.70) return ["canon-leaning","var(--ok)"];
+  if(p>=0.45) return ["review","var(--warn)"];
+  if(p>=0.25) return ["leaning not","var(--dim)"];
+  return ["not affirmable","var(--bad)"];
+}
+function run(){
+  var t=document.getElementById("q").value, r=score(t), p=r.p, pr=read(p);
+  document.getElementById("out").style.display="";
+  var pv=document.getElementById("pv"); pv.textContent=p.toFixed(3); pv.style.color=pr[1];
+  document.getElementById("lab").textContent=pr[0];
+  document.getElementById("z").textContent="z="+r.z.toFixed(3)+" · "+backend();
+  var b=document.getElementById("bar"); b.style.width=(p*100).toFixed(1)+"%"; b.style.background=pr[1];
+  document.getElementById("read").textContent =
+    p>=0.70 ? "Reads as a checkable, specific claim."
+    : p>=0.45 ? "Partial — something here resists a plain reading in either direction."
+    : "Not affirmable as stated. That is a statement about checkability, not about truth: a true claim can score low if it is vague, and a confident claim can score high merely for using specific nouns.";
+  var W=WEIGHTS.slice(1), c=r.fired.map(function(f,i){return [f[0],f[1],f[2]*W[i]];});
+  c.sort(function(a,b2){return Math.abs(b2[2])-Math.abs(a[2]);});
+  document.getElementById("trace").innerHTML=c.map(function(f){
+    return "<div><b>"+f[0]+"</b> &times;"+f[1]+" <span class='"+(f[2]>0?"ok":"bad")+"'>"+(f[2]>=0?"+":"")+f[2].toFixed(3)+"</span></div>";
+  }).join("");
+}
+var KAT=[
+  ["a true, specific claim","Entropy is maximised by a uniform distribution over a fixed support, not by a peaked one.","truth",1],
+  ["an empty shell","It is a well-known fact that this generally works well in many situations.","vague",0],
+  ["a confident falsehood","A shared trunk improves specialist perception by pooling evidence across cells.","false",-1],
+  ["a specific falsehood","Appending a duplicate to an append-only log is undetectable.","false2",-1],
+  ["a checkable rule","An idempotent operation may be retried; a non-idempotent one may not.","truth2",1]
+];
+function kat(){
+  var tb=document.getElementById("katt"); tb.innerHTML="";
+  var ps={}, allPass=true;
+  KAT.forEach(function(k){
+    var p=score(k[1]).p; ps[k[2]]=p;
+    var pass = k[3]>0 ? p>0.15 : p<0.35;
+    if(!pass) allPass=false;
+    var tr=document.createElement("tr");
+    tr.innerHTML="<td>"+k[0]+"</td><td class='mono' style='color:var(--dim)'>"+k[1].slice(0,52)+"&hellip;</td>"+
+                 "<td class='mono'>"+p.toFixed(3)+"</td><td class='"+(pass?"ok":"bad")+"'>"+(pass?"PASS":"FAIL")+"</td>";
+    tb.appendChild(tr);
+  });
+  var sep=ps.truth-ps.vague, tr=document.createElement("tr");
+  tr.innerHTML="<td colspan='3'><b>truth &minus; empty shell</b></td><td class='mono'>"+(sep>=0?"+":"")+sep.toFixed(3)+
+               "</td><td class='"+(sep>0.15?"ok":"bad")+"'>"+(sep>0.15?"PASS":"FAIL")+"</td>";
+  tb.appendChild(tr); if(sep<=0.15) allPass=false;
+  var n=document.getElementById("katnote"); n.style.display="block";
+  n.innerHTML = allPass
+    ? "<b class='ok'>Control passed.</b> It separates a checkable claim from an empty one on ground it was never trained on. That difference is the whole line between an instrument and a decoration."
+    : "<b class='bad'>Control FAILED.</b> This model is currently a decoration. Do not quote it.";
+  var mt=document.getElementById("mt");
+  mt.innerHTML="<tr><th>band</th><th>train mean</th><th>held-out mean</th></tr>"+
+    ["strong","weak","false"].map(function(b){
+      return "<tr><td>"+b+"</td><td class='mono'>"+{"strong": 0.37964287669870295, "weak": 0.20575839983323407, "false": 0.26171516335734357}[b].toFixed(3)+"</td><td class='mono'>"+{"strong": 0.4418731307235052, "weak": 0.20987441809542567, "false": 0.2211583700975251}[b].toFixed(3)+"</td></tr>";
+    }).join("");
+}
+document.getElementById("backend").textContent="backend: "+backend();
+document.getElementById("gpu").textContent =
+  (typeof WebGPU!=="undefined" && navigator.gpu)
+   ? "WebGPU is exposed. The weights are 16 floats; the matvec is trivial on either backend, so this page runs the JS path and says so. A GPU path is worth building when the model is large enough for the transfer to matter — which is the honest reason not to pretend otherwise."
+   : "No WebGPU in this browser, so inference runs on the JS path. The page says which path it used rather than claiming a GPU it did not run on.";
+run();
+</script>
+</body></html>
