@@ -1,0 +1,632 @@
+[
+ {
+  "band": "false",
+  "claim": "A 95% confidence interval means the true value is in the interval with probability 0.95 once fixed.",
+  "p": 0.09
+ },
+ {
+  "band": "false",
+  "claim": "A cache and a read are interchangeable because both return the value.",
+  "p": 0.06
+ },
+ {
+  "band": "false",
+  "claim": "A cache hit and a cache miss produce the same value so the difference does not matter.",
+  "p": 0.09
+ },
+ {
+  "band": "false",
+  "claim": "A checksum that ignores the length field cannot detect truncation.",
+  "p": 0.67
+ },
+ {
+  "band": "false",
+  "claim": "A confidence interval narrows when the estimator is biased but the sample grows.",
+  "p": 0.24
+ },
+ {
+  "band": "false",
+  "claim": "A file opened twice returns two independent handles to the same bytes, so writes interleave safely.",
+  "p": 0.15
+ },
+ {
+  "band": "false",
+  "claim": "A function that returns a constant is sensitive to its input.",
+  "p": 0.05
+ },
+ {
+  "band": "false",
+  "claim": "A gate that cannot see the rule can still correctly judge compliance.",
+  "p": 0.21
+ },
+ {
+  "band": "false",
+  "claim": "A git commit hash can be edited in place while preserving its identity.",
+  "p": 0.02
+ },
+ {
+  "band": "false",
+  "claim": "A hash of a file's contents is the same for two files with different contents.",
+  "p": 0.29
+ },
+ {
+  "band": "false",
+  "claim": "A hash of a string is the same as the string it hashes for practical purposes.",
+  "p": 0.03
+ },
+ {
+  "band": "false",
+  "claim": "A larger sample size always reduces the variance of a biased estimator.",
+  "p": 0.11
+ },
+ {
+  "band": "false",
+  "claim": "A lock that is released on every path is a lock that is never held.",
+  "p": 0.42
+ },
+ {
+  "band": "false",
+  "claim": "A lock-free algorithm is always faster than a lock-based one.",
+  "p": 0.03
+ },
+ {
+  "band": "false",
+  "claim": "A lock-free queue never blocks, therefore never deadlocks, therefore never loses an item.",
+  "p": 0.06
+ },
+ {
+  "band": "false",
+  "claim": "A model trained on the test set has learned the test set.",
+  "p": 0.62
+ },
+ {
+  "band": "false",
+  "claim": "A pattern that repeats can be matched by nearest-value search without ambiguity.",
+  "p": 0.13
+ },
+ {
+  "band": "false",
+  "claim": "A queue with one consumer and one producer cannot lose an item.",
+  "p": 0.22
+ },
+ {
+  "band": "false",
+  "claim": "A retry can never make a request succeed if the first attempt failed for a permanent reason.",
+  "p": 0.63
+ },
+ {
+  "band": "false",
+  "claim": "A rolling average is always at least as good as the true underlying signal.",
+  "p": 0.04
+ },
+ {
+  "band": "false",
+  "claim": "A rolling window over a shuffled stream reproduces the stationary distribution exactly.",
+  "p": 0.26
+ },
+ {
+  "band": "false",
+  "claim": "A shared trunk improves specialist perception by pooling evidence.",
+  "p": 0.21
+ },
+ {
+  "band": "false",
+  "claim": "A stale measurement is equivalent to a correct one, just older.",
+  "p": 0.11
+ },
+ {
+  "band": "false",
+  "claim": "A stop word list is correct for every corpus equally.",
+  "p": 0.03
+ },
+ {
+  "band": "false",
+  "claim": "A test fixture shared between a test and its implementation proves nothing about either.",
+  "p": 0.39
+ },
+ {
+  "band": "false",
+  "claim": "A test that always passes increases confidence in the code it covers.",
+  "p": 0.17
+ },
+ {
+  "band": "false",
+  "claim": "A test that asserts a property the implementation does not have will pass on the first run.",
+  "p": 0.22
+ },
+ {
+  "band": "false",
+  "claim": "A uniform distribution has lower entropy than a degenerate one on the same support.",
+  "p": 0.02
+ },
+ {
+  "band": "false",
+  "claim": "Adding a retry always improves the success rate of a system.",
+  "p": 0.06
+ },
+ {
+  "band": "false",
+  "claim": "An average of a signal and its own negation is strictly smaller than the signal.",
+  "p": 0.11
+ },
+ {
+  "band": "false",
+  "claim": "An eventually consistent store reports its writes immediately.",
+  "p": 0.43
+ },
+ {
+  "band": "false",
+  "claim": "An instrument that cannot discriminate still returns a confidence value worth reading.",
+  "p": 0.31
+ },
+ {
+  "band": "false",
+  "claim": "Any function that terminates will terminate within one second.",
+  "p": 0.02
+ },
+ {
+  "band": "false",
+  "claim": "Any measurement below the noise floor is evidence of nothing in particular.",
+  "p": 0.53
+ },
+ {
+  "band": "false",
+  "claim": "Appending a duplicate to an append-only log is undetectable.",
+  "p": 0.22
+ },
+ {
+  "band": "false",
+  "claim": "Compaction cannot change the order of events that have already been acknowledged.",
+  "p": 0.66
+ },
+ {
+  "band": "false",
+  "claim": "Deleting the first record from a hash chain is a minor formatting change.",
+  "p": 0.06
+ },
+ {
+  "band": "false",
+  "claim": "If a metric cannot go below zero, then taking its square root is always an improvement.",
+  "p": 0.1
+ },
+ {
+  "band": "false",
+  "claim": "Increasing the sample size always improves the accuracy of a biased estimator.",
+  "p": 0.06
+ },
+ {
+  "band": "false",
+  "claim": "Matching a filename to a keyword proves the file implements the claim.",
+  "p": 0.03
+ },
+ {
+  "band": "false",
+  "claim": "Normalising by the maximum value makes every dataset comparable regardless of units.",
+  "p": 0.15
+ },
+ {
+  "band": "false",
+  "claim": "Normalising inputs before comparison removes the need to compare units at all.",
+  "p": 0.36
+ },
+ {
+  "band": "false",
+  "claim": "Quantising the vision tower of a VLM improves its perception at no cost.",
+  "p": 0.07
+ },
+ {
+  "band": "false",
+  "claim": "Reading a file twice and getting the same answer proves the file is immutable.",
+  "p": 0.02
+ },
+ {
+  "band": "false",
+  "claim": "Reading a value once proves the system's long-term behaviour.",
+  "p": 0.04
+ },
+ {
+  "band": "false",
+  "claim": "Reading a value twice will always return the same value because the value does not change.",
+  "p": 0.09
+ },
+ {
+  "band": "false",
+  "claim": "Removing a record from the middle of a log leaves the rest verifiable.",
+  "p": 0.2
+ },
+ {
+  "band": "false",
+  "claim": "Sampling without replacement is identical to sampling with replacement for large n.",
+  "p": 0.29
+ },
+ {
+  "band": "false",
+  "claim": "Sorting before a limit is a micro-optimisation and never changes the result.",
+  "p": 0.18
+ },
+ {
+  "band": "false",
+  "claim": "Stale data is always better than no data for a real-time system.",
+  "p": 0.1
+ },
+ {
+  "band": "false",
+  "claim": "The average of two values is always further from zero than either of them.",
+  "p": 0.02
+ },
+ {
+  "band": "false",
+  "claim": "The exception path is the one users hit most often during an outage.",
+  "p": 0.13
+ },
+ {
+  "band": "false",
+  "claim": "The order of two floating point additions does not affect the result.",
+  "p": 0.04
+ },
+ {
+  "band": "false",
+  "claim": "The third observation is always the one that confirms the pattern.",
+  "p": 0.05
+ },
+ {
+  "band": "false",
+  "claim": "The variance of a sum equals the sum of the variances regardless of dependence.",
+  "p": 0.02
+ },
+ {
+  "band": "false",
+  "claim": "Two functions that agree on all tested inputs agree on all inputs.",
+  "p": 0.03
+ },
+ {
+  "band": "false",
+  "claim": "Two writes to the same key always land in the same order.",
+  "p": 0.11
+ },
+ {
+  "band": "strong",
+  "claim": "A cache is only correct if the key covers every input the computation reads.",
+  "p": 0.55
+ },
+ {
+  "band": "strong",
+  "claim": "A distribution with more mass on one element has strictly lower entropy than the uniform one on the same support.",
+  "p": 0.76
+ },
+ {
+  "band": "strong",
+  "claim": "A file that has been read once and not re-read tells you what was true at one instant.",
+  "p": 0.6
+ },
+ {
+  "band": "strong",
+  "claim": "A finding that survives a year of work by other people is more likely to be real than one verified once.",
+  "p": 0.5
+ },
+ {
+  "band": "strong",
+  "claim": "A gate which cannot see the rule it is enforcing has no basis for trusting or doubting a draft.",
+  "p": 0.33
+ },
+ {
+  "band": "strong",
+  "claim": "A metric with a large denominator and a small numerator is more stable and less meaningful.",
+  "p": 0.37
+ },
+ {
+  "band": "strong",
+  "claim": "A motion vector is unambiguous on a repeating texture where a nearest match is not.",
+  "p": 0.27
+ },
+ {
+  "band": "strong",
+  "claim": "A negative result published without its power calculation is not evidence of absence.",
+  "p": 0.9
+ },
+ {
+  "band": "strong",
+  "claim": "A percentile computed over a distribution that has drifted describes the past, not the present.",
+  "p": 0.61
+ },
+ {
+  "band": "strong",
+  "claim": "A quantised vision tower produces fluent text and corrupt perception in the same call, and the caller cannot tell.",
+  "p": 0.14
+ },
+ {
+  "band": "strong",
+  "claim": "A quorum read and a quorum write over the same quorum are not the same set.",
+  "p": 0.64
+ },
+ {
+  "band": "strong",
+  "claim": "A rate limit that is never hit is either not enforced or not reached.",
+  "p": 0.71
+ },
+ {
+  "band": "strong",
+  "claim": "A read that is not repeated and not taken from a different endpoint cannot distinguish a system failure from reading too early.",
+  "p": 0.63
+ },
+ {
+  "band": "strong",
+  "claim": "A receipt that includes its own hash cannot be verified by recomputing that hash.",
+  "p": 0.15
+ },
+ {
+  "band": "strong",
+  "claim": "A rollback test that never fails proves nothing about the code it was meant to test.",
+  "p": 0.69
+ },
+ {
+  "band": "strong",
+  "claim": "A shared inference trunk dilutes specialist perception; a shared rule does not.",
+  "p": 0.22
+ },
+ {
+  "band": "strong",
+  "claim": "A stop word is generic relative to the corpus, so the same list is not correct for two corpora.",
+  "p": 0.66
+ },
+ {
+  "band": "strong",
+  "claim": "A test that cannot fail consumes attention and produces the appearance of evidence.",
+  "p": 0.53
+ },
+ {
+  "band": "strong",
+  "claim": "A timestamp in microseconds is not a clock.",
+  "p": 0.85
+ },
+ {
+  "band": "strong",
+  "claim": "An idempotent operation may be retried; a non-idempotent one may not.",
+  "p": 0.79
+ },
+ {
+  "band": "strong",
+  "claim": "An index rebuild that is correct but unbounded is a denial of service with good manners.",
+  "p": 0.57
+ },
+ {
+  "band": "strong",
+  "claim": "An index reporting zero vectors is a repository that indexed nothing until proven otherwise.",
+  "p": 0.38
+ },
+ {
+  "band": "strong",
+  "claim": "Appending a duplicate line to an append-only log is detectable if each line carries a hash of the previous.",
+  "p": 0.63
+ },
+ {
+  "band": "strong",
+  "claim": "Batching two questions into one call halves the input tokens and doubles the ambiguity.",
+  "p": 0.28
+ },
+ {
+  "band": "strong",
+  "claim": "Compensating for a drift you have not measured is a guess with extra steps.",
+  "p": 0.54
+ },
+ {
+  "band": "strong",
+  "claim": "Deleting the state you need to reproduce a result is not the same as compressing it.",
+  "p": 0.84
+ },
+ {
+  "band": "strong",
+  "claim": "Entropy is maximised by a uniform distribution over a fixed support, not by a peaked one.",
+  "p": 0.95
+ },
+ {
+  "band": "strong",
+  "claim": "FNV-1a is not a cryptographic hash and is not intended to be.",
+  "p": 0.85
+ },
+ {
+  "band": "strong",
+  "claim": "If a system's writes are eventually consistent, reading immediately after a write is a valid observation and an invalid conclusion.",
+  "p": 0.56
+ },
+ {
+  "band": "strong",
+  "claim": "Matching a filename to a keyword is not evidence that the file implements the claim.",
+  "p": 0.92
+ },
+ {
+  "band": "strong",
+  "claim": "Reading only the happy path of a parser tests the parser, not the parser's contract.",
+  "p": 0.73
+ },
+ {
+  "band": "strong",
+  "claim": "Removing an outlier from a distribution changes the mean by more than doubling the sample would.",
+  "p": 0.11
+ },
+ {
+  "band": "strong",
+  "claim": "Sharding a keyspace by the same field you sort by produces hot partitions.",
+  "p": 0.64
+ },
+ {
+  "band": "strong",
+  "claim": "The Git object hash of a commit is the hash of its content, so a commit cannot be edited without changing its identity.",
+  "p": 0.73
+ },
+ {
+  "band": "strong",
+  "claim": "The commit hash 0x024a555471370b18d is fnv1a-64 of the UTF-8 bytes 'caf\u00e9 \u0394 \u65e5\u672c\u8a9e'.",
+  "p": 0.3
+ },
+ {
+  "band": "strong",
+  "claim": "The median of five samples is robust; the mean of five samples is not.",
+  "p": 0.63
+ },
+ {
+  "band": "strong",
+  "claim": "Two hashes over the same bytes are equal only if the hash function is deterministic.",
+  "p": 0.33
+ },
+ {
+  "band": "strong",
+  "claim": "Two independent implementations that agree are stronger evidence than one implementation read carefully.",
+  "p": 0.62
+ },
+ {
+  "band": "strong",
+  "claim": "Two independent measurements of the same quantity share their systematic error.",
+  "p": 0.34
+ },
+ {
+  "band": "weak",
+  "claim": "It handles a wide range of inputs gracefully and rarely surprises.",
+  "p": 0.18
+ },
+ {
+  "band": "weak",
+  "claim": "It has excellent performance characteristics and scales gracefully.",
+  "p": 0.13
+ },
+ {
+  "band": "weak",
+  "claim": "It is a carefully engineered system with sensible defaults throughout.",
+  "p": 0.19
+ },
+ {
+  "band": "weak",
+  "claim": "It is a strong contribution and the community will benefit from it.",
+  "p": 0.19
+ },
+ {
+  "band": "weak",
+  "claim": "It is a well-known fact that this generally works well in many situations.",
+  "p": 0.12
+ },
+ {
+  "band": "weak",
+  "claim": "It is fast enough and cheap enough for essentially any use case.",
+  "p": 0.08
+ },
+ {
+  "band": "weak",
+  "claim": "It is the kind of tool that once you use it you will not go back.",
+  "p": 0.1
+ },
+ {
+  "band": "weak",
+  "claim": "It outperforms all baselines we evaluated and generalises well.",
+  "p": 0.19
+ },
+ {
+  "band": "weak",
+  "claim": "It provides a seamless experience with a clean and intuitive interface.",
+  "p": 0.16
+ },
+ {
+  "band": "weak",
+  "claim": "It works well out of the box and is easy to get started with.",
+  "p": 0.19
+ },
+ {
+  "band": "weak",
+  "claim": "Our experiments demonstrate the effectiveness of the proposed approach.",
+  "p": 0.23
+ },
+ {
+  "band": "weak",
+  "claim": "Overall this is a very positive result and an encouraging direction.",
+  "p": 0.16
+ },
+ {
+  "band": "weak",
+  "claim": "The approach is both simple and powerful and works very well in practice.",
+  "p": 0.15
+ },
+ {
+  "band": "weak",
+  "claim": "The approach is general and applicable beyond the specific problem studied here.",
+  "p": 0.29
+ },
+ {
+  "band": "weak",
+  "claim": "The design philosophy is clean and the abstractions are well chosen.",
+  "p": 0.18
+ },
+ {
+  "band": "weak",
+  "claim": "The framework is flexible and can be adapted to many different use cases.",
+  "p": 0.26
+ },
+ {
+  "band": "weak",
+  "claim": "The implementation is robust and handles edge cases well.",
+  "p": 0.18
+ },
+ {
+  "band": "weak",
+  "claim": "The implementation is straightforward and easy to audit.",
+  "p": 0.17
+ },
+ {
+  "band": "weak",
+  "claim": "The method is novel and represents a major advance in the field.",
+  "p": 0.13
+ },
+ {
+  "band": "weak",
+  "claim": "The results are really quite good and show significant improvement.",
+  "p": 0.17
+ },
+ {
+  "band": "weak",
+  "claim": "The system is fast, scalable, and production-ready for most use cases.",
+  "p": 0.15
+ },
+ {
+  "band": "weak",
+  "claim": "The team has done a great job here and the result speaks for itself.",
+  "p": 0.15
+ },
+ {
+  "band": "weak",
+  "claim": "This is a significant improvement over the previous state of the art.",
+  "p": 0.15
+ },
+ {
+  "band": "weak",
+  "claim": "This is a very powerful and robust approach to the problem.",
+  "p": 0.15
+ },
+ {
+  "band": "weak",
+  "claim": "This is a very solid piece of work that should serve the community well.",
+  "p": 0.15
+ },
+ {
+  "band": "weak",
+  "claim": "This makes the whole thing much more pleasant to work with day to day.",
+  "p": 0.13
+ },
+ {
+  "band": "weak",
+  "claim": "This should improve things substantially across the board going forward.",
+  "p": 0.1
+ },
+ {
+  "band": "weak",
+  "claim": "This solution is elegant and solves the problem elegantly and cleanly.",
+  "p": 0.14
+ },
+ {
+  "band": "weak",
+  "claim": "We are excited about the results and think they are quite compelling.",
+  "p": 0.12
+ },
+ {
+  "band": "weak",
+  "claim": "We believe this represents an important step forward for the community.",
+  "p": 0.13
+ }
+]
