@@ -80,8 +80,13 @@ ANGLES = {
   "negative":  "What CANNOT be determined from the artifact, and what would it take?",
 }
 
-STOP = {'the','of','and','a','an','for','to','in','is','are','as','on','with','by','from',
-        'superinstance','quilt','cell','cells','paper','architecture','design','model','system'}
+# A stop word is GENERIC RELATIVE TO THE CORPUS. The original list mixed function
+# words with this corpus's own vocabulary -- 'quilt', 'cell', 'architecture', 'model',
+# 'system' -- and those are not generic here: they are how the fleet NAMES things.
+# Filtering them made 6 of 40 papers unable to see any code that referenced them,
+# which is the same class of bug as a search-mutate pool hard-wired to one wire:
+# the matcher was configured so the answer could not be expressed.
+STOP = {'the','of','and','a','an','for','to','in','is','are','as','on','with','by','from'}
 
 
 def gh_json(path):
@@ -101,6 +106,11 @@ def raw(path, ref="main"):
         return ""
 
 
+# MEASURED (2026-09-30): with the domain words in STOP, 33/40 papers had zero code
+# matches; with this list, 27/40. The remaining 27 are NOT a stop-word problem --
+# the filename-stem matcher is structurally unable to see an artifact filed under a
+# different name, which `unmapped` already says out loud. Fixing that means reading
+# the paper body for distinctive terms, not the filename. Not fixed here.
 def keywords(name: str) -> list:
     stem = re.sub(r'^\d{2}-|\.md$', '', os.path.basename(name))
     ws = re.findall(r'[A-Za-z][A-Za-z0-9]{2,}', stem.replace('-', ' ').replace('_', ' '))
