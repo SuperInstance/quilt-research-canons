@@ -1,0 +1,104 @@
+{
+ "pre_registered": "see module docstring \u2014 registered before first embedding call",
+ "commit": "quilt-c pypi-oidc-publish 6c616c5",
+ "panel": [
+  "Qwen/Qwen3-Embedding-8B",
+  "Qwen/Qwen3-Embedding-0.6B",
+  "BAAI/bge-m3",
+  "intfloat/multilingual-e5-large-instruct",
+  "sentence-transformers/all-mpnet-base-v2"
+ ],
+ "n_docs": 19,
+ "results": {
+  "Qwen/Qwen3-Embedding-8B": {
+   "C1": 0.062385839435179835,
+   "C2": 0.053569027419469895,
+   "C1_shuf": 0.05562932025536238,
+   "C2_shuf": 0.045345060284120664,
+   "foreign_ctrl": true,
+   "to_contract": {
+    "crdt": 0.6163221168401531,
+    "proof": 0.5663667367013199,
+    "quf": 0.6852833880862511,
+    "route": 0.6037377887869252,
+    "time": 0.6408788340213212,
+    "world": 0.6911053407865165
+   },
+   "kernel_pairwise_mean": 0.5803800067842779,
+   "between_mean": 0.6109231542382494,
+   "incell_mean": 0.5485373148030696
+  },
+  "Qwen/Qwen3-Embedding-0.6B": {
+   "C1": 0.042461083474153116,
+   "C2": 0.09668882600292694,
+   "C1_shuf": 0.022202346523256256,
+   "C2_shuf": 0.07097108751358172,
+   "foreign_ctrl": true,
+   "to_contract": {
+    "crdt": 0.6772514571445238,
+    "proof": 0.5617871559185984,
+    "quf": 0.667503516329248,
+    "route": 0.5997902026076263,
+    "time": 0.6258725860873262,
+    "world": 0.6997129448086608
+   },
+   "kernel_pairwise_mean": 0.5419641511464037,
+   "between_mean": 0.5624137506931136,
+   "incell_mean": 0.5199526672189605
+  },
+  "BAAI/bge-m3": {
+   "C1": -0.014515108640880348,
+   "C2": 0.04511709469083203,
+   "C1_shuf": -0.018049629521239563,
+   "C2_shuf": 0.05787026483152824,
+   "foreign_ctrl": true,
+   "to_contract": {
+    "crdt": 0.7698675824288199,
+    "proof": 0.7884855989201474,
+    "quf": 0.7577854383277883,
+    "route": 0.7602597660791822,
+    "time": 0.8145222103752443,
+    "world": 0.7711691485181862
+   },
+   "kernel_pairwise_mean": 0.7318978627507293,
+   "between_mean": 0.7200964561427189,
+   "incell_mean": 0.7346115647835992
+  },
+  "intfloat/multilingual-e5-large-instruct": {
+   "C1": -0.009063671027443654,
+   "C2": 0.009771157257723373,
+   "C1_shuf": 0.0010583955092449138,
+   "C2_shuf": 0.011598109886841401,
+   "foreign_ctrl": true,
+   "to_contract": {
+    "crdt": 0.9168301694873455,
+    "proof": 0.9069653107677378,
+    "quf": 0.9224707741558844,
+    "route": 0.9264638030551267,
+    "time": 0.9048036400487467,
+    "world": 0.9258531827424472
+   },
+   "kernel_pairwise_mean": 0.9074599894518247,
+   "between_mean": 0.9038252624046054,
+   "incell_mean": 0.912888933432049
+  },
+  "sentence-transformers/all-mpnet-base-v2": {
+   "C1": 0.10614603370010078,
+   "C2": 0.07831208622792984,
+   "C1_shuf": 0.11694261094935626,
+   "C2_shuf": 0.08337799668833312,
+   "foreign_ctrl": true,
+   "to_contract": {
+    "crdt": 0.594793464837961,
+    "proof": 0.5639603899423684,
+    "quf": 0.592450159484505,
+    "route": 0.6949989832074426,
+    "time": 0.6297244832332596,
+    "world": 0.6969797192924192
+   },
+   "kernel_pairwise_mean": 0.5505057804383962,
+   "between_mean": 0.6089768740069542,
+   "incell_mean": 0.5028308403068534
+  }
+ }
+}

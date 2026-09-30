@@ -1,0 +1,58 @@
+{
+ "XiaomiMiMo/MiMo-V2.6-Flash": {
+  "novelty": 0.81,
+  "promote": 0.66
+ },
+ "ByteDance/Seed-2.0-mini": {
+  "novelty": 0.75,
+  "promote": 0.67,
+  "model": "jev-1.13.0",
+  "usage": {
+   "input_tokens": 659,
+   "output_tokens": 39
+  }
+ },
+ "deepseek-ai/DeepSeek-V4-Flash-Vision-Exp": {
+  "novelty": 0.84,
+  "promote": 0.65
+ },
+ "thinkingmachines/Inkling-Small": {
+  "novelty": 0.8,
+  "promote": 0.65
+ },
+ "nvidia/NVIDIA-Nemotron-3.5-Lightning": {
+  "novelty": 0.72,
+  "promote": 0.5,
+  "model": "jev-1.13.0",
+  "usage": {
+   "input_tokens": 634,
+   "output_tokens": 39
+  }
+ },
+ "meta-models/Muse-Glimmer-30B": {
+  "novelty": 0.82,
+  "promote": 0.69
+ },
+ "inclusionAI/Ling-3.0-flash": {
+  "novelty": 0.42,
+  "promote": 0.33,
+  "model": "jev-1.13.0",
+  "usage": {
+   "input_tokens": 720,
+   "output_tokens": 39
+  }
+ },
+ "ibm-granite/granite-4.2-30b": {
+  "novelty": 0.76,
+  "promote": 0.7
+ },
+ "Qwen/Qwen3.8-Flash": {
+  "novelty": 0.83,
+  "promote": 0.7,
+  "model": "jev-1.13.0",
+  "usage": {
+   "input_tokens": 685,
+   "output_tokens": 39
+  }
+ }
+}
