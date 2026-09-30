@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fleet Negation Blindness — wave-66 quilt</title>
+<style>
+  :root{
+    --bg:#0b0e14; --panel:#131826; --ink:#e8ecf4; --dim:#8b94a7;
+    --hot:#ff6b6b; --warm:#ffd166; --cool:#4ecdc4; --route:#4ecdc4; --filter:#ffd166; --proj:#ff6b6b;
+    --line:#232a3b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:48px 20px;max-width:1060px;margin:0 auto}
+  h1{font-size:26px;letter-spacing:.2px;margin-bottom:6px}
+  h1 .accent{color:var(--cool)}
+  .sub{color:var(--dim);font-size:14px;margin-bottom:34px}
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px}
+  .chip{border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--dim)}
+  .chip b{color:var(--ink)}
+  .chip.ok{border-color:#2b6b5f;color:#7fe3d2}
+  h2{font-size:15px;text-transform:uppercase;letter-spacing:1.6px;color:var(--dim);margin:34px 0 14px}
+  .bar-row{display:grid;grid-template-columns:230px 1fr 74px;align-items:center;gap:12px;margin:7px 0}
+  .bar-row .name{font-size:14px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar-track{height:16px;background:var(--panel);border-radius:4px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:4px}
+  .bar-row .val{font-size:13px;color:var(--dim);text-align:right;font-variant-numeric:tabular-nums}
+  .note{color:var(--dim);font-size:13.5px;margin-top:14px;max-width:70ch}
+  .tri{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:8px}
+  .tri .cell{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+  .tri .cell h3{font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+  .tri .route h3{color:var(--route)}.tri .filter h3{color:var(--filter)}.tri .proj h3{color:var(--proj)}
+  .tri .big{font-size:22px;font-variant-numeric:tabular-nums}
+  .tri .desc{color:var(--dim);font-size:13px;margin-top:6px}
+  .law{background:var(--panel);border-left:3px solid var(--cool);border-radius:0 10px 10px 0;padding:18px 20px;margin-top:36px;font-size:15.5px}
+  .law b{color:var(--cool)}
+  footer{margin-top:44px;color:var(--dim);font-size:12.5px}
+  footer a{color:var(--cool);text-decoration:none}
+</style>
+</head>
+<body>
+  <h1>Fleet <span class="accent">negation blindness</span> &amp; the geometry of routings / filters / projections</h1>
+  <div class="sub">wave-66 lane A · 11 deepinfra embedding models · pre-registered P1–P4 · 2026-09-30</div>
+
+  <div class="chips">
+    <div class="chip ok"><b>P1</b> universal blindness · 11/11 (predicted ≥7/11)</div>
+    <div class="chip ok"><b>P2</b> Qwen3 ladder shrinks NB: .559 → .516 → .463</div>
+    <div class="chip ok"><b>P3</b> routing &gt; filter &gt; projection on 11/11</div>
+    <div class="chip ok"><b>P4</b> judge novelty 3.73/4 · promote noul 0.64</div>
+  </div>
+
+  <h2>Negation blindness index — cos(contradiction) − cos(unrelated)</h2>
+  <div id="bars"></div>
+  <p class="note">Every model ranks a <i>refuted</i> claim far above unrelated noise. A vector-only memory would
+  file “the cell does <i>not</i> grow toward the light” right next to its affirmation — on every model we can reach.
+  Scaling reduces but does not remove the effect.</p>
+
+  <h2>Relational-cell gradient (fleet mean cosine per axis)</h2>
+  <div class="tri">
+    <div class="cell route"><h3>routing</h3><div class="big">0.979</div><div class="desc">same payload, different route — near-free in similarity space</div></div>
+    <div class="cell filter"><h3>filter</h3><div class="big">0.900</div><div class="desc">what the filter lets through changes content more</div></div>
+    <div class="cell proj"><h3>projection</h3><div class="big">0.867</div><div class="desc">changing the frame changes meaning most</div></div>
+  </div>
+
+  <div class="law">Fleet law of record: <b>embeddings for recall, receipts for truth</b>. And a construction rule for
+  quilts: cell identity lives at the projection level — routing is an address, not a property.</div>
+
+  <footer>Receipts: <code>results.json</code> (per-pair cosines) · <code>raw_responses.jsonl</code> · <code>judge_receipt.json</code>
+  · quilt-research-canons <code>research/fleet-negation-2026-09-30/</code> · System One request
+  <code>req_01a0ef9c6cb17d2296c7731e9a299708</code></footer>
+
+<script>
+const data = [
+  ["sentence-transformers/all-MiniLM-L6-v2", 0.735],
+  ["google/embeddinggemma-300m", 0.646],
+  ["Qwen/Qwen3-Embedding-0.6B", 0.559],
+  ["Qwen/Qwen3-Embedding-4B", 0.516],
+  ["Qwen/Qwen3-Embedding-8B", 0.463],
+  ["BAAI/bge-m3", 0.378],
+  ["BAAI/bge-large-en-v1.5", 0.377],
+  ["BAAI/bge-en-icl", 0.296],
+  ["thenlper/gte-large", 0.178],
+  ["intfloat/e5-large-v2", 0.177],
+  ["intfloat/multilingual-e5-large", 0.173],
+];
+const max = data[0][1];
+const wrap = document.getElementById("bars");
+for (const [name, v] of data) {
+  const hue = 174 - (v / max) * 130; // teal (low) -> red (high)
+  const row = document.createElement("div");
+  row.className = "bar-row";
+  row.innerHTML = `<div class="name">${name}</div>
+    <div class="bar-track"><div class="bar-fill" style="width:${(v / max) * 100}%;background:hsl(${hue} 65% 55%)"></div></div>
+    <div class="val">+${v.toFixed(3)}</div>`;
+  wrap.appendChild(row);
+}
+</script>
+</body>
+</html>

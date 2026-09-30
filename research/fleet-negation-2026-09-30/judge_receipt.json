@@ -1,0 +1,38 @@
+{
+  "ts": "2026-09-30T00:00:01.329+00:00",
+  "request_id": "req_01a0ef9c6cb17d2296c7731e9a299708",
+  "latency_s": 0.24,
+  "answers": {
+    "novelty": {
+      "type": "score",
+      "score": 3.73,
+      "confidence": 0.78,
+      "legend": {
+        "0": "0: not novel or not quantified",
+        "1": "1: marginal novelty, methods unclear",
+        "2": "2: real finding but weak controls or missing predictions",
+        "3": "3: solid novel finding, pre-registered, quantified, controls present",
+        "4": "4: exemplary \u2014 clean design, universal result, honest limitations"
+      },
+      "probabilities": {
+        "0": 0.01,
+        "1": 0.01,
+        "2": 0.01,
+        "3": 0.15,
+        "4": 0.81
+      }
+    },
+    "stranger_verifiable": {
+      "type": "noul",
+      "noul": 0.53
+    },
+    "promote": {
+      "type": "noul",
+      "noul": 0.64
+    }
+  },
+  "usage": {
+    "input_tokens": 1326,
+    "output_tokens": 56
+  }
+}
