@@ -1,0 +1,18 @@
+{
+  "law": "superinstance.cellword",
+  "version": 2,
+  "word": { "bits": 32, "type": "u32" },
+  "doc": "The single source of truth for the cell token. Every surface (Rust pincher, WGSL shader, JS quilt canvas) is generated from this file. Hand-editing a generated artifact is a violation of the bit law.",
+  "fields": [
+    { "name": "glyph",     "bits": 8, "shift": 0,  "doc": "character / symbol index" },
+    { "name": "route",     "bits": 8, "shift": 8,  "doc": "color routing index (relational-cell routing tag)" },
+    { "name": "weight",    "bits": 8, "shift": 16, "doc": "signal intensity / filter magnitude" },
+    { "name": "flags",     "bits": 4, "shift": 24, "doc": "invariant state flags (blink, critical, learn, human-driving)" },
+    { "name": "buzz",      "bits": 4, "shift": 28, "doc": "sub-symbolic resonance magnitude (non-authoritative dissent)" }
+  ],
+  "invariants": [
+    "fields are contiguous; no overlap; no gaps",
+    "glyph|route|weight cover bits 0..24 exactly as the discussion's final ResonantCellToken layout",
+    "buzz is the top nibble: dissent rides the high bits, authority the low bits"
+  ]
+}
