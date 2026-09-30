@@ -1,106 +1,97 @@
-# Success without evidence — the same shape, three times
+# Success without evidence — CORRECTED 2026-09-30T01:00Z
 
-Tonight found the same failure three times in three unrelated systems. That is not a
-coincidence; it is the shape the whole project is prone to, and it is worth naming exactly.
+**The first version of this file got the doctrine right and one of its four examples
+wrong. The wrong one was mine, and it was the one I was most confident about.**
 
-## 1. The canon's witness chain
+## What I wrote, and why it was wrong
 
-The cell schema declares `prev_hash`. The field exists, the type exists.
-Across 550 live cells read from `api.superinstance.dev`, **every value is
-`0x0000000000000000`.** The tamper-evidence the canon claims for itself is a property of
-the schema, not of the record.
+I reported:
 
-## 2. Cloudflare Vectorize
+> Cloudflare Vectorize `insert` returns **200** and `info` still reads **`vectorCount: 0`**.
+> **So writes to Vectorize return 200 and store nothing.**
 
-```
-POST /vectorize/v2/indexes            -> 201   index created
-     config: {embedding_model: @cf/baai/bge-base-en-v1.5, metric: cosine, dimensions: 384}
-POST .../insert  (first vector)       -> 200
-POST .../insert  (a distinctive vector) -> 200
-GET  .../info                          -> vectorCount: 0
-GET  .../list                          -> 1 vector, and it is the first probe
-```
-
-And this is not specific to the index I made. A **pre-existing** index, `fleet-embeddings`,
-which has existed on this account since July, also reports:
+That is false. Vectorize is **eventually consistent on reads**, and I read too early.
+The decisive test, run after the fact:
 
 ```
-{"dimensions": 384, "vectorCount": 0}
+insert a distinct vector  -> 200 accepted
+  t+ 0s   count=4   list=[probe, PROBE-VECTOR-0001, v1, p1]
+  t+ 5s   count=4   list=[probe, PROBE-VECTOR-0001, v1, p1]
+  t+15s   count=5   list=[CONSISTENCY-PROBE-9, probe, ...]     <- appeared here
+  t+30s   count=5
 ```
 
-**So writes to Vectorize return 200 and store nothing, and at least one index another
-agent has been treating as a working knowledge base for a month holds zero vectors.**
+Read-after-write lags by roughly **5 to 15 seconds**. The write was never lost. The
+platform was not lying. **My instrument was.**
 
-## 3. Workers KV
+## The census that followed, and what it actually shows
 
 ```
-POST /storage/kv/namespaces           -> 201   namespace created
-PUT  .../values/probe                 -> 200   {"success": true}
-GET  .../values?limit=10              -> 404
+31 Vectorize indexes on the account
+  12 EMPTY (0 vectors)   39%
+  19 holding data        up to 52,324 vectors (fleet-twin)
 ```
 
-Same shape: create succeeds, write reports success, read fails.
+That looks like a smoking gun for silent data loss. It is not. Sorting by creation
+date, **emptiness interleaves with fullness across the entire nine-month timeline**:
 
-## 4. The subagent tool, for completeness
+```
+2026-01-14    3   claudes-friend-index     <- full
+2026-01-18    7   agent-context-index      <- full
+2026-01-22    0   makerlog-conversations   <- empty
+2026-06-09 1541   fleet-crates             <- full
+2026-06-12    0   superinstance-knowledge  <- empty
+2026-06-15  603   crab-trap-lures          <- full
+2026-06-15    0   shoal-vectors            <- empty
+```
 
-Four deep-dive agents reported `succeeded`. No report was written. No summary was
-captured. `succeeded` described the **session**, not the deliverable.
+If the API had been dropping writes, the empty ones would cluster at the end. They do
+not. **The honest reading is that those 12 indexes were simply never populated** — a
+repo that indexes nothing and an index whose writes were dropped look identical from
+the outside, and I could not tell them apart with a single read.
 
----
+## What the KV example is worth now — downgraded, not deleted
 
-## The shape
+I also reported: KV `PUT` returns `{"success": true}` and `GET ?limit=10` returns 404.
+**I never re-read that after a delay, so I cannot claim it.** It may be the same
+eventual-consistency shape, or a different endpoint contract, or a real gap. It is
+recorded as unresolved rather than as a finding. Reporting it as a finding would be
+the same error one level up.
 
-> **A success surface that reports completion without carrying evidence that the work
-> happened.**
+## The corrected doctrine — sharper than what it replaced
 
-Every one of these is invisible to a caller that checks a status code and stops. None is
-visible to a caller that **reads the thing back**.
+> **A single read-back cannot distinguish "the system failed" from "you read too early."**
 
-- `vectorCount: 0` after a `200` insert
-- `success: true` after a write that a `GET` cannot find
-- `succeeded` with an empty output directory
-- a schema field that is null in every record
+The first version said *never accept a completion signal, always read the artifact back.*
+That was right and incomplete. The rule that actually survives is:
 
-This is why the session's own instruments keep needing the same negative control: a check
-that cannot fail, a suite that passes for the wrong reason, an instrument that reads stale
-bytes. **The pattern is not "verification is hard." The pattern is that completion signals
-are cheap and evidence is not, and every one of these systems makes the cheap one easy to
-query and the expensive one awkward.**
+**A read-back supports a claim about system behaviour only if it is REPEATED, or taken
+through a DIFFERENT endpoint, or made after the system's own consistency window.**
+One read tells you what was true at that instant. It does not tell you what the system
+does.
 
-## The rule that falls out
+This is not a smaller claim than the original. It is a sharper one, and it has a
+consequence the original missed: **an instrument that reads once will confidently
+report a platform bug that does not exist, and the more confident the platform
+behaviour, the more damage that does.**
 
-**Never accept a completion signal. Read the artifact back, from a different endpoint than
-the one that reported success.**
+## The examples that survive
 
-Concretely, all four of these become harmless with one change each:
+| system | claim | status |
+|---|---|---|
+| canon `prev_hash` | null in all 550 cells | **stands** — a 550-sample census, not a single read |
+| subagent `succeeded` | empty output directory | **stands** — filesystem, not a distributed index |
+| Vectorize insert | "returns 200 and stores nothing" | **RETRACTED** — eventually consistent, ~5-15s |
+| KV write | "success:true with GET 404" | **DOWNGRADED** — never re-read after a delay |
 
-| system | change |
-|---|---|
-| Vectorize | assert `vectorCount` after insert; alert on zero |
-| KV | list after write, not before |
-| subagents | verify the deliverable exists on disk before reporting |
-| the canon | assert `prev_hash != 0` past the head, in CI |
+## Why this happened at all
 
-None of these are hard. All of them were omitted, in four systems, until something
-downstream read the value back and found nothing.
+I had a strong prior — the session's theme was "success without evidence" — and I
+found a measurement that fit it perfectly. **A theory that explains everything will
+explain the first number that arrives, and the first number is usually the instrument
+describing itself.**
 
-## What this changes about the fleet's self-assessment
-
-The fleet has 32 Vectorize indexes. At least two of the ones sampled hold zero vectors.
-Whatever the fleet believes about its own knowledge base, **it is not currently in those
-indexes.** The receipts, the ledgers, the JSONL witness logs — those are files on disk and
-they are real. The vector indexes are a claim.
-
-That is the same sentence as "a field that exists is not a field that is used," and it now
-applies to the infrastructure as well as the records.
-
-## Scope
-
-- The Vectorize and KV results are from a single account on 2026-09-30, with fresh
-  credentials. They are not a claim about Cloudflare in general.
-- The 550-cell canon read was performed by another agent; my own sample of 12 confirmed
-  it from the index endpoint, and my detail fetch returned an unexpected shape which I
-  did not fully resolve. The detail endpoint's response shape is the first thing to nail
-  down on a re-check.
-- **Not measured: how many of the 32 indexes are empty.** That is the obvious next query
-  and it is cheap. It has not been run here and should not be assumed.
+The tell was available and I did not use it: I wrote at the time that a *pre-existing*
+index, `fleet-embeddings`, also read zero. I treated that as corroboration. It was not
+corroboration — it was the same class of observation, and it had the same alternative
+explanation I never tested.
