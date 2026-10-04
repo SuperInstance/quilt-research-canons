@@ -119,3 +119,23 @@ This is the substrate walker pattern at the agent layer: the agent walks itself 
   repos.** The GitHub token in this environment cannot create org repos.
 - **Not every report has been independently verified.** The ones with a `frontier_run` or
   `test_output` receipt have a runnable check; the prose does not.
+
+## Documentation (wave-69 doc package)
+
+Route by audience — every file is complete and current as of wave-69:
+
+- Just cloned, zero context (agents): start at [docs/ONBOARDING.md](docs/ONBOARDING.md)
+  — identity, verify-it-works commands, gotchas, frontier.
+- Using the instruments and receipts (researchers/analysts):
+  [docs/USER-GUIDE.md](docs/USER-GUIDE.md) — install, first success, everyday tasks,
+  troubleshooting, FAQ.
+- Extending the code (developers): [docs/DEVELOPER-GUIDE.md](docs/DEVELOPER-GUIDE.md)
+  — code layout, core concepts, how to add a sprint/loop round/instrument, testing,
+  gotchas for editors.
+- Operating/reviewing the system (engineers):
+  [docs/ENGINEERING-NOTES.md](docs/ENGINEERING-NOTES.md) — architecture, invariants,
+  failure modes, measured cost envelope, design decisions.
+- Deciding investment (executives): [docs/CTO-BRIEF.md](docs/CTO-BRIEF.md) — maturity,
+  risks, cost profile, strategic options.
+- The index of indexes (everyone): [docs/KNOWLEDGE-MAP.md](docs/KNOWLEDGE-MAP.md) —
+  every project, research lane, pre-existing doc, journal task ID, and receipt of record.
