@@ -4,18 +4,26 @@
 model-provider keys return later. Until then: local-first execution, Cloudflare is
 the only live external capacity, every artifact lands push-ready.
 
+**UPDATE same day, part 2:** principal returned with GitHub + typesafe.ai + moth +
+groq. All four verified live in `recon/key-receipts-2026-10-04/` (typesafe noul
+heartbeat 0.87; moth /me 200; GitHub login SuperInstance). Groq restored-but-
+region-blocked (HTTP 403 Forbidden, same as pre-rotation) → unblocked via a
+Cloudflare Worker relay (`quilt-groq-relay`: Workers egress ≠ this box's region —
+"cloudflare in the loops" doing its job). DeepSeek/Kimi/deepinfra still burned.
+Staged bundles pushed: wave69 (new repo) + quilt-research-canons.
+
 ## Status board
 
 | Key | State | Fleet impact | Mitigation in force |
 |---|---|---|---|
-| Cloudflare (`cfut_…`) | **LIVE (not rotated)** | none — it is the regime | sole external provider; Workers AI carries all model work |
-| GitHub (`ghp_…`) | rotated out | no pushes; CI unverifiable until return | local commits + `PUSH-ON-KEY-RETURN.md` staged bundles |
-| DeepSeek | rotated out | reasoner lane down | `@cf/deepseek-ai/deepseek-v4-*` runs on Workers AI (same family, live) |
-| Groq | rotated out | was region-blocked anyway | low-latency lane folds into CF edge cells |
-| Kimi | rotated out | reasoner lane down | `@cf/moonshotai/kimi-k2.6` runs on Workers AI (live) |
-| Mothquantum | rotated out | H3 IonQ recon stays parked | fleet doctrine already degrades to deterministic labeled mock (`moth.mjs`) |
-| typesafe.ai | rotated out | workhorse lane down | llama-3.1-8b + qwen2.5-coder-32b on Workers AI verified live this session |
-| deepinfra | rotated out | bulk lane down | CF catalog holds 35 text-generation models / 17 families |
+| Cloudflare (`cfut_…`) | **LIVE (not rotated)** | none — it is the regime | Workers AI + now a groq relay worker |
+| GitHub (`ghp_…`) | **RESTORED part 2** | pushes + CI live again | wave69 + canons pushed on return |
+| DeepSeek | still burned | reasoner lane down | `@cf/deepseek-ai/deepseek-v4-*` on Workers AI (live) |
+| Groq | **RESTORED part 2** — but region-blocked from this box (403) | smallest-model lane needs relay | `quilt-groq-relay` CF Worker (egress ≠ this box) |
+| Kimi | still burned | reasoner lane down | `@cf/moonshotai/kimi-k2.6` on Workers AI (live) |
+| Mothquantum | **RESTORED part 2** | H3 IonQ recon UNPARKED | `/me` 200 verified; engines list shape TBD |
+| typesafe.ai | **RESTORED part 2** | workhorse lane UP — System One question oracle | noul heartbeat 0.87 verified |
+| deepinfra | still burned | bulk lane down | CF catalog holds 35 text-generation models / 17 families |
 
 ## Headline finding
 
