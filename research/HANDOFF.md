@@ -44,6 +44,7 @@ actor rather than me.
 | `quilt-c` | **#5** | A2A cell API reference implementation, 13/13 |
 | `fleet-seeds` | **#2** | externalisability gate, 0/10 currently pass |
 | `AI-Writings` | **#70** | Bell-witness verifier + JEV known-answer control |
+| `git.pp-ng` | **#16** | §6 retraction doctrine (3 options, recommended II) — captain's call, see `retraction-doctrine-2026-10-15/DOCTRINE.md` |
 
 If you merge any of these, say so in the receipt. If you replace one, the replacement
 needs its own negative controls — see §5.
