@@ -29,6 +29,7 @@ For any record `r` and a captain-class settlement `s` upholding a third-party di
 ## Files
 
 - `DOCTRINE.md` — the full design doc (the three options in detail, the rationale, the "doctrine" framing, the conformance test, the "what to do now" checklist).
+- `SANITY-CHECK.md` — a mechanical demonstration that the three options produce different observable behaviour (one concrete case where they diverge, side-by-side).
 - `pr16-link.md` — the PR that surfaced the question.
 
 ## What to do now
