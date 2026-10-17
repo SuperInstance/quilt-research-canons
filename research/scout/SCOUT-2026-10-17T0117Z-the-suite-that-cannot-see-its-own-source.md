@@ -8,7 +8,7 @@ added 8 repos on 10-15/10-16 alone (`gitpp-bench`, `gitpp-ports`, `gitpp-playgro
 `quilt-precommit`). **Not one of them had been examined.** They are the best thing in the fleet.
 
 Examined set rebuilt from all **96** prior scout files + 271 other canon files (token-intersection
-against the live name set) → **1,275 examined / 3,256 unseen own**. 18 repos cloned, 7 examined
+against the live name set) → **1,275 examined / 3,256 unseen own**. 25 repos cloned; 5 subjects examined
 deeply with execution + mutation, including 7 full-history clones of the ternary family.
 
 ---
