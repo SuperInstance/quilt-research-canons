@@ -433,7 +433,7 @@ README says *"**Tests**: 250+ passing (100%)"* in **four** separate places (line
 *"**Version**: 0.2.0"* (lines 295, 470) while `usemeter/Cargo.toml` says `version = "0.1.0"`. It also claims
 *"**Status**: Production-Ready (Phase 1)"* (line 470) next to a badge reading `phase-2`.
 
-### 3b. 95.5% of the repository is committed build output
+### 3b. 99.91% of the repository's bytes are committed build output
 
 ```
 $ git ls-files | grep -c "/target/"
@@ -699,8 +699,9 @@ into `forgemaster`, `exocortex`, `usemeter` and `fm-experiments` — not the cod
 5. **Check badge URLs for a foreign host repo.** A badge that points at a different repo is a pointer, not a status.
 6. **Count `#[test]` before believing a `tests-N/N` badge.** And for Rust: `Cargo.lock` tracked-ness **together
    with** `RUSTFLAGS: -Dwarnings` — that pair is a permanent-red machine.
-7. **Diff a repo's README against its closest sibling.** `usemeter` vs `Tripartite1` — 5 hunks, four of them
-   borrowed badges.
+7. **Diff a repo's README against its closest sibling.** `usemeter` vs `Tripartite1` — **two** diff hunks, and
+   every status badge inherited verbatim from the sibling. A 584-line README that is 472 lines of someone
+   else's.
 8. **If a repo's CI has `if [ -f requirements.txt ]` guards, check the file exists.** If it does not, the CI
    installed nothing but the test runner.
 
