@@ -48,7 +48,7 @@ the *other* one, whose CI has never passed. The #5 is the pattern to copy.
 | # | Repo | The one-line surprise |
 |---|------|------------------------|
 | 1 | `exocortex` | Published on PyPI as `si-exocortex` v0.1.0. **One CI step, three eras: `pytest \|\| true` (could never fail) → `pytest -v` (11 green runs) → `skipped` for 6 straight runs since 2026-08-05.** The break landed on a **Markdown-only commit** — the workflow file never changed; the **unpinned `ruff`** did. |
-| 2 | `forgemaster` | The fleet's "constraint-aware agentic compiler": **123 gitlinks, all 123 empty after a clean clone, and no `.gitmodules` at all** (`git submodule update --init` → **exit 128**). Its CI badge is a Python re-implementation of a DSL the real compiler's grammar does not contain. Its "cross-compiler compatibility proof" **exits 0 and prints a success banner even when its own tests fail**. And across its **1,432 runs**, one workflow ran **629 times and never passed once**, while the green badge belongs to a 22-run workflow. |
+| 2 | `forgemaster` | The fleet's "constraint-aware agentic compiler": **123 gitlinks, all 123 empty after a clean clone, and no `.gitmodules` at all** (`git submodule update --init` → **exit 128**) — but **106 of the 109 doors whose name is a live fleet repo still resolve to a real commit today**. The content is fine; the index is missing. Its CI badge is a Python re-implementation of a DSL the real compiler's grammar does not contain. Its "cross-compiler compatibility proof" **exits 0 and prints a success banner even when its own tests fail**. And across its **1,432 runs**, one workflow ran **629 times and never passed once**, while the green badge belongs to a 22-run workflow. |
 | 3 | `usemeter` (+ `Tripartite1`) | `usemeter`'s README **is** `Tripartite1`'s README — all four status badges and the `tests-298/298` badge still point at `Tripartite1`, whose CI/Documentation/Security have **never had a passing run** (0/14, 0/14, 0/71). `usemeter` itself: **0/6, 0/6, 0/62**, last run 2026-04-15. **10,671 of 11,181 tracked files are committed `target/` build output (5.06 GB = 99.91% of all tracked bytes).** CI tests **244 of 7,387** `#[test]`s. |
 | 4 | `fm-experiments` | 330 Python files, 179 of them import `torch`/`numpy`, **no `requirements.txt`, no `setup.py`, no `pyproject.toml`**. CI installs `pytest` only, then runs `python -m pytest -v` from the repo root → collects 14 test files that import `torch` → **collection errors. CI: 0/2, never passed.** Its README also says "Four experiments" over a table of three. |
 | 5 | `exoj` | **Positive control, mutation-verified — with one crack worth more than the praise.** 28/28 green locally, no install; `lab/readme-pin.test.mjs` pins the README's numbers to the artifact of record (**mutate one digit → RED, exit 1; restore → GREEN**); `tools/spec_gate.mjs` is a fail-closed sha256 seal and is the **first** CI step. **But the pin test's own `FAIL-FIRST` comment shows it was satisfied by editing a results line inside the charter section that promises never to be edited — a test that pins a document can be satisfied by rewriting the document.** |
@@ -230,7 +230,9 @@ The empty doors are not decorative. They include:
   turbovec               0 files
   i2i-protocol           0 files
   agent/fleet-agent      0 files
-  guard/guardc           REAL FILES  (the only guard that shipped)
+  guard/guardc           REAL FILES  (the only guard *compiler* that shipped as source;
+                                      guard-constraints, guard-dsl and guard2mask also
+                                      shipped real files)
 ```
 
 **And the content behind those doors is still there.** Of the 123 door paths, **109 have a basename that is a
