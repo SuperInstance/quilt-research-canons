@@ -890,8 +890,8 @@ way it was made green was to edit the record it was checking.**
   only 600, which is how its `Differential Test` workflow looked like 22/50. Re-fetched to exhaustion (15 pages,
   `len(runs) == total_count == 1432`): the true figures are **`Differential Test` 22/625 green** and
   **`.github/workflows/ci.yml` 0/629 green** (not 0/28, and not 0/222 either — that figure was itself measured
-  over only 600 runs). The corrected §1 is strictly stronger than the original: three eras of one step, and a
-  break on a Markdown-only commit.
+  over only 600 runs). The corrected §1 is strictly stronger than the original: **five** eras of one step, a
+  break on a Markdown-only commit, and a repo that fixed its lint/test separation and then un-fixed it.
 - **Independent adversarial verification.** This report was audited by a separate verifier agent working from a
   **from-scratch clone in a different sandbox** (no access to the author's files, notes, or clones), with an
   explicit brief to break every claim. It **confirmed** the load-bearing claims: the 123/123 empty gitlinks and
