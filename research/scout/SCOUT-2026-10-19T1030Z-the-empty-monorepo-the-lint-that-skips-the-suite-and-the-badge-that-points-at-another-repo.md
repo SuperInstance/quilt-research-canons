@@ -18,6 +18,15 @@ fetched, 8–10 concurrent), **not** API `size`, **not** tree bytes, **not** nam
 `SuperInstance-archive` (71 MB) and `SuperInstance-papers` (31 MB) on top of every unfiltered ranking; the
 code-bytes pass puts real work on top immediately.
 
+> ## ⚠ CORRECTION (issued 2026-10-19T10:5xZ, same commit, git history holds the original)
+>
+> The first published version of §1 claimed the exocortex pytest suite **"has never run in CI."** **That was
+> wrong.** Re-reading the full run history (28 runs total, not the 27 I had) shows the test step **succeeded 11
+> times** before the lint step started skipping it. The claim is corrected in place below, and the correction
+> *strengthens* the finding: the real story is a three-era history of **the same CI step** — first made
+> unfailable, then made failable and green, then silently skipped — plus a **break on a Markdown-only commit**
+> caused by an **unpinned linter**. The corrected §1 is the one to read.
+
 **Prior baseline:** 111 scout files, last `SCOUT-2026-10-19T0745Z`.
 Filename checked for collisions: `SCOUT-2026-10-19T1030Z-the-empty-monorepo-the-lint-that-skips-the-suite-and-the-badge-that-points-at-another-repo.md`
 — **no collision** (no `2026-10-19T10xx` file existed at write time).
@@ -26,14 +35,15 @@ Filename checked for collisions: `SCOUT-2026-10-19T1030Z-the-empty-monorepo-the-
 
 ## 0. Headline
 
-Five things nobody had examined. **The #1 is a published PyPI package whose test suite has never executed, because
-a linter failed first.** The #2 is the fleet's own "assembles the whole fleet" compiler, carrying **123 empty
-doors and no `.gitmodules`** — and a CI badge that means nothing. The #3 is two repos that are one project, where
-the README's green badges point at the *other* one, whose CI has never passed. The #5 is the pattern to copy.
+Five things nobody had examined. **The #1 is a published PyPI package whose CI step has been dead for six
+consecutive runs behind a linter — and which was broken by a commit that changed nothing but Markdown.** The #2
+is the fleet's own "assembles the whole fleet" compiler, carrying **123 empty doors and no `.gitmodules`** — and a
+CI badge that means nothing. The #3 is two repos that are one project, where the README's green badges point at
+the *other* one, whose CI has never passed. The #5 is the pattern to copy.
 
 | # | Repo | The one-line surprise |
 |---|------|------------------------|
-| 1 | `exocortex` | Published on PyPI as `si-exocortex` v0.1.0. **CI fails at `ruff check .` → `Run tests` is `skipped` → the pytest suite has never run in CI**, and the other two Python-version matrix legs are **`cancelled`**. 12/27 green, last run 2 months stale. |
+| 1 | `exocortex` | Published on PyPI as `si-exocortex` v0.1.0. **One CI step, three eras: `pytest \|\| true` (could never fail) → `pytest -v` (11 green runs) → `skipped` for 6 straight runs since 2026-08-05.** The break landed on a **Markdown-only commit** — the workflow file never changed; the **unpinned `ruff`** did. |
 | 2 | `forgemaster` | The fleet's "constraint-aware agentic compiler": **123 gitlinks, all 123 empty after a clean clone, and no `.gitmodules` at all** (`git submodule update --init` → **exit 128**). Its CI badge is a Python re-implementation of a DSL the real compiler's grammar does not contain. Its "cross-compiler compatibility proof" **exits 0 and prints a success banner even when its own tests fail**. |
 | 3 | `usemeter` (+ `Tripartite1`) | `usemeter`'s README **is** `Tripartite1`'s README — all four badges and the `tests-298/298` badge still point at `Tripartite1`, whose CI/Documentation/Security have **never had a passing run** (0/14, 0/14, 0/71). `usemeter` itself: **0/6, 0/6, 0/62**, last run 2026-04-15. **10,671 of 11,181 tracked files are committed `target/` build output (4.83 GB).** |
 | 4 | `fm-experiments` | 330 Python files, 179 of them import `torch`/`numpy`, **no `requirements.txt`, no `setup.py`, no `pyproject.toml`**. CI installs `pytest` only, then runs `python -m pytest -v` from the repo root → collects 14 test files that import `torch` → **collection errors. CI: 0/2, never passed.** Its README also says "Four experiments" over a table of three. |
@@ -41,13 +51,15 @@ the README's green badges point at the *other* one, whose CI has never passed. T
 
 ---
 
-## 1. `exocortex` — a published package whose test suite has never run
+## 1. `exocortex` — one CI step, three eras, and a break on a commit that changed only Markdown
 
-**`SuperInstance/exocortex` · 9 test files, 31 Python files · PyPI: `si-exocortex` v0.1.0, released 2026-07-12 (verified live on pypi.org).**
+**`SuperInstance/exocortex` · 9 top-level test files + 3 under `mentis-thinker-adapter/` · PyPI: `si-exocortex` v0.1.0, released 2026-07-12 (verified live on pypi.org).**
 
-The artifact is real and installable. The CI is not real, and it is not because the tests fail.
+The artifact is real and installable. The CI is not — and the interesting part is *how* it isn't.
 
-`.github/workflows/ci.yml`:
+### 1a. The full history of one CI step
+
+`.github/workflows/ci.yml`, current form:
 
 ```yaml
     strategy:
@@ -65,8 +77,90 @@ The artifact is real and installable. The CI is not real, and it is not because 
         run: pytest -v
 ```
 
-**`ruff check .` fails, and `Run tests` is therefore `skipped`.** Measured directly from the jobs API on the
-most recent failing run (`32449024762`, 2026-08-21):
+The **entire** history of this file is four commits, and the test step has lived three lives
+(28 runs total across all workflows; 27 of them are the `CI` workflow; **12 green, 15 red**):
+
+| when | commit | the test step | outcome |
+|---|---|---|---|
+| **2026-06-08** | `c415914` "ci: add CI workflow" | **`Run pytest \|\| true`** | green — **and the step could not fail** |
+| **2026-07-12** (×6) | `ba8414e` "Tier 2 → Tier 1: fix CI, license, packaging" | `Run tests` (no lint step yet) | **6 green**, `Run tests=success` |
+| **2026-07-12** (×9 red) | `72e2c9b` "ci: standardize to lint/test/**build** pattern (batch2)" | `Lint (ruff)` **added** in front | **9 consecutive red** — lint failed, tests skipped |
+| **2026-07-12 21:23** | `23bdaba` "6 real bugs fixed + **fake-green test corrected** + stale claim removed" | lint fixed | **5 green** (07-13 ×3, 07-20 ×2), `Lint (ruff) -> success` **and** `Run tests -> success` |
+| **2026-08-05 → 08-21** (×6 red) | source-only commits | **workflow file unchanged since 07-12** | **6 consecutive red**, `Lint (ruff) -> failure`, `Run tests -> skipped` |
+
+Three things fall out of this table that a badge alone would never show you:
+
+1. **The test step's first incarnation was `pytest || true`.** A test step with `|| true` **cannot fail** — it
+   reports `success` whether the suite passes, errors, or doesn't exist. The repo's own commit message three weeks
+   later calls it *"fake-green test corrected"*, so the authors knew. But the *shape* — a gate that reports success
+   unconditionally — is the same defect class as `forgemaster`'s `test_multi_compiler.py` below, and it is worth
+   noticing that this repo has now hosted **both** versions of the same anti-pattern: a test step that can't fail,
+   and a test step that never runs.
+2. **The suite did run, and it did pass — 11 times** (6 on 07-12, 5 on 07-13/07-20, all with `Run tests=success`).
+   The corrected claim is therefore **not** "the suite has never run"; it is **"the test step has been skipped for
+   six consecutive runs since 2026-08-05"**, and it is *skipped*, not *failing*.
+3. **The break landed on a commit that changed nothing but Markdown.** The first red run is
+   `30963828283` (2026-08-05T00:36) for commit `3dbe1f8` — *"Add Long Horizon Roadmap: Phases 7-18 (Arcs 2-5)"*:
+
+   ```
+   $ git show --stat 3dbe1f8
+    LONG_HORIZON_ROADMAP.md | 801 ++++++++++++++++++++++++++++++++++++++++++++++++
+    1 file changed, 801 insertions(+)
+   $ git show --name-only --format= 3dbe1f8 | grep -c '\.py$'
+   0
+   ```
+
+   The workflow file's last commit is `23bdaba` (2026-07-12 21:23) — it did not change. The last green run was
+   `cec70f9` (2026-07-20). Between them, only Markdown was touched. **The only variable left is the `ruff` build
+   itself**: `pip install -e ".[dev]"` pulls the newest ruff from PyPI on every run, with nothing pinning it, so
+   **a new ruff release that added a rule to the default set turned this repo red without a single line of code
+   changing.** And because ruff is unpinned, **the build that broke it is gone** — you cannot reproduce it locally.
+   That is a CI that is not a check at all: it is a function of PyPI's upload schedule.
+
+   The subsequent commits then piled real F401s on top of the already-broken lint — `b958230` "Mentis mental world
+   model adapter" (2026-08-05, adds `mentis-thinker-adapter/` = 23 of the 37 unused imports) and a burst of
+   AI-generated test commits on 08-06/08-07: `7658bba` "+69 tests", `b9c87b8` "+46 tests", `7b87938` "+100 tests
+   for dream cycle and resonance engine" (this one introduced the unused `import math`), `5f4e801` "+46 tests for
+   SurrealDB memory backend", `b48fd00` "fix: CortexEvent.new() trace_id collision + **103 new tests**". The
+   commit titles are the tell: **294 new tests landed in two days and every one of them added a lint error.**
+
+### 1b. Why the lint fails
+
+`pyproject.toml` sets `[tool.ruff] line-length = 100` and `target-version = "py310"` and **selects nothing** —
+no `select`, no `ignore`, no `extend-ignore`, no `per-file-ignores`. There is **no `ruff.toml` and no
+`.ruff.toml`** anywhere in the tree, and **zero `noqa` comments** in any `.py` file. So ruff's default rule set
+applies, which includes `F401` (unused import). An AST pass over the whole tree (excluding `__future__`, which
+ruff exempts) finds **37 unused imports**, **none of them in an `__init__.py`** — 14 in the top-level `tests/`
+and 23 under `mentis-thinker-adapter/`:
+
+```
+  tests/test_config_and_memory.py:11  from pathlib import Path
+  tests/test_config_and_memory.py:15  MemoryEntry
+  tests/test_dream_cycle.py:10         from unittest.mock import AsyncMock, MagicMock, patch
+  tests/test_dream_cycle.py:14         DreamAnomaly
+  tests/test_dream_cycle.py:29         CortexEvent
+  tests/test_resonance_engine.py:7     import math
+  tests/test_resonance_engine.py:9     from unittest.mock import AsyncMock, MagicMock
+  tests/test_resonance_engine.py:24    CortexEvent
+  tests/test_shadows_and_bus.py:10     from unittest.mock import patch
+  tests/test_shadows_and_bus.py:17     RenderedShadow
+  tests/test_surrealdb_backend.py:8    import asyncio
+  tests/test_surrealdb_backend.py:19   HOT_WINDOW_SECONDS, WARM_UNREINFORCED_HOURS
+  mentis-thinker-adapter/branch_simulator.py:21-27   json, math, random, field, AgentMentalState
+  mentis-thinker-adapter/mental_state.py:20-23      json, datetime, timezone
+  mentis-thinker-adapter/mentis_adapter.py:43,61     hashlib, BranchScore, ActionPlan, rank_branches
+  mentis-thinker-adapter/tests/*.py                   8 more
+```
+
+**The second-order defect is the one that matters.** The matrix has **no `fail-fast: false`**, so the default
+`fail-fast: true` applies: the first leg to fail at lint **cancels** the other two. One unused import therefore
+takes out three Python versions' worth of CI — and, because the failure is upstream of the test step, takes out
+the tests too. **A linter is not a test gate, but in this repo it is the only live gate, and it sits in front of
+the tests.**
+
+### 1c. The measured jobs payload (the runs payload hides this)
+
+From the most recent failing run (`32449024762`, 2026-08-21):
 
 ```
   job: test (3.11) -> failure
@@ -80,39 +174,22 @@ most recent failing run (`32449024762`, 2026-08-21):
        Install package and test dependencies -> cancelled
 ```
 
-**Why the lint fails:** `pyproject.toml` sets `[tool.ruff] line-length = 100` / `target-version = "py310"` and
-**selects nothing**, so ruff's default rule set applies — which includes `F401` (unused import). An AST pass over
-the whole tree (excluding `__future__`, which ruff exempts) finds **37 unused imports**, 15 of them in `tests/`:
-
-```
-  tests/test_resonance_engine.py:7    import math                      (used 0 times)
-  tests/test_resonance_engine.py:9    from unittest.mock import AsyncMock, MagicMock
-  tests/test_shadows_and_bus.py:10    from unittest.mock import patch
-  tests/test_shadows_and_bus.py:17    RenderedShadow
-  tests/test_surrealdb_backend.py:8   import asyncio                   (used 0 times)
-  tests/test_surrealdb_backend.py:19  HOT_WINDOW_SECONDS, WARM_UNREINFORCED_HOURS
-  tests/test_config_and_memory.py:11  from pathlib import Path
-  tests/test_config_and_memory.py:15  MemoryEntry
-  ... 29 more
-```
-
-**The second-order defect is the one that matters.** The matrix has **no `fail-fast: false`**, so the default
-`fail-fast: true` applies: the first leg to fail at lint **cancels** the other two. One unused import therefore
-takes out three Python versions' worth of CI — and, because the failure is upstream of the test step, takes out
-the tests too. **A linter is not a test gate, but in this repo it is the only gate, and it sits in front of the tests.**
-
-**Status:** 27 CI runs, **12 success / 15 failure**; newest 2026-08-21; the 12 successes predate the `ruff` step.
-On PyPI as `si-exocortex` since 2026-07-12 with the test suite never having executed in CI.
-
 **Why another agent should care:** this is the **third** occurrence of the "a first step that fails converts the
 rest into skipped steps" shape in this series (previously `SCOUT-2026-10-17T2235Z-the-control-that-cannot-fail-and-the-suite-that-never-ran.md`
-and the `spreadsheet-engine` finding of 2026-10-01). It recurs because **GitHub reports it as a red badge and
-nothing else** — the skip is invisible unless you read the jobs payload. The reusable check is
-`grep -A3 "conclusion" ` on the **jobs** endpoint, not the runs endpoint, and the reusable fix is
-`continue-on-error: false` → move lint to a **separate job** with `needs:` so lint failure cannot cancel tests,
-plus `fail-fast: false` on the matrix.
+and the `spreadsheet-engine` finding of 2026-10-01) — and the first where the skipping step is a **linter**, which
+is the one step everyone adds "just to be safe". It recurs because **GitHub reports it as a red badge and nothing
+else**; the skip is invisible unless you read the **jobs** payload.
 
----
+**Three reusable rules, all cheap:**
+
+- **Read the jobs payload, not the runs payload.** A failed first step turns the rest into `skipped`; a failed
+  matrix leg with default `fail-fast` turns the siblings into `cancelled`. Both hide the test suite.
+- **Pin your linter.** `pip install -e ".[dev]"` + a floating `ruff`/`pytest`/`eslint` means your CI's result is a
+  function of PyPI's upload schedule, not of your code. A ruff release is what turned this repo red here — on a
+  Markdown-only commit. Pin the tool version (`ruff==0.x.y`) and you get a check; leave it floating and you get a
+  weather report.
+- **Put lint in its own job with `needs:`**, or mark it `continue-on-error: true`. A lint nit must never be able
+  to cancel the test matrix.
 
 ## 2. `forgemaster` — 123 empty doors, and a badge that means nothing
 
@@ -624,7 +701,18 @@ into `forgemaster`, `exocortex`, `usemeter` and `fm-experiments` — not the cod
 - **`pip install` is blocked in this sandbox** (network refused, and the system Python is PEP-668 managed), so
   `pytest` and `ruff` could not be executed. Where a lint or test outcome is claimed above, it is derived from
   the **jobs API payload** (what GitHub actually ran) plus a static AST check of the rule that fails — and it is
-  labelled as such. `cargo`/`rustc` are absent, so no Rust code was executed; the Rust findings are read-only
+  labelled as such.
+- **Correction carried into the canon (why the banner at the top is there).** The first draft of §1 said the
+  exocortex pytest suite *"has never run in CI."* It did — 11 successful `Run tests` steps on 2026-07-12/13/20.
+  The error was **reading one recent run's job payload and generalising it to the repo's history**. The rule this
+  earns: *a "never" claim about a CI step requires reading the step list across the **whole** run history, and
+  `per_page=100` on `/actions/runs` is not enough* — `forgemaster` has **1,432** runs and my first pass fetched
+  only 600, which is how its `Differential Test` workflow looked like 22/50 when the true figure is **22/245**
+  (and `.github/workflows/ci.yml` is **0/222**, not 0/28). The corrected §1 is strictly stronger than the
+  original: three eras of one step, and a break on a Markdown-only commit.
+- **Read a CI file's *git history*, not just its current contents.** `git log -- .github/workflows/ci.yml` for
+  exocortex is four commits, and the current file is a *later* generation than the one the first green run used.
+  The `pytest || true` era and the `Lint (ruff)` era are both invisible in the current file. `cargo`/`rustc` are absent, so no Rust code was executed; the Rust findings are read-only
   and are stated as such.
 - **No `usemeter`/`Tripartite1`/`forgemaster` `Cargo.lock` exists, so the dependency-resolution theory of their
   red CI is a hypothesis, not a measured cause.** The *measured* facts are: every workflow in both repos has
@@ -636,9 +724,10 @@ into `forgemaster`, `exocortex`, `usemeter` and `fm-experiments` — not the cod
 
 ## 8. What to do next (in priority order)
 
-1. **`exocortex`:** move `ruff check .` into its own job (or add `continue-on-error: true` to it), add
-   `fail-fast: false` to the matrix, and delete the 37 unused imports. That is a 20-minute fix that turns a
-   permanently-red badge into a real one — and lets the suite run for the first time.
+1. **`exocortex`:** pin the linter (`ruff==<version>` in the dev extra), move `ruff check .` into its own job
+   (or add `continue-on-error: true` to it), add `fail-fast: false` to the matrix, and delete the 37 unused
+   imports. That is a 20-minute fix that turns a red badge into a real one — and un-skips a test suite that
+   **passed 11 times** and has been dark for six consecutive runs since 2026-08-05.
 2. **`forgemaster`:** add the missing `.gitmodules` (or delete the 123 gitlinks). Until one of those happens, the
    repo cannot be cloned into a working state by anyone. Then point CI at the real `guardc` compiler and at
    `tests/test_*.py` instead of the re-implementation, and give `test_multi_compiler.py` a real `sys.exit(1)`.
