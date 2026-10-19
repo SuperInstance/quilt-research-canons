@@ -157,8 +157,8 @@ Four things fall out of this table that a badge alone would never show you:
 no `select`, no `ignore`, no `extend-ignore`, no `per-file-ignores`. There is **no `ruff.toml` and no
 `.ruff.toml`** anywhere in the tree, and **zero `noqa` comments** in any `.py` file. So ruff's default rule set
 applies, which includes `F401` (unused import). An AST pass over the whole tree (excluding `__future__`, which
-ruff exempts) finds **37 unused imports**, **none of them in an `__init__.py`** — 14 in the top-level `tests/`
-and 23 under `mentis-thinker-adapter/`:
+ruff exempts) finds **37 unused imports**, **none of them in an `__init__.py`** — **16** across the 5 top-level
+files in `tests/` and **21** across the 6 files under `mentis-thinker-adapter/`:
 
 ```
   tests/test_config_and_memory.py:11  from pathlib import Path
@@ -427,10 +427,17 @@ build = forge.compile(requirements)     # README.md:43
 ```
 
 ```
-Forge methods: ['artifact_for_recipe','build_all','build_one','cancel','config','get_artifact',
-                'monitor','queue','register_artifact','reset_steps','stats','submit']
-has compile? False
+$ dir(Forge)          # the class
+['artifact_for_recipe','build_all','build_one','cancel','get_artifact',
+ 'register_artifact','reset_steps','stats','submit']          -> 9, no 'compile'
+$ dir(forge)          # an instance
+['artifact_for_recipe','build_all','build_one','cancel','config','get_artifact',
+ 'monitor','queue','register_artifact','reset_steps','stats','submit']  -> 12, no 'compile'
 ```
+
+(`config`, `monitor` and `queue` are instance attributes set in `__init__`, so they appear only on the
+instance — a transcript that shows all 12 while labelling the call `dir(Forge)` is a mislabel, and the
+substantive claim is unchanged either way: **there is no `compile`**)
 
 There is no `compile` anywhere in the package (`grep -rn "def compile" forgemaster/` → 0 hits). The 628-line
 implementation underneath is coherent and real — a topological build queue with retries, artifacts, and an event
@@ -541,8 +548,10 @@ them.** A rule and its violation in the same commit, at the same path, in the sa
 
 ```
 .gitignore:6   Cargo.lock
-$ git ls-files | grep -ci "cargo.lock"     # only target/*/.cargo-lock — cargo's own lock files, not a manifest
+$ git ls-files | grep -ci 'cargo\.lock'     # escaped dot: matches Cargo.lock manifests only
 0
+$ git ls-files | grep -ci "cargo.lock"      # UNescaped: the dot is a wildcard, so this ALSO matches
+6                                                  # target/*/.cargo-lock (cargo's own lock files)
 ```
 
 `ci.yml` sets, globally:
@@ -561,9 +570,10 @@ says `channel = "stable"`, not a pinned version) with **no committed `Cargo.lock
 means **any upstream release that introduces a warning turns the entire 4-way matrix red**, with nothing to pin
 against. The matrix fails identically on ubuntu/stable, ubuntu/nightly, macos/stable and windows/stable, and the
 coverage job fails with it — which is exactly the signature of a dependency-side failure rather than a
-platform-specific one. The Security workflow (typos, `cargo deny`, gitleaks, `cargo audit`) fails 6 of 7 jobs for
-the same reason: `cargo deny` and `cargo audit` both need a resolved lockfile to have anything to audit, and
-there isn't one.
+platform-specific one. The Security workflow fails the same way: of its 7 jobs, **5 fail outright**
+(`Check for Typos`, `Cargo Deny Checks`, `Secret Scanning`, `Security Audit`, `Generate Security Report`),
+a 6th (`Dependency Review`) is **skipped**, and only `Check Outdated Dependencies` passes. `cargo deny` and
+`cargo audit` both need a resolved lockfile to have anything to audit, and there isn't one.
 
 **Nothing in this repo can be green until a `Cargo.lock` is committed.** For a workspace that ships binaries,
 committing the lockfile is also what makes the builds reproducible.
@@ -652,7 +662,10 @@ from the jobs API on both runs:
 ```
 
 **The three headline experiments in the README are exactly the ones that cannot be collected.** Two of the three
-(`delta-detect`, `holonomy-phase`) need `torch`; the third (`sheaf-h1`) needs `numpy`. The README's own Quick
+(`delta-detect`, `holonomy-phase`) need `torch`; the third (`sheaf-h1`) needs `numpy`. Note that
+`holonomy-phase` ships **no `test_*.py` at all** — only `experiment.py` and `holonomy.py` — so it is not
+collected by pytest even in principle; it is listed here because the README names it as one of the three
+headline experiments and its `experiment.py` is what CI could never import. The README's own Quick
 Summary table marks all three "Done" with run times of "~30s", "~1s", "~30s" — and CI has never run any of them.
 
 **And the README contradicts itself in its first three lines:** *"**Four** experiments that test the core claims
