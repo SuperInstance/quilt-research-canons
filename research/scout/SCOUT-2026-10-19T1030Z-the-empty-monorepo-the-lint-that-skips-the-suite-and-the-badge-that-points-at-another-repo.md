@@ -45,7 +45,7 @@ the *other* one, whose CI has never passed. The #5 is the pattern to copy.
 |---|------|------------------------|
 | 1 | `exocortex` | Published on PyPI as `si-exocortex` v0.1.0. **One CI step, three eras: `pytest \|\| true` (could never fail) → `pytest -v` (11 green runs) → `skipped` for 6 straight runs since 2026-08-05.** The break landed on a **Markdown-only commit** — the workflow file never changed; the **unpinned `ruff`** did. |
 | 2 | `forgemaster` | The fleet's "constraint-aware agentic compiler": **123 gitlinks, all 123 empty after a clean clone, and no `.gitmodules` at all** (`git submodule update --init` → **exit 128**). Its CI badge is a Python re-implementation of a DSL the real compiler's grammar does not contain. Its "cross-compiler compatibility proof" **exits 0 and prints a success banner even when its own tests fail**. |
-| 3 | `usemeter` (+ `Tripartite1`) | `usemeter`'s README **is** `Tripartite1`'s README — all four badges and the `tests-298/298` badge still point at `Tripartite1`, whose CI/Documentation/Security have **never had a passing run** (0/14, 0/14, 0/71). `usemeter` itself: **0/6, 0/6, 0/62**, last run 2026-04-15. **10,671 of 11,181 tracked files are committed `target/` build output (4.83 GB).** |
+| 3 | `usemeter` (+ `Tripartite1`) | `usemeter`'s README **is** `Tripartite1`'s README — all four badges and the `tests-298/298` badge still point at `Tripartite1`, whose CI/Documentation/Security have **never had a passing run** (0/14, 0/14, 0/71). `usemeter` itself: **0/6, 0/6, 0/62**, last run 2026-04-15. **10,671 of 11,181 tracked files are committed `target/` build output (5.06 GB = 99.91% of all tracked bytes).** |
 | 4 | `fm-experiments` | 330 Python files, 179 of them import `torch`/`numpy`, **no `requirements.txt`, no `setup.py`, no `pyproject.toml`**. CI installs `pytest` only, then runs `python -m pytest -v` from the repo root → collects 14 test files that import `torch` → **collection errors. CI: 0/2, never passed.** Its README also says "Four experiments" over a table of three. |
 | 5 | `exoj` | **Positive control, mutation-verified.** 28/28 green locally, no install. `lab/readme-pin.test.mjs` pins the README's headline numbers to the artifact of record — **mutate one digit → RED (exit 1); restore → GREEN.** `tools/spec_gate.mjs` is a fail-closed sha256 seal and is the **first** CI step. |
 
@@ -390,13 +390,19 @@ the script.
 
 ## 3. `usemeter` — one project, two repos, four borrowed badges
 
-**`SuperInstance/usemeter` · 11,181 tracked files, 4.83 GB · `SuperInstance/Tripartite1` · 266 tracked files.**
+**`SuperInstance/usemeter` · 11,181 tracked files, 5.06 GB of which 99.91% is committed build output · `SuperInstance/Tripartite1` · 266 tracked files.**
 
 ### 3a. The README is another repo's README
 
-`usemeter/README.md` is 584 lines; `Tripartite1/README.md` is 472. The diff is **five hunks**: a changed title, a
-changed subtitle, a replaced Overview paragraph, and a 112-line "Architecture (Metering Pipeline)" appendix.
-**Everything else is Tripartite1's, verbatim — including every badge:**
+`usemeter/README.md` is 584 lines; `Tripartite1/README.md` is 472. The diff is **exactly two hunks**:
+
+```
+@@ -1,6 +1,12 @@       title, subtitle, and an ADDED "## Overview" section  (6 lines -> 12)
+@@ -470,3 +476,109 @@  "## Architecture (Metering Pipeline)" appendix       (3 lines -> 109, i.e. 106 added)
+```
+
+Tripartite1 has **no** `## Overview` section at all — the overview is *added*, not replaced. **Everything else is
+Tripartite1's, verbatim — including every badge:**
 
 ```markdown
 [![CI](https://github.com/SuperInstance/Tripartite1/actions/workflows/ci.yml/badge.svg)](.../Tripartite1/...)
@@ -421,9 +427,11 @@ changed subtitle, a replaced Overview paragraph, and a 112-line "Architecture (M
 **Every workflow in both repos has never passed a single run.** The badges are borrowed *and* red.
 
 **And the test count is wrong.** The badge says `tests-298/298`. `Tripartite1` contains **247** `#[test]`
-attributes — the badge overstates by 20.6%. The same README also says *"**Tests**: 250+ passing (100%)"* in
-three separate places, and *"**Version**: 0.2.0"* while `usemeter/Cargo.toml` says `version = "0.1.0"`. It also
-claims *"**Status**: Production-Ready (Phase 1)"* next to a badge reading `phase-2`.
+attributes — the badge overstates by 20.6% (247 confirmed three independent ways: `git grep -c`,
+`git ls-files | xargs grep`, and a working-tree `grep -rho`; all three agree exactly, across 51 files). The same
+README says *"**Tests**: 250+ passing (100%)"* in **four** separate places (lines 297, 309, 428, 470) and
+*"**Version**: 0.2.0"* (lines 295, 470) while `usemeter/Cargo.toml` says `version = "0.1.0"`. It also claims
+*"**Status**: Production-Ready (Phase 1)"* (line 470) next to a badge reading `phase-2`.
 
 ### 3b. 95.5% of the repository is committed build output
 
@@ -433,12 +441,15 @@ $ git ls-files | grep -c "/target/"
 $ git ls-files | wc -l
 11181
 $ (sum of tracked bytes under */target/*)
-5063705578 bytes  =  4.83 GB
+5063705578 bytes  =  5.06 GB (4.72 GiB)   # 99.91% of all tracked bytes
 ```
 
 `model-registry/target/`, `privox/target/`, `quicunnel/target/`, `token-vault/target/`, `usemeter/target/` —
-**10,671 tracked files, 4.83 GB**, including `debug/.cargo-lock` files and `build/*/out/private.rs` generated
-sources. The `.gitignore` has `/target/` — **root-anchored**, so it correctly does not match the member crates'
+**10,671 tracked files, 5,063,705,578 bytes = 5.06 GB (4.72 GiB)**, which is **99.91% of every tracked byte in
+the repository** and 95.46% of every tracked file. The largest single tracked artifacts are 70.8 MB
+(`privox/target/debug/examples/server`), 46.4 MB (`quicunnel/target/debug/deps/quicunnel-*`) and 33.6 MB
+(`token-vault/target/debug/deps/libreqwest-*.rlib`). The set also includes `debug/.cargo-lock` files and
+`build/*/out/private.rs` generated sources. The `.gitignore` has `/target/` — **root-anchored**, so it correctly does not match the member crates'
 targets, which is *why* they were committed. Not a cosmetic-ignore case; a scope case. But the result is the same:
 the repository is 95.5% build output, and `usemeter` is 40× the size of its sibling for no substantive reason.
 
@@ -496,10 +507,18 @@ exclude  = ["privox", "tripartite-rs", "knowledge-vault", "usemeter"]
 | `knowledge-vault-rs` | 28 | ✗ not a member |
 | `quicunnel` | 20 | ✗ not a member |
 | `usemeter` | **20** | ✗ **excluded — the repo's own crate** |
+| `tests/integration/` (root) | **3** | ✗ **orphan — not a cargo test target at all** (see below) |
 | **total** | **7,387** | **244 = 3.3%** |
 
 **The repository named `usemeter` excludes the `usemeter` crate from the workspace its CI tests.** 96.7% of the
 test suite is unrun, unlinted, and unformatted in CI, including the repo's own crate.
+
+**And the last 3 are not even compiled by any cargo command.** The root `Cargo.toml` is a **virtual manifest** —
+it has `[workspace]` and **no `[package]`** (`grep -c '^\[package\]' Cargo.toml` → 0). Cargo test targets live
+at `<package>/tests/`, so a `tests/` directory sitting at the root of a virtual workspace is **not a test target
+for any member**: `tests/integration/{consensus_flow,knowledge_vault,privacy_roundtrip}.rs` (3 `#[test]`s, plus
+`hardware_constraints.rs`, `performance_benchmarks.rs`, `mod.rs`) are **orphan test code that no cargo invocation
+can reach**.
 
 **Why another agent should care:** the fleet census sees `usemeter` and `Tripartite1` as two projects. They are
 one. An agent doing a fleet-wide survey will double-count it, and an agent picking a repo to trust will pick the
@@ -710,6 +729,21 @@ into `forgemaster`, `exocortex`, `usemeter` and `fm-experiments` — not the cod
   only 600, which is how its `Differential Test` workflow looked like 22/50 when the true figure is **22/245**
   (and `.github/workflows/ci.yml` is **0/222**, not 0/28). The corrected §1 is strictly stronger than the
   original: three eras of one step, and a break on a Markdown-only commit.
+- **Independent adversarial verification.** This report was audited by a separate verifier agent working from a
+  **from-scratch clone in a different sandbox** (no access to the author's files, notes, or clones), with an
+  explicit brief to break every claim. It **confirmed** the load-bearing claims: the 123/123 empty gitlinks and
+  the exit-128 `submodule update`; `test_multi_compiler.py` exiting 0 with a success banner while its own test
+  fails; the five foreign badges and the `tests-298/298` vs 247 gap; the usemeter byte count **to the byte**
+  (10,671 files / 5,063,705,578); the full `#[test]` census (7,387 total, 244 in `crates/`, privox 3,523,
+  token-vault 1,768, model-registry 1,747, tripartite-rs 34, knowledge-vault-rs 28, quicunnel 20, usemeter 20);
+  and the exocortex jobs payload showing `Lint (ruff) -> failure` + `Run tests -> skipped`. It also **found four
+  errors in this report, all corrected above**: (1) the README diff is **two** hunks, not five, and the appendix
+  is **106** added lines, not 112; (2) the Overview is *added*, not *replaced*; (3) "250+ tests passing (100%)"
+  appears in **four** places, not three; (4) the byte figure is **5.06 GB (4.72 GiB)**, not 4.83 GB. It also
+  correctly located the **3 `#[test]`s my table was missing** — in the root `tests/integration/` — which turned a
+  cosmetic table gap into the virtual-manifest finding above. One claim it queried, the **247 `#[test]`s in
+  `Tripartite1`**, was re-measured three independent ways and is exact; the verifier's 0 was an artifact of its
+  own script, not a defect in the claim.
 - **Read a CI file's *git history*, not just its current contents.** `git log -- .github/workflows/ci.yml` for
   exocortex is four commits, and the current file is a *later* generation than the one the first green run used.
   The `pytest || true` era and the `Lint (ruff)` era are both invisible in the current file. `cargo`/`rustc` are absent, so no Rust code was executed; the Rust findings are read-only
@@ -733,7 +767,7 @@ into `forgemaster`, `exocortex`, `usemeter` and `fm-experiments` — not the cod
    `tests/test_*.py` instead of the re-implementation, and give `test_multi_compiler.py` a real `sys.exit(1)`.
 3. **`usemeter`:** commit `Cargo.lock`, drop the global `RUSTFLAGS: -Dwarnings` (keep it on the clippy step, where
    it only applies to local code), add the excluded crates to the workspace or test them separately, and
-   `git rm -r --cached` the 4.83 GB of `target/`. Then fix the README to point its badges at `usemeter`.
+   `git rm -r --cached` the 5.06 GB of `target/`. Then fix the README to point its badges at `usemeter`.
 4. **`fm-experiments`:** write a `requirements.txt` and scope `pytest` to the directories that can import.
 5. **Everywhere:** adopt `exoj`'s three pieces — a sealed spec gate that runs **first**, a README-pin test that
    holds the README's numbers to their artifacts, and an append-only anti-entropy log.
