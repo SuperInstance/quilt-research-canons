@@ -51,7 +51,7 @@ the *other* one, whose CI has never passed. The #5 is the pattern to copy.
 | 2 | `forgemaster` | The fleet's "constraint-aware agentic compiler": **123 gitlinks, all 123 empty after a clean clone, and no `.gitmodules` at all** (`git submodule update --init` → **exit 128**). Its CI badge is a Python re-implementation of a DSL the real compiler's grammar does not contain. Its "cross-compiler compatibility proof" **exits 0 and prints a success banner even when its own tests fail**. And across its **1,432 runs**, one workflow ran **629 times and never passed once**, while the green badge belongs to a 22-run workflow. |
 | 3 | `usemeter` (+ `Tripartite1`) | `usemeter`'s README **is** `Tripartite1`'s README — all four status badges and the `tests-298/298` badge still point at `Tripartite1`, whose CI/Documentation/Security have **never had a passing run** (0/14, 0/14, 0/71). `usemeter` itself: **0/6, 0/6, 0/62**, last run 2026-04-15. **10,671 of 11,181 tracked files are committed `target/` build output (5.06 GB = 99.91% of all tracked bytes).** CI tests **244 of 7,387** `#[test]`s. |
 | 4 | `fm-experiments` | 330 Python files, 179 of them import `torch`/`numpy`, **no `requirements.txt`, no `setup.py`, no `pyproject.toml`**. CI installs `pytest` only, then runs `python -m pytest -v` from the repo root → collects 14 test files that import `torch` → **collection errors. CI: 0/2, never passed.** Its README also says "Four experiments" over a table of three. |
-| 5 | `exoj` | **Positive control, mutation-verified.** 28/28 green locally, no install. `lab/readme-pin.test.mjs` pins the README's headline numbers to the artifact of record — **mutate one digit → RED (exit 1); restore → GREEN.** `tools/spec_gate.mjs` is a fail-closed sha256 seal and is the **first** CI step. |
+| 5 | `exoj` | **Positive control, mutation-verified — with one crack worth more than the praise.** 28/28 green locally, no install; `lab/readme-pin.test.mjs` pins the README's numbers to the artifact of record (**mutate one digit → RED, exit 1; restore → GREEN**); `tools/spec_gate.mjs` is a fail-closed sha256 seal and is the **first** CI step. **But the pin test's own `FAIL-FIRST` comment shows it was satisfied by editing a results line inside the charter section that promises never to be edited — a test that pins a document can be satisfied by rewriting the document.** |
 
 ---
 
@@ -470,9 +470,31 @@ $ (sum of tracked bytes under */target/*)
 the repository** and 95.46% of every tracked file. The largest single tracked artifacts are 70.8 MB
 (`privox/target/debug/examples/server`), 46.4 MB (`quicunnel/target/debug/deps/quicunnel-*`) and 33.6 MB
 (`token-vault/target/debug/deps/libreqwest-*.rlib`). The set also includes `debug/.cargo-lock` files and
-`build/*/out/private.rs` generated sources. The `.gitignore` has `/target/` — **root-anchored**, so it correctly does not match the member crates'
-targets, which is *why* they were committed. Not a cosmetic-ignore case; a scope case. But the result is the same:
-the repository is 95.5% build output, and `usemeter` is 40× the size of its sibling for no substantive reason.
+`build/*/out/private.rs` generated sources. **The mechanism is not one rule — it is an inventory, and one crate breaks the pattern.** The root
+`.gitignore` carries `/target/` (root-anchored) and was added **2026-01-02**, *before* any `target/` file
+exists in the tree (the first target files land **2026-01-08**). Per crate:
+
+| crate | own `.gitignore` | its target rule | tracked `target/` files |
+|---|---|---|---|
+| root | yes | `/target/` (anchored) | 0 |
+| `privox` | **NONE** | — | **3,533** |
+| `model-registry` | **NONE** | — | **2,416** |
+| `usemeter` | **NONE** | — | **1,743** |
+| `quicunnel` | **NONE** | — | **1,200** |
+| **`token-vault`** | **yes** | **`target/` (unanchored — would match)** | **1,779** |
+| `tripartite-rs` | yes | `/target/` | 0 |
+| `knowledge-vault-rs` | yes | `/target/` | 0 |
+
+**8,892 of the 10,671 files (83.4%) are explained by the scope case**: four crates have no `.gitignore` of
+their own, so the root's anchored `/target/` never covered them and `git add .` swept them in.
+
+**`token-vault` is the one that breaks the pattern, and it is the worst case.** It has its own `.gitignore`
+with an **unanchored `target/`** — a rule that *would* have matched `token-vault/target/` — and that
+`.gitignore` was added in **`80f6036` (2026-01-08), the same commit that first added its `target/` files**. So
+**1,779 tracked build artifacts were force-added in the very commit that created the rule meant to exclude
+them.** A rule and its violation in the same commit, at the same path, in the same tree. That is the
+`superinstance-api` defect (`.gitignore` lists `.wrangler/`, the file is still tracked) in its purest form:
+**the ignore rule is not a filter, it is a comment.** The only cure is `git rm -r --cached`.
 
 ### 3c. No lockfile + warnings-as-errors = a CI that cannot stay green
 
@@ -609,11 +631,13 @@ install step for what it *actually* installs, then grep the test files for their
 
 ---
 
-## 5. `exoj` — the positive control, mutation-verified
+## 5. `exoj` — the positive control, mutation-verified, with one crack that is worth more than the praise
 
 **`SuperInstance/exoj` · 34 JS/TS files · CI: forge 17/17, smoke 27/27 (both green) · contains the canary.**
 
-This is the artifact the rest of this report should be measured against.
+This is the artifact the rest of this report should be measured against — and the one place in the fleet where
+the machinery is genuinely right. It is also the one place where the machinery is *right for the wrong reason*
+in one spot, and that spot is worth more than the praise. Read §5a.
 
 **It runs, locally, with no install and no network:**
 
@@ -660,11 +684,58 @@ codes — `E_SPEC_MISSING`, `E_SPEC_SHA_MISSING`, `E_SPEC_MALFORMED`, `E_SPEC_DI
 Note the ordering: **spec → tests → smoke.** This is the exact inverse of `exocortex`, where lint sat in front
 of the tests and killed them.
 
-**The charter promise is kept.** The README says the charter is *"versioned in this repo's first commit and never
-edited afterward."* Verified against first commit `b7e83f2c` ("seed: charter committed verbatim — the question is
-the first receipt", 2026-09-26): the charter section is **byte-identical** to HEAD. The README's *results* numbers
-were updated — and, correctly, **pinned to an artifact of record** with the note *"earlier numbers in this README
-narrate earlier runs"*, which the pin test then holds them to.
+### 5a. …and the one crack in it: the pin test *forced* an edit to the "never edited" charter
+
+**This is the most interesting thing in the repo, and it is the repo's own best test that caused it.**
+
+The README says the charter is *"versioned in this repo's first commit and never edited afterward."* The seed
+**prose** is indeed untouched — but the charter **section** runs from `## Charter (the seed, verbatim)` at
+**line 8 all the way to line 220**, and it carries a results line at **line 175** that **was** edited. The exact
+diff of the whole section (lines 8–220) between first commit `b7e83f2c` ("seed: charter committed verbatim — the
+question is the first receipt", 2026-09-26) and HEAD:
+
+```
+168c168,169
+< **Final state:** γ=0.107 η=0.893 Σ=1.0 Δ=0.497 zone=1.0 prob_open=0.917 deformations=16 observations=1
+---
+> **Final state:** γ=0.1983 η=0.8017 Σ=1.0 Δ=0.5145 zone=1.0 prob_open=0.9412 deformations=39 observations=1
+> *(pinned to artifact of record: experiments/outputs/e40_scratch.json; earlier numbers in this README narrate earlier runs)*
+```
+
+**One hunk, two lines, inside the section that promised never to change.** And the cause is documented *by the
+test itself* — `lab/readme-pin.test.mjs` opens with:
+
+```js
+// readme-pin.test.mjs — S6-R3 iteration: exoj README "Final state" must match the artifact of record.
+// FAIL-FIRST: on first run this was RED (README: deformations=16, prob_open=0.917 vs artifact 39/0.9412).
+```
+
+and the line it parses is exactly line 175:
+
+```js
+const fsLine = readme.match(/\*\*Final state:\*\*.*$/m)?.[0] ?? '';
+```
+
+**So the direction of causation is not in doubt: the test was RED first, and the charter was edited to turn it
+green.** The repo holds two disciplines that are quietly incompatible — *"the charter is never edited"* and
+*"the README's numbers are pinned to their artifact"* — and when they collided, the charter lost. The numbers
+in the charter changed; the prose did not. The charter's *own* reported result was updated to match a later
+run, inside a section whose text says it is the record of the first one.
+
+**Why this is a finding and not a nitpick:** the charter is described in the README as *"the charter of record"*,
+and the repo's whole method is receipts-before-results. But a **test that pins a document to an artifact can be
+satisfied by editing the document** — and this one was. The pin test verifies *agreement*, never *provenance*:
+it cannot tell an updated number from a fudged one, because it only compares two values. **A receipt discipline
+that can be satisfied by rewriting the receipt is not a receipt discipline.** The fix is structural and is the
+one thing `exoj` has not done: put the `**Final state:**` line **outside** the charter section, or assert in the
+test that the charter section's bytes still hash to their first-commit value (the same fail-closed
+sha256-seal technique `tools/spec_gate.mjs` already applies to `spec/SPEC.md` — the repo has the tool, it just
+did not point it at the charter).
+
+**And note what this does to the report's own claim.** An earlier draft of this section said the charter
+section was *"byte-identical"*. It was not — and the error was mine: I had compared **the first 60 lines** of
+the README and called that "the charter section", when the section runs to line 220. **Comparing a prefix of a
+region is not comparing the region.** That lesson is recorded in §7.
 
 **`ANTI-ENTROPY-LOG.md` is an append-only fault ledger** — each fault recorded when found *and* when fixed, e.g.
 `F1 — test script absent / broken directory mode`: *"node --test lab/ (directory mode) fails on node ≥ 22 (treats
@@ -685,8 +756,10 @@ integer that renders identically on screen.)
 
 **Why another agent should care:** `exoj` is the *procedure* the fleet is missing everywhere else. A receipt
 discipline, a sealed spec, a fail-closed gate that runs first, a README whose numbers are machine-pinned to their
-artifacts, an append-only fault ledger, and a charter that is provably immutable. **`exoj` is the thing to copy
-into `forgemaster`, `exocortex`, `usemeter` and `fm-experiments` — not the code.**
+artifacts, an append-only fault ledger, and a charter whose *prose* is provably immutable. **`exoj` is the thing
+to copy into `forgemaster`, `exocortex`, `usemeter` and `fm-experiments` — not the code.** And §5a is the
+correction every copy needs to carry with it: **a pin test that compares values cannot prove provenance, and the
+way it was made green was to edit the record it was checking.**
 
 ---
 
@@ -702,6 +775,13 @@ into `forgemaster`, `exocortex`, `usemeter` and `fm-experiments` — not the cod
   (Phase 1)" vs a `phase-2` badge; "250+ tests passing (100%)" vs a CI with zero passing runs; `tests-298/298` vs
   247 actual `#[test]`s (§3a).
 - **`usemeter` and `Tripartite1` are one project under two names**, and the fleet census counts them as two (§3).
+- **`usemeter`'s own `.gitignore` rules are violated in the commit that creates them** — `token-vault/.gitignore`
+  with an unanchored `target/` landed in the same commit as 1,779 force-added `target/` files (§3b).
+- **`exoj`'s README promises its charter is *"never edited afterward"* — and the charter section was edited**, by
+  the repo's own pin test, to make that test pass (§5a). A record that can be rewritten to satisfy the check
+  against it is not a record of record.
+- **`exoj`'s pin test verifies agreement, never provenance** — it compares two numbers and cannot distinguish an
+  updated number from a fudged one (§5a).
 
 ---
 
@@ -768,6 +848,14 @@ into `forgemaster`, `exocortex`, `usemeter` and `fm-experiments` — not the cod
   cosmetic table gap into the virtual-manifest finding above. One claim it queried, the **247 `#[test]`s in
   `Tripartite1`**, was re-measured three independent ways and is exact; the verifier's 0 was an artifact of its
   own script, not a defect in the claim.
+- **Comparing a prefix of a region is not comparing the region.** I declared `exoj`'s charter section
+  *"byte-identical"* to its first commit after diffing **the first 60 lines** — and the section runs to
+  **line 220**, where a results line at 175 had in fact been edited. The correct check is to diff the
+  **whole region** (here `sed -n '8,220p'` of both revisions) and read the hunk, not the headline. A second
+  instance of the same shape: `usemeter`'s `.gitignore` mechanism is not one rule but a **per-crate
+  inventory**, and the one crate that *does* have a matching rule is the one that breaks the pattern
+  (1,779 force-added files in the same commit that added the rule). **Check the exceptional case, not the
+  average one.**
 - **Read a CI file's *git history*, not just its current contents.** `git log -- .github/workflows/ci.yml` for
   exocortex is four commits, and the current file is a *later* generation than the one the first green run used.
   The `pytest || true` era and the `Lint (ruff)` era are both invisible in the current file. `cargo`/`rustc` are absent, so no Rust code was executed; the Rust findings are read-only
@@ -793,5 +881,11 @@ into `forgemaster`, `exocortex`, `usemeter` and `fm-experiments` — not the cod
    it only applies to local code), add the excluded crates to the workspace or test them separately, and
    `git rm -r --cached` the 5.06 GB of `target/`. Then fix the README to point its badges at `usemeter`.
 4. **`fm-experiments`:** write a `requirements.txt` and scope `pytest` to the directories that can import.
-5. **Everywhere:** adopt `exoj`'s three pieces — a sealed spec gate that runs **first**, a README-pin test that
-   holds the README's numbers to their artifacts, and an append-only anti-entropy log.
+5. **`exoj`:** move the `**Final state:**` line **out of** the charter section, and add to the pin test an
+   assertion that the charter section still hashes to its first-commit value — `tools/spec_gate.mjs` already
+   implements exactly that technique for `spec/SPEC.md`, so the repo has the tool and simply did not point it
+   at the charter. Then, and only then, copy the pattern fleet-wide.
+6. **Everywhere:** adopt `exoj`'s three pieces — a sealed spec gate that runs **first**, a README-pin test that
+   holds the README's numbers to their artifacts, and an append-only anti-entropy log — **plus the correction
+   from §5a: a pin test that compares values must also seal the region it reads, or it can be satisfied by
+   rewriting the region.**
