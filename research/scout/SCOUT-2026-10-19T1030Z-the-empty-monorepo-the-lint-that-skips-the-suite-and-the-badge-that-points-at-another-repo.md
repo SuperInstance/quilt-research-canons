@@ -5,6 +5,10 @@
 **Census:** **5,296 public repos / 53 pages**, `unique_by(.full_name) == rows_returned` **PASS**
 (5,296 raw rows, 5,296 unique, 0 duplicates, 0 non-monotonic adjacent pairs under case-insensitive collation).
 **821 forks / 4,475 own / 16 archived / 0 private.** The 54th page was empty.
+**Independently re-derived by the adversarial verifier** (unauthenticated, in a different sandbox):
+`GET /users/SuperInstance` → `public_repos = 5,296` ✔; page 53 = **96 rows**, page 54 = **0 rows**; total from
+pagination = 52×100 + 96 = **5,296** ✔; over 4,196 rows across 41 fetched page boundaries: **0 duplicates, 0
+non-monotonic boundaries, 0 non-monotonic within-page pairs** ✔.
 Growth: **+0 vs the 0745Z census 3 hours earlier**; **+183 in 18 days ≈ 10.2/day** vs the 5,113 of 2026-10-01.
 The 5,113 figure in the standing brief is **stale** — re-derive it, it is 5,296 today.
 
@@ -44,8 +48,8 @@ the *other* one, whose CI has never passed. The #5 is the pattern to copy.
 | # | Repo | The one-line surprise |
 |---|------|------------------------|
 | 1 | `exocortex` | Published on PyPI as `si-exocortex` v0.1.0. **One CI step, three eras: `pytest \|\| true` (could never fail) → `pytest -v` (11 green runs) → `skipped` for 6 straight runs since 2026-08-05.** The break landed on a **Markdown-only commit** — the workflow file never changed; the **unpinned `ruff`** did. |
-| 2 | `forgemaster` | The fleet's "constraint-aware agentic compiler": **123 gitlinks, all 123 empty after a clean clone, and no `.gitmodules` at all** (`git submodule update --init` → **exit 128**). Its CI badge is a Python re-implementation of a DSL the real compiler's grammar does not contain. Its "cross-compiler compatibility proof" **exits 0 and prints a success banner even when its own tests fail**. |
-| 3 | `usemeter` (+ `Tripartite1`) | `usemeter`'s README **is** `Tripartite1`'s README — all four badges and the `tests-298/298` badge still point at `Tripartite1`, whose CI/Documentation/Security have **never had a passing run** (0/14, 0/14, 0/71). `usemeter` itself: **0/6, 0/6, 0/62**, last run 2026-04-15. **10,671 of 11,181 tracked files are committed `target/` build output (5.06 GB = 99.91% of all tracked bytes).** |
+| 2 | `forgemaster` | The fleet's "constraint-aware agentic compiler": **123 gitlinks, all 123 empty after a clean clone, and no `.gitmodules` at all** (`git submodule update --init` → **exit 128**). Its CI badge is a Python re-implementation of a DSL the real compiler's grammar does not contain. Its "cross-compiler compatibility proof" **exits 0 and prints a success banner even when its own tests fail**. And across its **1,432 runs**, one workflow ran **629 times and never passed once**, while the green badge belongs to a 22-run workflow. |
+| 3 | `usemeter` (+ `Tripartite1`) | `usemeter`'s README **is** `Tripartite1`'s README — all four status badges and the `tests-298/298` badge still point at `Tripartite1`, whose CI/Documentation/Security have **never had a passing run** (0/14, 0/14, 0/71). `usemeter` itself: **0/6, 0/6, 0/62**, last run 2026-04-15. **10,671 of 11,181 tracked files are committed `target/` build output (5.06 GB = 99.91% of all tracked bytes).** CI tests **244 of 7,387** `#[test]`s. |
 | 4 | `fm-experiments` | 330 Python files, 179 of them import `torch`/`numpy`, **no `requirements.txt`, no `setup.py`, no `pyproject.toml`**. CI installs `pytest` only, then runs `python -m pytest -v` from the repo root → collects 14 test files that import `torch` → **collection errors. CI: 0/2, never passed.** Its README also says "Four experiments" over a table of three. |
 | 5 | `exoj` | **Positive control, mutation-verified.** 28/28 green locally, no install. `lab/readme-pin.test.mjs` pins the README's headline numbers to the artifact of record — **mutate one digit → RED (exit 1); restore → GREEN.** `tools/spec_gate.mjs` is a fail-closed sha256 seal and is the **first** CI step. |
 
