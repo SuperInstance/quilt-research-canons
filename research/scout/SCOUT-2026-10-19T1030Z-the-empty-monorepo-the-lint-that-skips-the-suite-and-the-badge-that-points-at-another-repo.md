@@ -55,7 +55,7 @@ the *other* one, whose CI has never passed. The #5 is the pattern to copy.
 
 ---
 
-## 1. `exocortex` — one CI step, three eras, and a break on a commit that changed only Markdown
+## 1. `exocortex` — one CI step, five eras, and a break on a commit that changed only Markdown
 
 **`SuperInstance/exocortex` · 9 top-level test files + 3 under `mentis-thinker-adapter/` · PyPI: `si-exocortex` v0.1.0, released 2026-07-12 (verified live on pypi.org).**
 
@@ -868,7 +868,9 @@ way it was made green was to edit the record it was checking.**
   the **jobs API payload** (what GitHub actually ran) plus a static AST check of the rule that fails — and it is
   labelled as such.
 - **Correction carried into the canon (why the banner at the top is there).** The first draft of §1 said the
-  exocortex pytest suite *"has never run in CI."* It did — 11 successful `Run tests` steps on 2026-07-12/13/20.
+  exocortex pytest suite *"has never run in CI."* It did — it ran and passed in **~20 of the 27 CI runs**
+  (including every run of the 9-run red era, where the lint was a *separate job* and all three `Test` jobs
+  succeeded). Only the **six** runs from 2026-08-05 onward have `Run tests -> skipped`.
   The error was **reading one recent run's job payload and generalising it to the repo's history**. The rule this
   earns: *a "never" claim about a CI step requires reading the step list across the **whole** run history, and
   `per_page=100` on `/actions/runs` is not enough* — `forgemaster` has **1,432** runs and my first pass fetched
@@ -934,7 +936,8 @@ way it was made green was to edit the record it was checking.**
 1. **`exocortex`:** pin the linter (`ruff==<version>` in the dev extra), move `ruff check .` into its own job
    (or add `continue-on-error: true` to it), add `fail-fast: false` to the matrix, and delete the 37 unused
    imports. That is a 20-minute fix that turns a red badge into a real one — and un-skips a test suite that
-   **passed 11 times** and has been dark for six consecutive runs since 2026-08-05.
+   **passed in ~20 of the 27 CI runs** — including the whole red era, where lint was a separate job — and has
+   been dark for six consecutive runs since 2026-08-05.
 2. **`forgemaster`:** add the missing `.gitmodules` (or delete the 123 gitlinks). Until one of those happens, the
    repo cannot be cloned into a working state by anyone. Then point CI at the real `guardc` compiler and at
    `tests/test_*.py` instead of the re-implementation, and give `test_multi_compiler.py` a real `sys.exit(1)`.
