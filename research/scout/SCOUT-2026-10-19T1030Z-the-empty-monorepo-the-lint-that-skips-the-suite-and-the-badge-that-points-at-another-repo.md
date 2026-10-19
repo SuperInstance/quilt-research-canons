@@ -356,7 +356,24 @@ So `forgemaster`'s CI badge *can* go red. The problem is not vacuity — it is t
 (`tests/test_*.py`, 6 files) that would test the actual package are **never run by any workflow**. CI installs
 `pytest` and then does not use it.
 
-### 2f. And the README's headline API does not exist
+### 2f. And the complete CI history is 1,432 runs deep
+
+`forgemaster` has **1,432 workflow runs** in total. Fetched to exhaustion (15 pages, `len(runs) == total_count`):
+
+| workflow | green / total | window |
+|---|---|---|
+| **`.github/workflows/ci.yml`** | **0 / 629** | 2026-05-04 .. 2026-05-26 |
+| **`Differential Test`** | **22 / 625** (96.5% red) | 2026-05-05 .. 2026-09-21 |
+| `FLUX CI` | 22 / 22 | 2026-05-26 .. 2026-09-21 |
+| `Metal SRAM Bake` | 0 / 2 | 2026-05-04 .. 2026-05-05 |
+| `test` | 154 / 154 | 2026-05-08 .. 2026-05-17 |
+
+**One workflow ran 629 times and never passed a single run.** Another — the `Differential Test` workflow that is
+the *whole* of the CI described in §2b — **failed 603 of 625 times**. The green `FLUX CI` badge the repo shows
+today belongs to the **22-run, four-month-old** workflow, not to the 629-run one that died in May 2026. **A badge
+is a label on one workflow**, and a repo can carry a green badge and a 629-run corpse at the same time.
+
+### 2g. And the README's headline API does not exist
 
 ```python
 from forgemaster import Forge
@@ -727,9 +744,11 @@ into `forgemaster`, `exocortex`, `usemeter` and `fm-experiments` — not the cod
   The error was **reading one recent run's job payload and generalising it to the repo's history**. The rule this
   earns: *a "never" claim about a CI step requires reading the step list across the **whole** run history, and
   `per_page=100` on `/actions/runs` is not enough* — `forgemaster` has **1,432** runs and my first pass fetched
-  only 600, which is how its `Differential Test` workflow looked like 22/50 when the true figure is **22/245**
-  (and `.github/workflows/ci.yml` is **0/222**, not 0/28). The corrected §1 is strictly stronger than the
-  original: three eras of one step, and a break on a Markdown-only commit.
+  only 600, which is how its `Differential Test` workflow looked like 22/50. Re-fetched to exhaustion (15 pages,
+  `len(runs) == total_count == 1432`): the true figures are **`Differential Test` 22/625 green** and
+  **`.github/workflows/ci.yml` 0/629 green** (not 0/28, and not 0/222 either — that figure was itself measured
+  over only 600 runs). The corrected §1 is strictly stronger than the original: three eras of one step, and a
+  break on a Markdown-only commit.
 - **Independent adversarial verification.** This report was audited by a separate verifier agent working from a
   **from-scratch clone in a different sandbox** (no access to the author's files, notes, or clones), with an
   explicit brief to break every claim. It **confirmed** the load-bearing claims: the 123/123 empty gitlinks and
