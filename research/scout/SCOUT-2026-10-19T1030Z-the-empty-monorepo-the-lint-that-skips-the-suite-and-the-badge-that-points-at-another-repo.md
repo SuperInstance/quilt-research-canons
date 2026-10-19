@@ -47,7 +47,7 @@ the *other* one, whose CI has never passed. The #5 is the pattern to copy.
 
 | # | Repo | The one-line surprise |
 |---|------|------------------------|
-| 1 | `exocortex` | Published on PyPI as `si-exocortex` v0.1.0. **One CI step, three eras: `pytest \|\| true` (could never fail) → `pytest -v` (11 green runs) → `skipped` for 6 straight runs since 2026-08-05.** The break landed on a **Markdown-only commit** — the workflow file never changed; the **unpinned `ruff`** did. |
+| 1 | `exocortex` | Published on PyPI as `si-exocortex` v0.1.0. **One CI step, five eras** — including one era where the lint was a **separate job** and the tests ran green while the run was red, and a later era where the lint was **merged back in front of the tests**. It has been **`skipped` for 6 straight runs since 2026-08-05**, and the break landed on a **Markdown-only commit** — the workflow file never changed; an **unpinned `ruff`** did. |
 | 2 | `forgemaster` | The fleet's "constraint-aware agentic compiler": **123 gitlinks, all 123 empty after a clean clone, and no `.gitmodules` at all** (`git submodule update --init` → **exit 128**) — but **106 of the 109 doors whose name is a live fleet repo still resolve to a real commit today**. The content is fine; the index is missing. Its CI badge is a Python re-implementation of a DSL the real compiler's grammar does not contain. Its "cross-compiler compatibility proof" **exits 0 and prints a success banner even when its own tests fail**. And across its **1,432 runs**, one workflow ran **629 times and never passed once**, while the green badge belongs to a 22-run workflow. |
 | 3 | `usemeter` (+ `Tripartite1`) | `usemeter`'s README **is** `Tripartite1`'s README — all four status badges and the `tests-298/298` badge still point at `Tripartite1`, whose CI/Documentation/Security have **never had a passing run** (0/14, 0/14, 0/71). `usemeter` itself: **0/6, 0/6, 0/62**, last run 2026-04-15. **10,671 of 11,181 tracked files are committed `target/` build output (5.06 GB = 99.91% of all tracked bytes).** CI tests **244 of 7,387** `#[test]`s. |
 | 4 | `fm-experiments` | 330 Python files, 179 of them import `torch`/`numpy`, **no `requirements.txt`, no `setup.py`, no `pyproject.toml`**. CI installs `pytest` only, then runs `python -m pytest -v` from the repo root → collects 14 test files that import `torch` → **collection errors. CI: 0/2, never passed.** Its README also says "Four experiments" over a table of three. |
@@ -81,18 +81,31 @@ The artifact is real and installable. The CI is not — and the interesting part
         run: pytest -v
 ```
 
-The **entire** history of this file is four commits, and the test step has lived three lives
-(28 runs total across all workflows; 27 of them are the `CI` workflow; **12 green, 15 red**):
+The **entire** history of this file is four commits, and the test step has lived **five** lives
+(28 runs total across all workflows; 27 of them are the `CI` workflow; **12 green, 15 red**). The job
+structures below are the **measured jobs payload** of one run from each era, not inferred from the workflow file:
 
-| when | commit | the test step | outcome |
-|---|---|---|---|
-| **2026-06-08** | `c415914` "ci: add CI workflow" | **`Run pytest \|\| true`** | green — **and the step could not fail** |
-| **2026-07-12** (×6) | `ba8414e` "Tier 2 → Tier 1: fix CI, license, packaging" | `Run tests` (no lint step yet) | **6 green**, `Run tests=success` |
-| **2026-07-12** (×9 red) | `72e2c9b` "ci: standardize to lint/test/**build** pattern (batch2)" | `Lint (ruff)` **added** in front | **9 consecutive red** — lint failed, tests skipped |
-| **2026-07-12 21:23** | `23bdaba` "6 real bugs fixed + **fake-green test corrected** + stale claim removed" | lint fixed | **5 green** (07-13 ×3, 07-20 ×2), `Lint (ruff) -> success` **and** `Run tests -> success` |
-| **2026-08-05 → 08-21** (×6 red) | source-only commits | **workflow file unchanged since 07-12** | **6 consecutive red**, `Lint (ruff) -> failure`, `Run tests -> skipped` |
+| era | runs | commit(s) | job structure (measured) | outcome |
+|---|---|---|---|---|
+| **1** | 06-08 (×1) | `c415914` "ci: add CI workflow" | 3 × `test (…)`, each = `pip install pytest` → **`Run pytest \|\| true`** | green — **and the step could not fail** |
+| **2** | 07-12 02:12–02:48 (×6) | `ba8414e2`×2, `1d71e3e1`×2, `5f20ae2b`×2 | 3 × `test (…)` = `Install package and test dependencies` → `Run tests` — **no lint step at all** | **6 green**, `Run tests=success` |
+| **3** | 07-12 04:58–15:53 (×9 red) | `72e2c9b` "ci: standardize to lint/test/**build** pattern", `d389797` "docs: add Cross-Implementation section…" | **SPLIT**: a separate `Lint` job (`Lint with ruff` → **failure**) + `Build` (success) + 3 × `Test (…)` | run red — **but every `Test` job succeeded, `Run tests=success`** |
+| **4** | 07-13 – 07-20 (×5) | `23bdaba` "6 real bugs fixed + **fake-green test corrected**", `a30adf23`×2, `cec70f9a`, `56b45709` | **MERGED**: 3 × `test (…)` = `Install…` → **`Lint (ruff)`** → `Run tests` | **5 green**, lint *and* tests both pass |
+| **5** | **08-05 00:36 → 08-21** (×6 red) | `3dbe1f8` "Add Long Horizon Roadmap", `b958230`, `7b87938`, `5f4e801`, `b48fd00`, `ae40f14` | merged, **and now the lint fails** | `Lint (ruff) -> failure`, **`Run tests -> skipped`**, sibling legs **`cancelled`** |
 
-Three things fall out of this table that a badge alone would never show you:
+**The structural finding is sharper than "a linter sits in front of the tests": the repo already had the right
+structure, and then lost it.** In **era 3** the lint was a **separate job** (`Lint`, `Build`, `Test (3.10)`,
+`Test (3.11)`, `Test (3.12)`) — which is *exactly* the structure this report recommends as the fix — and the
+**tests ran and passed while the run was red**. In **era 4** the lint was **merged back into** each `test (…)`
+job, in front of `Run tests`. In **era 5** that merged arrangement finally cost the test runs: the lint fails,
+`Run tests` is **skipped**, and the sibling legs are **cancelled**. **A repo fixed its lint/test separation,
+then un-fixed it, and then paid for it.**
+
+And the **count** matters: because era 3's red runs *did* run the tests, the test step succeeded in **~20 of
+the 27 CI runs**, not 11. **Only the six runs from 2026-08-05 onward have `Run tests -> skipped`.** (An earlier
+draft of this report said 11 and said era 3 skipped the tests; both were wrong, and both are corrected here.)
+
+Four things fall out of this table that a badge alone would never show you:
 
 1. **The test step's first incarnation was `pytest || true`.** A test step with `|| true` **cannot fail** — it
    reports `success` whether the suite passes, errors, or doesn't exist. The repo's own commit message three weeks
@@ -100,10 +113,10 @@ Three things fall out of this table that a badge alone would never show you:
    unconditionally — is the same defect class as `forgemaster`'s `test_multi_compiler.py` below, and it is worth
    noticing that this repo has now hosted **both** versions of the same anti-pattern: a test step that can't fail,
    and a test step that never runs.
-2. **The suite did run, and it did pass — 11 times** (6 on 07-12, 5 on 07-13/07-20, all with `Run tests=success`).
+2. **The suite did run, and it did pass — in ~20 of the 27 CI runs**, including every run of the red era 3.
    The corrected claim is therefore **not** "the suite has never run"; it is **"the test step has been skipped for
    six consecutive runs since 2026-08-05"**, and it is *skipped*, not *failing*.
-3. **The break landed on a commit that changed nothing but Markdown.** The first red run is
+3. **The break landed on a commit that changed nothing but Markdown.** The first era-5 run is
    `30963828283` (2026-08-05T00:36) for commit `3dbe1f8` — *"Add Long Horizon Roadmap: Phases 7-18 (Arcs 2-5)"*:
 
    ```
@@ -115,11 +128,18 @@ Three things fall out of this table that a badge alone would never show you:
    ```
 
    The workflow file's last commit is `23bdaba` (2026-07-12 21:23) — it did not change. The last green run was
-   `cec70f9` (2026-07-20). Between them, only Markdown was touched. **The only variable left is the `ruff` build
-   itself**: `pip install -e ".[dev]"` pulls the newest ruff from PyPI on every run, with nothing pinning it, so
-   **a new ruff release that added a rule to the default set turned this repo red without a single line of code
-   changing.** And because ruff is unpinned, **the build that broke it is gone** — you cannot reproduce it locally.
-   That is a CI that is not a check at all: it is a function of PyPI's upload schedule.
+   `cec70f9` (2026-07-20). Between them, only Markdown was touched. **So the trigger is environmental, not
+   source.** `pip install -e ".[dev]"` pulls the newest ruff from PyPI on every run with nothing pinning it, so
+   **the ruff build that ran on 2026-08-05 differs from the one that ran on 2026-07-20** — and it is the only
+   variable left.
+
+   **Stated as a hypothesis with a falsifiable form, because it is one:** a ruff release between 2026-07-20 and
+   2026-08-05 changed what it reports on this tree. It may be a rule added to the default set, a rule whose
+   *detection* changed, a `target-version` behaviour change, or a regression. **The 37 `F401`s in §1b cannot be
+   the cause** — they were introduced *after* 2026-08-05 (`b958230` and the 08-06/08-07 test commits) and are
+   what keeps the lint red today. **The build that broke it is unpinned and unrecorded, so it cannot be
+   reproduced.** That is the point: a CI whose result depends on an unrecorded tool version is not a check, it
+   is a function of PyPI's upload schedule.
 
    The subsequent commits then piled real F401s on top of the already-broken lint — `b958230` "Mentis mental world
    model adapter" (2026-08-05, adds `mentis-thinker-adapter/` = 23 of the 37 unused imports) and a burst of
@@ -127,6 +147,9 @@ Three things fall out of this table that a badge alone would never show you:
    for dream cycle and resonance engine" (this one introduced the unused `import math`), `5f4e801` "+46 tests for
    SurrealDB memory backend", `b48fd00` "fix: CortexEvent.new() trace_id collision + **103 new tests**". The
    commit titles are the tell: **294 new tests landed in two days and every one of them added a lint error.**
+   So there are **two independent causes stacked**: an environmental trigger on 2026-08-05 (unpinned ruff) and a
+   genuine code-quality regression on 2026-08-06/07 (294 new tests, each with lint errors). Fixing only the
+   second leaves the first as a landmine.
 
 ### 1b. Why the lint fails
 
