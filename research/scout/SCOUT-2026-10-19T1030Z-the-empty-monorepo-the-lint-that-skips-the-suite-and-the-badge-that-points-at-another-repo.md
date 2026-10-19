@@ -233,10 +233,26 @@ The empty doors are not decorative. They include:
   guard/guardc           REAL FILES  (the only guard that shipped)
 ```
 
-This is the **empty-door defect at 5× the scale of `plato-portal` (25 gitlinks)**, and it is worse there: in
-`plato-portal` the path was tracked so a URL existed somewhere; here the mapping does not exist at all, so **no
-clone of any commit can populate any of the 123 directories**. `forgemaster` is the repo that claims to *assemble
-the fleet*. It cannot assemble itself.
+**And the content behind those doors is still there.** Of the 123 door paths, **109 have a basename that is a
+live fleet repo**, and for those the pinned commit was tested against the fleet's own API:
+
+| | count |
+|---|---|
+| gitlink doors | **123** |
+| door basename is a live `SuperInstance/*` repo | **109** |
+| **pinned SHA RESOLVES to a real commit in that repo today** | **106 / 109** |
+| SHA not found on the default branch (HTTP 422) | 3 (`eisenstein-vs-z2`, `luciddreamer`, `spectral-conservation`) |
+
+**So 106 of the 123 empty doors point at content that is public and reachable right now.** The content is not
+lost; **the index is broken.** A clone cannot populate any of them, but a `curl` can fetch every one of them.
+
+**This is the same defect as `plato-portal` — at 5× the scale — not a worse one.** Verified on `plato-portal`
+itself: it has **25 gitlinks and no `.gitmodules` in any commit** (`git log --all -- .gitmodules` → empty), and
+`git submodule update --init` there also **exits 128**. The earlier draft of this report claimed `plato-portal`
+had a URL somewhere; it does not, and never did. Both repos are the *same* failure, and the remediation is
+therefore **mechanical rather than archaeological**: write the missing `.gitmodules` with the URLs and every one
+of those 106 doors opens. `forgemaster` is the repo that claims to *assemble the fleet*; its own 123 doors are
+an index with no index, and 106 of the rooms behind them are already built.
 
 ### 2b. The CI badge is a self-referential re-implementation
 
@@ -793,6 +809,9 @@ way it was made green was to edit the record it was checking.**
    absent → every gitlink is an empty door and `git submodule update --init` exits 128. Found 123 in `forgemaster`.
 2. **Read the CI file, not the badge.** Name the *exact command* each workflow runs. A workflow whose only test
    step is a hand-rolled script is measuring the script.
+2b. **For an empty door, check whether the content still resolves** before calling it a loss. `forgemaster`'s 123
+   gitlink doors have no `.gitmodules` at all — but **106 of the 109 whose basename is a live fleet repo resolve
+   to a real commit today**. The fix is to write the index, not to re-find the content.
 3. **Check that the test imports the thing under test.** `grep -n "^import\|^from" <test>` — zero hits on the
    package is a self-referential test, even if it can go red.
 4. **Read the jobs payload, not the runs payload.** A failed first step turns the rest into `skipped`; a failed
@@ -848,6 +867,14 @@ way it was made green was to edit the record it was checking.**
   cosmetic table gap into the virtual-manifest finding above. One claim it queried, the **247 `#[test]`s in
   `Tripartite1`**, was re-measured three independent ways and is exact; the verifier's 0 was an artifact of its
   own script, not a defect in the claim.
+  **It also found four more errors, all corrected above**, including the one that mattered most: **my positive
+  control was wrong.** I had written that `exoj`'s charter section was *"byte-identical"* to its first commit
+  after diffing **the first 60 lines** — and the section runs to **line 220**, where a results line at 175 had in
+  fact been edited *by the repo's own pin test* (§5a). It also caught that the `plato-portal` contrast was false
+  (that repo has no `.gitmodules` in any commit either), that `forgemaster` **does** track 22 `Cargo.lock` files,
+  and that a `grep` command I quoted returns 6, not 0, because `.` is a regex wildcard. **Every one of its five
+  findings was a real error in my report, and three of them I had verified myself and still got wrong.** The
+  load-bearing claim it could not break — `public_repos = 5,296` and every mutation result — held.
 - **Comparing a prefix of a region is not comparing the region.** I declared `exoj`'s charter section
   *"byte-identical"* to its first commit after diffing **the first 60 lines** — and the section runs to
   **line 220**, where a results line at 175 had in fact been edited. The correct check is to diff the
@@ -860,11 +887,20 @@ way it was made green was to edit the record it was checking.**
   exocortex is four commits, and the current file is a *later* generation than the one the first green run used.
   The `pytest || true` era and the `Lint (ruff)` era are both invisible in the current file. `cargo`/`rustc` are absent, so no Rust code was executed; the Rust findings are read-only
   and are stated as such.
-- **No `usemeter`/`Tripartite1`/`forgemaster` `Cargo.lock` exists, so the dependency-resolution theory of their
-  red CI is a hypothesis, not a measured cause.** The *measured* facts are: every workflow in both repos has
-  never passed, the matrix fails identically on all four OS/toolchain legs, `RUSTFLAGS: -Dwarnings` is global,
-  the toolchain is floating `stable`, and no lockfile is tracked. The interaction is the standard mechanism, but
-  the logs expired (HTTP 410 on the job-logs endpoint) so the failing line could not be read directly.
+- **No `Cargo.lock` is tracked in `usemeter` or `Tripartite1`, so the dependency-resolution theory of their red
+  CI is a hypothesis, not a measured cause.** The *measured* facts are: every workflow in both repos has never
+  passed, the matrix fails identically on all four OS/toolchain legs, `RUSTFLAGS: -Dwarnings` is global, the
+  toolchain is floating `stable`, and no lockfile is tracked. The interaction is the standard mechanism, but the
+  logs expired (HTTP 410 on the job-logs endpoint) so the failing line could not be read directly.
+  **Correction (verifier-found): `forgemaster` DOES track 22 `Cargo.lock` files** (`guard/guardc/Cargo.lock`,
+  `ct-demo/Cargo.lock`, `cocapn/cocapn-cli/Cargo.lock`, …) and its `.gitignore` has **no** `Cargo.lock` entry —
+  so the blanket "no `Cargo.lock` in `forgemaster`" claim was wrong. The lockfile argument applies to
+  `usemeter`/`Tripartite1` only.
+- **A reproducibility defect in this report's own evidence block:** the command shown as
+  `git ls-files | grep -ci "cargo.lock"` → `0` is wrong, because `.` is a regex wildcard and the command
+  actually returns **6** (the `target/*/.cargo-lock` files). The command that returns `0` — i.e. the one that
+  proves no `Cargo.lock` *manifest* is tracked — is `git ls-files | grep -ci 'cargo\.lock'`. The claim was right;
+  the transcription of the command was not. **Quote the command you actually ran, and escape the dot.**
 
 ---
 
