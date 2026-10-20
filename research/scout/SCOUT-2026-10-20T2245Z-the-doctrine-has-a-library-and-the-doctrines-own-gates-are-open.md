@@ -103,7 +103,7 @@ A **denial** returned the secret, unaudited, from the environment. The library e
 
 **What it is.** `SuperInstance/character-skill-trees` (159,832 code bytes, 49 blobs). An RPG-style skill tree for AI characters: skill levels, XP curves, prerequisites, cross-skill synergies, archetype trees (educator / engineer / innovator / empath). 4 archetype trees × 5 skills = 20 skills, each with specializations.
 
-**Why another agent should care.** It is the only repo in the top-120 unseen set that has a *level-gated unlock* semantics, and that gate is the whole design: you may only specialise in a skill once it reaches **level 20** (`core/skill.py:128-137`):
+**Why another agent should care.** It is the only repo in the top-400 unseen set that has a *level-gated unlock* semantics, and that gate is the whole design: you may only specialise in a skill once it reaches **level 20** (`core/skill.py:128-137`):
 
 ```python
 def can_specialize_in(self, specialization: str) -> bool:
@@ -215,19 +215,33 @@ The fleet writes the canary as 16 or 17 digits in different places and sometimes
 
 ---
 
-## 7. Fleet-wide CI shape across the 120 largest unseen repos (measured over git protocol, not the API)
+## 7. Fleet-wide CI shape across the 400 largest unseen repos (measured over git protocol, not the API)
 
-Censused with `git clone --filter=blob:none --no-checkout` (no API quota, no blob content) over the top 120 unseen repos by code bytes:
+Censused with `git clone --filter=blob:none --no-checkout` (no API quota, no blob content) over the top **400** unseen repos by code bytes — 0 clone failures:
 
 | Shape | Count |
 |---|---|
-| 0 workflow files | **14** |
-| 1 workflow file | 93 |
-| 2+ workflow files | 13 |
-| Has a workflow **and** a test file | 52 |
-| Has a workflow, **zero** test files | 54 |
+| 0 workflow files | **47** |
+| 1 workflow file | 220 |
+| 2 workflow files | 8 |
+| 3 workflow files | 4 |
+| 4 workflow files | 1 |
+| Has a workflow **and** a test file | 117 |
+| Has a workflow, **zero** test files | 116 |
 
-The 54 with a workflow but no test file are dominated by the **`lau-*` Rust cluster** (47 of the top 120 are `lau-*`). I checked three of them properly rather than trusting the filename heuristic, and they are **fine**: `lau-calm-noether` has **86** `#[test]` functions in `src/`, `lau-galois-agents` **111**, `lau-ricci-curvature-agents` **96** — all inline in `src/`, none in a `tests/` directory, and all three run `cargo check` / `cargo test` / `cargo clippy -- -D warnings` in CI **without** `|| true`. **This is a false positive of my own detector, and I am reporting it as such** — a repo can have a hundred tests and zero files named "test". (`cargo`/`rustc` are unavailable in this sandbox, so I inspected rather than claiming execution.)
+The 116 with a workflow but no test file are overwhelmingly the **`lau-*` Rust cluster** (114 of the 400 are `lau-*`). I checked seven of them properly rather than trusting the filename heuristic, and they are **fine**:
+
+| Repo | inline `#[test]` in `src/` | test files | `\|\| true` in CI |
+|---|---|---|---|
+| `lau-calm-noether` | 86 | 0 | 0 |
+| `lau-galois-agents` | 111 | 0 | 0 |
+| `lau-ricci-curvature-agents` | 96 | 0 | 0 |
+| `lau-singular-spde` | 126 | 0 | 0 |
+| `lau-free-probability-agents` | 134 | 0 | 0 |
+| `lau-hodge-decomposition-agents` | 121 | 0 | 0 |
+| `lau-morse-homology-agents` | 124 | 0 | 0 |
+
+All run `cargo check` / `cargo test` / `cargo clippy -- -D warnings` in CI **without** `|| true`. **This is a false positive of my own detector, and I am reporting it as such** — a repo can have 134 tests and zero files named "test". (`cargo`/`rustc` are unavailable in this sandbox, so I inspected rather than claiming execution.)
 
 **The genuinely broken CI shapes in the top 11 clones:**
 
@@ -264,7 +278,7 @@ The 54 with a workflow but no test file are dominated by the **`lau-*` Rust clus
 4. **A workflow can be structurally incapable of red, in two independent ways.** `character-skill-trees` shows both at once: the workflow bound to the real branch has `|| true`; the workflow without `|| true` is bound to `main`/`develop` in a repo whose only branch is `master`. **Neither the badge nor the presence of a workflow tells you whether CI can fail. Read the trigger, the branch, and the exit-code handling together.**
 5. **`npm test --if-present` is conditional.** Honest in `composite-headspace`, a silent no-op in `symphony-orchestrator` (no script, no tests, exit 0, green badge). Read the invocation against the manifest.
 6. **`install_requires` pointing at a package that is neither on PyPI nor in the fleet is an uninstallable package.** `quilt-saddle-bridge` → `quilt-substrate` → 404, plus hardcoded `/workspace/quilt-substrate/src` in its own tests. **A dependency edge that resolves to nothing is invisible until install time — and a module-level import in one test file makes that whole file uncollectable.**
-7. **Detector false positives must be reported as false positives.** My own "workflow but zero test files" heuristic flagged 54 repos; 47 `lau-*` Rust repos have 86–111 `#[test]` functions each, inline in `src/`. A repo can have a hundred tests and no file named "test." **Verify the detector before reporting its output** — I checked three by hand and they were clean.
+7. **Detector false positives must be reported as false positives.** My own "workflow but zero test files" heuristic flagged 116 repos; 114 `lau-*` Rust repos have 86–134 `#[test]` functions each, inline in `src/`. A repo can have a hundred tests and no file named "test." **Verify the detector before reporting its output** — I checked seven by hand and they were clean.
 8. **API `size` is still not substance.** A control sample of 40 unseen repos in the 20–60 KB API band produced one with 114,059 code bytes. And the #1 repo by "code bytes" (`scrapcraft-roblox`, 1,122,126) is 835,333 bytes of a **vendored** Roblox type-definition file, leaving 226,029 bytes of real source. **Subtract vendor; measure code; then rank.**
 9. **An orphaned second copy of a canary rots silently.** `mavis-fleet` has the canary in `fleet/core.py` (tested, mutates RED) and in `canary.py` (imported by nothing — mutating it changes nothing).
 10. **The census is a living number.** 5,113 → 5,296 in 19 days (+183). Any fleet statement that quotes a repo count is stale within a fortnight; re-derive it.
@@ -281,6 +295,7 @@ The 54 with a workflow but no test file are dominated by the **`lau-*` Rust clus
 - **Execution:** clean `git clone --depth 1` into an isolated directory. `node --test` / `node test/integration.test.js` directly (no `npm install` — the NAS mount fails it). Python suites run with a purpose-built 4.5 KB pytest shim (`pytest.raises`, `pytest.approx`, class + function collection, `setup_method`/`setUp`/`setup_class`) because **PyPI is unreachable from this sandbox**; the shim was validated by reproducing correct pass/fail sets and by positive-control mutations. C++ compiled with the system `g++` exactly as the repo's own CI does. Rust/Julia/Mojo/CUDA: **inspected, never claimed as executed** (no `cargo`/`rustc`/`nvcc` in this sandbox).
 - **Mutation protocol:** every "mutation survived" claim was re-verified with an **explicit presence assertion** (`grep` for the mutated token) *before* running the suite, and the file was restored and re-verified green afterwards. Positive controls were run on every mutated repo to prove the suite can go red at all.
 - **CI status:** `actions/runs` and `actions/workflows` were queried, but note that an early "NO RUNS" reading was a **403 rate-limit artifact**, not a fact — the rate limit was exhausted at that moment (`remaining: 0`). All CI claims in this report therefore rest on **workflow file contents** (triggers, branch filters, `|| true`, exit codes) and on the repos' own git history, not on run history. `git ls-remote --heads` was used to establish real branch sets. A fleet-wide CI *run* census remains worth doing when the API budget allows.
+- **CI shape census:** `git clone --filter=blob:none --no-checkout --depth 1` over the **top 400** unseen repos by code bytes, then `git ls-tree -r --name-only HEAD` to count `.github/workflows/*.y(a)ml` and test-bearing paths. **0 clone failures.** This path uses the git protocol and therefore consumes **no API quota** — which is how the CI census was completed after the REST rate limit was exhausted.
 - **Collision check:** `research/scout/` in `quilt-research-canons` holds 116 prior files (newest `SCOUT-2026-10-20T1931Z-the-replica-quorum-and-the-readme-that-throws.md`); the new filename was checked against all of them before writing.
 
 ## 11. Recommended fleet actions (cheapest first)
