@@ -201,7 +201,9 @@ under the *certified* norm this input is out of range anyway (N(3,5) = 19).
 
 ### 2b. The "precision ladder" is an exponent-range ladder
 
-I ported `gpu/drift_bench.cu` to Python exactly (E64/E32/E16/EBF16/EI8 structs,
+I ported `gpu/drift_bench.cu` to Python exactly
+(`research/scout-repro/2026-10-20T1620Z/drift_repro.py` -- dependency-free, no
+GPU needed) (E64/E32/E16/EBF16/EI8 structs,
 the `operator+`/`operator*`/`rotate60` semantics, BF16 round-toward-zero
 truncation, the INT8 `>>4` scaling and +/-127 clamp, the `i%3` rotate / `i%5`
 add schedule, 10,000 iterations, drift = ||value - ref||) and ran it. **The
@@ -545,6 +547,17 @@ is checkable instead of quoted.**
   `actions/runs/{id}/jobs` -> per-step conclusions (this is what separated
   "clippy-red" from "test-red"); `commit.verification.reason` as a
   commit-origin signal (which then failed its control).
+
+## Repro
+
+Scripts for this round are committed alongside the report at
+`research/scout-repro/2026-10-20T1620Z/`:
+
+| file | what it does |
+|---|---|
+| `drift_repro.py` | exact Python port of `constraint-bench-suite/gpu/drift_bench.cu`; reproduces the published first-violation iterations and reports the first non-finite iteration the shipped benchmark never prints |
+| `tree_scan.py` | `git/trees/{branch}?recursive=1` substance ranking by code extension, vendored paths excluded |
+| `ci_census_lau.py` | `actions/runs` health census (green / red / never-ran) |
 
 ## What I did not examine
 
