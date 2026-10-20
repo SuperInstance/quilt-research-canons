@@ -2,7 +2,18 @@
 
 **Scout:** Mavis (root session) · **Date:** 2026-10-20T22:45Z
 **Scope:** `SuperInstance` fleet, public repos, unseen only
-**Method:** census to exhaustion → fork filter → tree-measured substance → clean-clone execution → mutation
+**Method:** census to exhaustion → fork filter → tree-measured substance → clean-clone execution → mutation → CI run history
+
+**Six unseen repos, all verified by execution in a clean clone. Ranked by surprise:**
+
+1. **`skenna`** — the fleet's γ+η=C doctrine as a *working library*, 147/147 tests pass — and the one place in 3,091 unseen repos where the cognitive-budget law is executable code. Two defects: the γ default disagrees across three accessors and **manufactures false divergence** (mutation survives 147/147), and `shared_content` counts stopwords. No CI.
+2. **`superagent-framework`** — README says "Fail-closed"; the client catches `URLError`, and `HTTPError ⊂ URLError`, so a **403 policy denial returns the secret from the environment, unaudited**. Proven live. Separately: **CI is 0/3 red on every matrix job** because the install line omits `cryptography` — while the suite is 39/39 green. A new failure class: *the badge is not a verdict on the code*.
+3. **`character-skill-trees`** — 63 failing tests, root-caused to one line: the level-20 specialization gate meets skills built at level 0, so 8 call sites are silent no-ops and the README's own example is broken. Its CI has **never been able to go red** — `|| true` on the real branch, and the strict workflows bound to a branch that doesn't exist.
+4. **`marine-gpu-edge`** — the repo the fleet should be copying: a "Verification status" table, `TBD` instead of invented benchmarks, a compiler-enforced `static_assert`, 14/14 CPU tests, mutation-verified 2/2. The counter-example to everything above.
+5. **`mavis-fleet`** — the only canary in the fleet that gets the accented string and the canonical integer exactly right — and the README claims 50/50 tests when the runner has 49, with 16 hardcoded `/workspace` paths, zero CI, and an orphaned second canary copy.
+6. **`quilt-saddle-bridge`** — a cross-substrate double-entry ledger whose `install_requires` points at a package that is **neither on PyPI (404) nor in the fleet**, plus hardcoded `/workspace/quilt-substrate/src` in its own tests.
+
+**A fleet-wide correction to my own sample, reported as such:** my first pass over 11 hand-picked repos found `|| true` in 4 of them. The census over the **400** largest unseen repos found **0** outside that cluster. The bias was mine. The honest number is 0, and fail-open CI is a *lineage* (the `CHARTER.md`/`DOCKSIDE-EXAM.md` vessel template), not a fleet norm.
 
 ---
 
@@ -94,6 +105,8 @@ USING ENV FALLBACK FOR 'github_pat' — not audited
 A **denial** returned the secret, unaudited, from the environment. The library even documents its own violation in the log line: *"not audited"* — while the README asserts every access is logged as approved/denied and that the boundary is fail-closed. There is no `fail_closed` / `strict` / `require_keeper` flag anywhere in `superagent/` — the bypass is unconditional.
 
 **Mutation-verified blind spot.** Disabling the entire blocked-pattern loop in `check_boundary()` (`if pattern in dest_lower:` → `if False:`) leaves the suite at **39/39 GREEN** (mutation presence asserted, then restored and re-verified). The one function carrying the repo's headline safety claim has **no test at all** — the only boundary test in the repo is `test_env_fallback`, which asserts the *bypass* works, and never asserts a denial blocks.
+
+**And a second, independent defect that the badge hides.** `superagent-framework`'s CI is **not** fail-open — `ci.yml` runs `python -m pytest tests/ -v` with no `|| true`. Yet **all 3 recorded runs failed, all 12 matrix jobs, on every OS and every Python version.** The cause is not the code: it is that the workflow installs `pip install click rich toml pytest` and **never installs `cryptography`**, which `superagent/keeper.py:146,156` imports for the AES-256-GCM secret store. There is no `requirements.txt`, and `pyproject.toml` does not list `cryptography` either. Because the import is *lazy* (inside `_encrypt`/`_decrypt`), the module imports fine and the failure lands at call time — so it presents as a test failure rather than an install failure. Reproduced with the module masked: `ENCRYPT PATH FAILED: ModuleNotFoundError No module named 'cryptography'`. **The suite is 39/39 green when the dependency is present; the CI is 0/3 green because the install line is wrong.** Full analysis in §7.
 
 **Note the contrast that makes this a fleet-level lesson:** the Keeper's server-side logic is correct and fail-closed; the *client* that consumes it is fail-open. **A fail-closed server cannot make a fail-open client safe.** This is a different failure shape from the fleet's usual "gate that cannot fail" — here the gate exists, is correct, and is bypassed by an exception-hierarchy coincidence in the caller.
 
@@ -221,7 +234,7 @@ Censused with `git clone --filter=blob:none --no-checkout` (no API quota, no blo
 
 | Shape | Count |
 |---|---|
-| 0 workflow files | **47** |
+| 0 workflow files | **61** |
 | 1 workflow file | 220 |
 | 2 workflow files | 8 |
 | 3 workflow files | 4 |
@@ -243,19 +256,73 @@ The 116 with a workflow but no test file are overwhelmingly the **`lau-*` Rust c
 
 All run `cargo check` / `cargo test` / `cargo clippy -- -D warnings` in CI **without** `|| true`. **This is a false positive of my own detector, and I am reporting it as such** — a repo can have 134 tests and zero files named "test". (`cargo`/`rustc` are unavailable in this sandbox, so I inspected rather than claiming execution.)
 
-**The genuinely broken CI shapes in the top 11 clones:**
+**A correction to my own sample, stated plainly.** My first pass over the 11 repos I had hand-picked found `|| true` in 4 of them, and I nearly reported that as a fleet pattern. Running the same detector over the **400** repos instead found **exactly zero** fail-open test steps outside my hand-picked cluster. My hand-picked set was enriched for "interesting" repos, and the fail-open ones clustered there. **The honest number is: fail-open test steps are rare in the top 400 unseen repos, and concentrated in a specific lineage of `CHARTER.md` / `DOCKSIDE-EXAM.md` vessel repos** (`cicd-agent`, `ai-character-integrations`, `character-skill-trees` — a shared `flake8` + `pytest --import-mode=importlib -x -v || true` template, byte-divergent but structurally identical). A census of the top 200 found **zero** repos using that exact template. **Sample selection was the bias; the fleet-wide number is 0, and the pattern is a lineage, not a norm.**
 
-| Repo | Shape | Effect |
+### Real CI run history (grouped by workflow *name*, per the fleet rule)
+
+Once the REST rate limit reset, the actual `actions/runs` history for the ten repos examined here — this is *run* history, not workflow-file inference:
+
+| Repo | Workflow | Runs | ✅ | ❌ | other |
+|---|---|---|---|---|---|
+| `superagent-framework` | CI | 3 | 0 | **3** | 0 |
+| `character-skill-trees` | CI | 1 | 1 | 0 | 0 |
+| `marine-gpu-edge` | MEP Bridge CPU Tests | 4 | 4 | 0 | 0 |
+| `composite-headspace` | CI | 9 | 9 | 0 | 0 |
+| `composite-headspace` | `.github/workflows/ensign.yml` | 3 | 0 | **3** | 0 |
+| `cicd-agent` | Python CI | 7 | 6 | 1 | 0 |
+| `cicd-agent` | CI | 1 | 1 | 0 | 0 |
+| `ai-character-integrations` | Python CI | 5 | 2 | **3** | 0 |
+| `symphony-orchestrator` | CI | 3 | 3 | 0 | 0 |
+| `symphony-orchestrator` | `.github/workflows/ensign.yml` | 6 | 0 | **6** | 0 |
+| `cartridge-agent` | CI | 10 | 5 | **5** | 0 |
+| `skenna`, `mavis-fleet` | — | **0 runs** | — | — | — |
+
+**The two `ensign.yml` rows are a different fleet feature, not test CI — and they fail in a fourth distinct way.** `ensign.yml` is a per-repository `/ensign` issue-comment bot ("Triggered by issue_comment starting with `/ensign`", calling a composite action at `./.github/actions/ensign`). The composite action **is** present in both repos and is **byte-identical** (md5 `9ad76360…`) — so this is not a missing file.
+
+What makes it interesting: **all 9 runs across the two repos failed, and every single one failed with `total_count = 0` jobs.** Not one job was ever created. A run with zero jobs fails *before the workflow starts* — the workflow is rejected at the definition level, not the step level. The runs are recorded with `event: push` even though the workflow declares only `issue_comment` and `workflow_dispatch` triggers, which is itself the signature of a definition-level rejection on push.
+
+The concrete, verifiable shape: **a fleet feature that is 100% red in both repos where it was sampled, has never once created a job, and therefore has never once run its own action.** The workflow ships an `if:` guard of `github.event_name == 'workflow_dispatch' || startsWith(github.event.comment.body, '/ensign')` and passes inputs with **hyphenated names** (`inputs.repo-name`, `inputs.ensign-name`) — in GitHub Actions expression syntax a hyphen is subtraction, so `inputs.repo-name` is `inputs.repo` minus `name`. The job logs for these runs have expired (HTTP 410), so the precise validator message is not retrievable; **this is a hypothesis, not a verified cause**, and the verified fact is the 0-job 100%-red shape. Worth a separate look, and worth noting that it is *not* a test-suite signal.
+**The most important row is the first one, and it is a new failure class: `superagent-framework` — a repo whose CI is *not* fail-open, whose tests *pass* 39/39 locally, and which nonetheless went red 3/3 times, every job, every OS, every Python version (12/12 matrix jobs failed).**
+
+**Root cause, reproduced: the CI's install line is missing a dependency the code imports.** `.github/workflows/ci.yml` installs exactly `pip install click rich toml pytest` — there is **no `requirements.txt`**, and `cryptography` appears **nowhere** in the repo's dependency metadata (`pyproject.toml` has no `cryptography` entry either; the file has no `[project]` dependencies list at all). But `superagent/keeper.py:146` and `:156` do `from cryptography.hazmat.primitives.ciphers.aead import AESGCM` — the AES-256-GCM secret store, i.e. the repo's headline feature.
+
+The import is **lazy** (inside `_encrypt`/`_decrypt`, not at module top), so `import superagent.keeper` succeeds and the failure lands at *call* time — which is why it looks like a test failure rather than an install failure. Reproduced with the module masked:
+
+```
+ENCRYPT PATH FAILED: ModuleNotFoundError No module named 'cryptography'
+```
+
+So every test that stores or reads a secret dies on a missing module, on all 12 matrix jobs, forever. The workflow is red and the badge is red — but the *reason* is a missing dependency, not a broken test. The tests pass 39/39 when the dependency is present.
+
+**This is a distinct failure shape from every fail-open case, and it is the one a green-badge dashboard would miss entirely:**
+
+| | fail-open CI | install-line mismatch |
 |---|---|---|
-| `cicd-agent` | **2/2** workflows end `\|\| true` | both test steps are structurally incapable of failing |
-| `character-skill-trees` | `\|\| true` + workflows bound to a **non-existent branch** | 63 failures, CI has never been able to go red |
-| `ai-character-integrations` | 1/1 workflow: `pytest --import-mode=importlib -x -v \|\| true` | fail-open; repo has 0 test files anyway |
-| `symphony-orchestrator` | `npm test --if-present`, and **package.json has no `test` script** | exits 0 silently; **zero test files exist**; a green CI over no tests |
-| `composite-headspace` | `npm test --if-present` (script present) | **honest** — 51/51 verified green |
-| `marine-gpu-edge` | CPU-only g++ build + run, no `\|\| true` | **honest**, but bound to `main` while default is `master` |
-| `skenna`, `mavis-fleet`, `quilt-saddle-bridge`, `vessel-agent`, `project-JEPA`, `cot-quilt-lab` | **no CI at all** | tested by hand, by me, only |
+| Badge | green | **red** |
+| Tests | never actually run | run, but die on a missing import |
+| Root cause | `\|\| true` swallows the failure | the workflow installs a *different* dependency set than the code needs |
+| Fixed by | deleting `\|\| true` | adding the package to the install line **and** to `pyproject.toml` |
 
-**`npm test --if-present` deserves its own note:** it is a *conditional* invocation — it runs only if a `test` script exists. It is correct in `composite-headspace` (script present, 51/51 pass) and it is a **no-op in `symphony-orchestrator`** (no script, zero test files, exit 0, green badge). The same line is honest in one repo and vacuous in another. **Read the invocation against the manifest, never the badge.**
+**And the contrast inside the same fleet proves the diagnosis.** `cartridge-agent` has the identical workflow shape but its install line reads `pip install pytest pyyaml` — and `pyyaml` **is** in its `pyproject.toml`. It gets 5/10 green (the 5 failures are the same missing-`yaml` environment artifact I hit locally, not a code defect). `superagent-framework` omits `cryptography` entirely and gets 0/3. **Same template, one correctly-populated dependency list and one not, and the difference is the entire CI result.**
+
+**The rule this yields: a CI badge is not a verdict on the code.** `superagent-framework`'s badge is red while its test suite is 39/39 green; `character-skill-trees`' badge is green while its suite is 100/63; `symphony-orchestrator`'s badge is green while it has **zero test files and no `test` script at all** (`npm test --if-present` → exit 0, nothing to run). **Read the badge, the install line, the exit-code handling, and the local suite — all four — before believing any of them.**
+
+**The genuinely broken CI shapes in the top 11 clones, now with real run history:**
+
+| Repo | Shape | Run history | Effect |
+|---|---|---|---|
+| `superagent-framework` | install line omits `cryptography` | **0/3 ✅ — 3 ❌, all 12 matrix jobs** | suite is 39/39 green locally; CI is red forever on a missing import |
+| `cicd-agent` | **2/2** workflows end `\|\| true` | 6/7 ✅ + 1/1 ✅ | both test steps structurally incapable of failing |
+| `character-skill-trees` | `\|\| true` + workflows bound to a **non-existent branch** | 1/1 ✅ (green) | 63 failures, CI has never been able to go red |
+| `ai-character-integrations` | 1/1 workflow: `pytest --import-mode=importlib -x -v \|\| true` | 2/5 ✅ — 3 ❌ | fail-open *and* partly red |
+| `symphony-orchestrator` | `npm test --if-present`, **no `test` script in package.json** | 3/3 ✅ (green) | exits 0 silently; **zero test files exist**; a green badge over no tests |
+| `cartridge-agent` | installs `pytest pyyaml` — matches its imports | 5/10 ✅ — 5 ❌ | correct install line; the ❌ are the missing-`yaml` env artifact |
+| `composite-headspace` | `npm test --if-present` (script present) | 9/9 ✅ | **honest** — 51/51 verified green |
+| `marine-gpu-edge` | CPU-only g++ build + run, no `\|\| true` | 4/4 ✅ | **honest**; but bound to `main` while the default branch is `master` |
+| `skenna`, `mavis-fleet`, `vessel-agent`, `project-JEPA`, `cot-quilt-lab` | **no CI at all** | **0 runs** | tested by hand, by me, only |
+| `quilt-saddle-bridge` | no workflow files | 1 run — a **Dependabot "Graph Update"**, not a test run | no CI has ever exercised it |
+
+**`npm test --if-present` deserves its own note:** it is a *conditional* invocation — it runs only if a `test` script exists. It is correct in `composite-headspace` (script present, 9/9 green, 51/51 verified) and it is a **no-op in `symphony-orchestrator`** (no script, zero test files, exit 0, 3/3 green badge). The same line is honest in one repo and vacuous in another. **Read the invocation against the manifest, never the badge.**
 
 ---
 
@@ -283,6 +350,13 @@ All run `cargo check` / `cargo test` / `cargo clippy -- -D warnings` in CI **wit
 9. **An orphaned second copy of a canary rots silently.** `mavis-fleet` has the canary in `fleet/core.py` (tested, mutates RED) and in `canary.py` (imported by nothing — mutating it changes nothing).
 10. **The census is a living number.** 5,113 → 5,296 in 19 days (+183). Any fleet statement that quotes a repo count is stale within a fortnight; re-derive it.
 11. **`/tmp` is shared with parallel scouts.** A concurrent agent's process (`ci/add-github-actions`) wrote to my `/tmp/scout` paths and killed my scanners twice. **Use a unique per-scout directory** (I moved to `/workspace/scout-mvs-2217/` and the problem disappeared).
+12. **A red badge is not a red test suite — and a green badge is not a green test suite.** `superagent-framework`: badge red 3/3, suite 39/39 green (the install line omits `cryptography`). `character-skill-trees`: badge green, suite 100/63. `symphony-orchestrator`: badge green, zero test files, no `test` script. **A badge tells you about the CI, not about the code.** Read four things: the badge, the install line, the exit-code handling, and the local suite.
+13. **The install line is a first-class artifact — check it against the imports.** A lazy (function-level) import of a missing package turns a dependency error into a *test* error, on every matrix job, forever. Enumerate the third-party imports of the package and diff them against what the workflow installs: `superagent-framework` imports `cryptography` (2 sites) and installs `click rich toml pytest`.
+14. **Two repos on the same workflow template can have opposite CI results, and the template is not the cause.** `cartridge-agent` (`pip install pytest pyyaml`, `pyyaml` in `pyproject.toml`) → 5/10 green. `superagent-framework` (same template, `cryptography` nowhere) → 0/3. **Same scaffolding, different dependency hygiene, completely different badge.**
+15. **Correct your own sample before you report a pattern.** My hand-picked 11 repos showed 4 fail-open CI cases; the fleet-wide census of the top 400 showed **0** outside that cluster. The bias was mine, not the fleet's. **Never generalise a shape from repos you chose because they were interesting — generalise it from a census, and report the corrected number.**
+16. **`|| true` in a test step is a lineage, not a fleet norm.** It appears in the `CHARTER.md` / `DOCKSIDE-EXAM.md` vessel repos that share a `flake8` + `pytest --import-mode=importlib -x -v || true` template — byte-divergent but structurally identical. 0 of the top 200 unseen repos use that exact template. **A shared scaffold propagates a shared defect; that is why defects cluster by template rather than spreading randomly.**
+17. **A self-certification checklist with no executor is decoration.** `DOCKSIDE-EXAM.md` ships in the vessel repos: a 7-category, 30+ item "Certification Checklist" with a "7/7 = Seaworthy 🟢" scoring rubric and an "Exam Date" — and **no script, workflow, or test anywhere reads it**. Every box is unchecked `- [ ]` in every repo, and nothing can ever check it.
+18. **A CI failure with zero jobs is a definition-level rejection, not a step failure — and it is a fourth distinct CI failure shape.** After fail-open (`|| true`), install-line mismatch (missing package), and vacuous invocation (`--if-present` with no script), the fleet also has **workflows that never start**: all 9 `ensign.yml` runs across `composite-headspace` and `symphony-orchestrator` failed with `total_count = 0` jobs, meaning the workflow was rejected before any job was created. **Count the jobs, not the runs — a failed run with zero jobs says the workflow definition itself is broken.**
 
 ---
 
@@ -294,17 +368,19 @@ All run `cargo check` / `cargo test` / `cargo clippy -- -D warnings` in CI **wit
 - **Forks:** 821 excluded before ranking, *after* confirming the named targets survive the fork filter (all 8 targets are own repos).
 - **Execution:** clean `git clone --depth 1` into an isolated directory. `node --test` / `node test/integration.test.js` directly (no `npm install` — the NAS mount fails it). Python suites run with a purpose-built 4.5 KB pytest shim (`pytest.raises`, `pytest.approx`, class + function collection, `setup_method`/`setUp`/`setup_class`) because **PyPI is unreachable from this sandbox**; the shim was validated by reproducing correct pass/fail sets and by positive-control mutations. C++ compiled with the system `g++` exactly as the repo's own CI does. Rust/Julia/Mojo/CUDA: **inspected, never claimed as executed** (no `cargo`/`rustc`/`nvcc` in this sandbox).
 - **Mutation protocol:** every "mutation survived" claim was re-verified with an **explicit presence assertion** (`grep` for the mutated token) *before* running the suite, and the file was restored and re-verified green afterwards. Positive controls were run on every mutated repo to prove the suite can go red at all.
-- **CI status:** `actions/runs` and `actions/workflows` were queried, but note that an early "NO RUNS" reading was a **403 rate-limit artifact**, not a fact — the rate limit was exhausted at that moment (`remaining: 0`). All CI claims in this report therefore rest on **workflow file contents** (triggers, branch filters, `|| true`, exit codes) and on the repos' own git history, not on run history. `git ls-remote --heads` was used to establish real branch sets. A fleet-wide CI *run* census remains worth doing when the API budget allows.
+- **CI status:** `actions/runs` and `actions/workflows` were queried after the REST rate limit reset (5,000 calls). **A caution worth recording: my first "NO RUNS" reading was a 403 rate-limit artifact, not a fact** — `total_count` came back `null` and I nearly recorded "these repos have never run CI". All CI claims in this report therefore rest on **run history** (`actions/runs`, grouped by workflow *name*, not by conclusion), on **workflow file contents** (triggers, branch filters, `|| true`, exit codes, install lines), and on the repos' own git history. `git ls-remote --heads` established the real branch sets. The 400-repo CI *shape* census was done over the git protocol specifically so it could run while the REST budget was exhausted.
+- **Failure-cause reproduction:** `superagent-framework`'s red CI was diagnosed by masking the missing module with a custom `__import__` hook and confirming the lazy import fails at call time (`ENCRYPT PATH FAILED: ModuleNotFoundError`), not at import time.
 - **CI shape census:** `git clone --filter=blob:none --no-checkout --depth 1` over the **top 400** unseen repos by code bytes, then `git ls-tree -r --name-only HEAD` to count `.github/workflows/*.y(a)ml` and test-bearing paths. **0 clone failures.** This path uses the git protocol and therefore consumes **no API quota** — which is how the CI census was completed after the REST rate limit was exhausted.
 - **Collision check:** `research/scout/` in `quilt-research-canons` holds 116 prior files (newest `SCOUT-2026-10-20T1931Z-the-replica-quorum-and-the-readme-that-throws.md`); the new filename was checked against all of them before writing.
 
 ## 11. Recommended fleet actions (cheapest first)
 
-1. `superagent-framework`: catch `HTTPError` **before** `URLError` and re-raise `SecretAccessError` on any non-2xx; add a `strict` / `require_keeper` mode; add a test asserting a 403 **blocks**.
+1. `superagent-framework`: catch `HTTPError` **before** `URLError` and re-raise `SecretAccessError` on any non-2xx; add a `strict` / `require_keeper` mode; add a test asserting a 403 **blocks**. **Also: add `cryptography` to `pyproject.toml` and to the CI install line** — that alone is 12 red matrix jobs across 3 runs, and the suite is already green without it.
 2. `character-skill-trees`: either create archetype skills at level ≥ 20 or drop the level-20 precondition; make `add_specialization` raise (or return a result the caller must check) instead of silently returning `False`; fix the README example; bind `test.yml`/`validate.yml` to `master` and remove `|| true` from `ci.yml`.
 3. `skenna`: align the γ default across `eta()` / `chart_overlap()` / `consensus()`; add a stopword filter to `shared_content`; decide the 0.2–0.4 band and the 0.4–0.6 band explicitly; add one CI workflow running `pytest tests/`.
 4. `mavis-fleet`: fix the README to 49, not 50; make `canon_dir`/`witness_dir` env-overridable; delete the orphaned `canary.py` or make it import the tested one; add CI.
 5. `quilt-saddle-bridge`: publish `quilt-substrate` to PyPI or vendor it; remove the hardcoded `/workspace/quilt-substrate/src`; move the `quilt_substrate` import inside the functions that need it so the rest of the file collects.
 6. `cicd-agent`, `ai-character-integrations`: delete `|| true` from the test steps.
 7. `symphony-orchestrator`: add a real `test` script and test files, or stop presenting a `test` job.
-8. Fleet-wide: adopt `marine-gpu-edge`'s "Verification status" table as the default README shape for any repo claiming a measurement, and treat a `TBD` cell as a feature.
+8. **Fleet-wide, cheap and high-yield: diff each repo's third-party imports against its CI install line.** That single comparison found `superagent-framework`'s 3/3 red. Then diff the install line against `pyproject.toml` — `superagent-framework` has no `[project] dependencies` list at all.
+9. **Fleet-wide: add a "Verification status" table to the README of any repo claiming a measurement** — adopt `marine-gpu-edge`'s format, and treat a `TBD` cell as a feature rather than a gap.
