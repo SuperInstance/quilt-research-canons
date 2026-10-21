@@ -14,6 +14,10 @@ The canon holds ~60 dated artifact directories, one per lane per receipt. Newest
 
 - `state-of-the-quilt-2026-10-15/` — **The current report.** What's merged in the active stream, what's open, what was built in this session, the open design questions, the honest assessment.
 
+### Creative-break (Taps) entries
+
+- `taps-fallback-2026-10-21T030133Z.md` — **Fallback, single-author.** The three-voice Taps round could not convene (harness absent from a wiped workspace; no voice credentials). Written under the task's fallback clause; no voices ran, no citation graph. Reads as one voice on why the value of a round is the friction at the join.
+
 ### Substrate canon (project architecture)
 
 - `HANDOFF.md` — The keeper's handoff. What's known, what's open, what to not rebuild. Section 3 lists the captain's-call items.
