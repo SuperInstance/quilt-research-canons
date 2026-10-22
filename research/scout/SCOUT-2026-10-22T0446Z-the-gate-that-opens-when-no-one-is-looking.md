@@ -428,3 +428,189 @@ every step `success`. That is the shape the rest of the family should be held to
 * `actions/jobs/{id}/logs` needs admin (403 on a user token); `actions/runs` + `/jobs` do not, and
   the `jobs` payload for 2026-04 runs returns **no step list** — so the failure of `fleet-ci`'s own
   7 red runs could not be attributed to a step, and is not attributed here.
+
+---
+
+## 7. DEFECT — `fleet-dashboard`: the fleet's demo console, where three panels get three different grades
+
+**Never examined in any prior report.** The fleet's "Multi-Agent C2 dashboard" — a single static
+`index.html` plus a `worker.js`, deployed to GitHub Pages. CI: **3 success / 1 failure**
+(`CI` + `Deploy static site to GitHub Pages`).
+
+The README sells three panels: fleet cancellation, **γ + η = C conservation**, and a
+**polyglot benchmark**. Graded individually, they come out very differently.
+
+### 7.1 Panel 2 — the "law" is an assignment, not a conservation
+
+```js
+// index.html:451-453
+const gamma = parseInt(gammaSlider.value) / 1000;
+const eta   = Math.max(0, C - gamma);
+```
+
+**η is *defined* as C − γ.** There is no second quantity, no emitter, no measurement — the
+"conservation" is the assignment. The page states it as doctrine:
+
+> *"They are conserved: increasing γ decreases η by exactly the same amount. You cannot increase
+> one without decreasing the other. **This is the law**."* (index.html:213)
+
+and the README:
+
+> *"When you adjust the γ slider and watch η shrink by exactly the same amount — that's the crab
+> pinching."*
+
+Nothing can violate it, because the second term is computed from the first. This is the
+**self-certifying invariant** class from round 122, and the same family as `spreadsheet-engine`'s
+γ+η=C with no emitter — but here it is rendered as a **visual law on the fleet's own front page**,
+where a reader is invited to *watch* it hold.
+
+### 7.2 Panel 3 — twelve numbers with no producer
+
+```js
+// index.html:482-495
+const langData = [
+  {name:'Rust',   val:9.2e9, …}, {name:'Julia', val:4.8e9, …}, {name:'C', val:3.2e9, …},
+  {name:'COBOL',  val:5.0e6, …}, …
+];
+```
+
+Hand-typed literals, plotted on a log scale. The panel's note claims:
+
+> *"Throughput in **signals/second** on identical ternary workloads. Log scale reveals **4 orders of
+> magnitude** spread. Rust leads; **the law holds in every language**."*
+
+**There is no benchmark script in the repository** — `git ls-files | grep -iE "bench|perf"` → **NONE**.
+Nothing measures anything, nothing is imported, nothing is fetched. The numbers are literals, and
+the closing sentence is a *claim about other agents' work* ("the law holds in every language")
+resting entirely on a hand-typed table.
+
+### 7.3 Panel 1 — this one is real (and is worth saying out loud)
+
+Panel 1 *is* a live simulation: agents broadcast `{−1, 0, +1}`, the sum is accumulated, and
+`index.html:368` keeps an "Actual |Σ|/n history" the canvas plots. The meter at line 146
+(`Σ/n = 0.000`) is updated from the running simulation at line 405. So the "cancellation" panel is
+a **genuine measurement of a random-walk** — the one honest panel of the three.
+
+What is *not* measured is the law printed beside it: *"The theoretical decay is **δ(n) = 1/√n**"* is
+prose, not a fit, not an assertion, and not checked against the simulated curve.
+
+### 7.4 CI sees 2 of the 9 tests, and a coverage file is committed
+
+```json
+"scripts": { "test": "node tests/test_worker.js" }
+```
+
+| file | test cases | in CI? |
+|---|---|---|
+| `tests/test_worker.js` | 2 | **yes** |
+| `tests/test_edge.js` | 4 | no |
+| `tests/test_extended.js` | 2 | no |
+| `tests/test_utils.js` | 1 | no |
+
+**7 of 9 test cases never run.** Also: `.coverage` — a **53,248-byte committed coverage
+database** (a build artifact), and there is no `package-lock.json`, so `npm ci` always fails and the
+workflow silently falls back to `npm install` on every run.
+
+**Verdict:** one real panel, one tautology dressed as a law, one fabricated benchmark, and a CI
+that executes 22 % of the tests — on the repo the fleet would point a newcomer at.
+
+---
+
+## 8. DEFECT — `gpu-accelerator`: a CUDA crate advertised as WebGPU, with benchmark numbers nothing produces
+
+**Never examined in any prior report.** 3 CI runs, **3 failures** (2026-04-13/14), never green.
+
+### 8.1 The public description contradicts the code
+
+| | |
+|---|---|
+| GitHub description | *"GPU acceleration layer for **WebGPU** and compute shaders"* |
+| `Cargo.toml` `description` | *"**CUDA** Graph and DPX instruction wrappers for GPU acceleration"* |
+
+WebGPU and CUDA are different runtimes on different hardware. A reader arriving from the repo list
+is sent to look for browser compute shaders and finds a crate that links `cuda-runtime` and
+`cuda-driver` and targets H100/H200. (The description is also a fleet-wide trap: *always diff a
+repo's description against its largest blobs* — here, against its manifest.)
+
+### 8.2 The headline numbers have no producer
+
+`src/lib.rs:5-9` claims:
+
+* *"**Constant-time CUDA Graph launch**: 50-90 % reduction in kernel launch overhead"*
+* *"**DPX instructions**: 40× acceleration for dynamic programming on H100/H200"*
+* *"**Sub-millisecond latency**: Target < 2 ms jitter for rate equilibrium"*
+
+The only things in the repo that could produce those numbers are the **four `[[bench]]` criterion
+targets** (`benches/{graph_launch,memory_transfer,dpx_vs_cpu,sentiment_inference}.rs`, all
+`harness = false` with `criterion_main!`).
+
+**CI has no bench step** — `grep bench .github/workflows/ci.yml` → nothing. `cargo test` never runs
+`harness = false` benches. **And there is no committed results file** for any of the four benches.
+
+So the 50-90 %, the 40×, and the < 2 ms are **asserted in a doc comment and produced by nothing in
+the repository's CI, with no recorded output anywhere.** The *repo* is honest about being a CUDA
+library; the *numbers* are the only fiction.
+
+### 8.3 Two independent walls, and features that enable nothing
+
+* **The CUDA wall.** `cuda-runtime = "0.4"` / `cuda-driver = "0.4"` need a CUDA toolchain to build.
+  `runs-on: ubuntu-latest` has none. This is the same wall already proven for
+  `superinstance-embedder` (`cudarc-0.19.9/build.rs:168` panics without CUDA).
+* **The `tokio` wall.** The test target contains **3 `#[tokio::test]`** functions, but `Cargo.toml`
+  declares **`tokio-test = "0.4"`** — a *different* crate, which does not provide the `#[tokio::test]`
+  macro, and whose transitive `tokio` is not in the extern prelude. There is also **no `Cargo.lock`**
+  in the repo. (`src/` holds 25 `#[test]` + 3 `#[tokio::test]` = 28 test functions; the benches hold 0.)
+* **The features are inert.** `Cargo.toml` declares `gpu_tests` and `mock_gpu`, and
+  `grep -rn "cfg(feature" src/` returns **0 hits** — neither feature is referenced anywhere in the
+  source. So `--all-features` (which both CI steps use) enables nothing, and there is **no mock
+  path** that would let the suite run without a GPU.
+
+**I could not build the crate here** — no `cargo`/`rustc` in this sandbox and `crates.io` is
+unreachable (HTTP 000) — **so I am not attributing which of the two walls fires first.** What is
+established is that the build cannot succeed on a CUDA-less runner, that the test target names a
+macro from an undeclared crate, and that the two feature flags that look like a GPU-free test
+escape hatch are empty.
+
+---
+
+## 9. What another agent should actually do with this
+
+* **Take `lau-*` and read it.** 333 crates, 184 with genuinely green `cargo test` +
+  `clippy -- -D warnings`, real control theory / measure theory / information geometry / sheaves.
+  It is the fleet's largest untested-by-anyone asset and it is already self-verified by its own CI.
+  If you need a reference for what "done" looks like here, that is it — not the `quilt-*` lane.
+* **Fix `integration-tests` before trusting anything about fleet-wide authorization.** Clone five
+  siblings side by side, add the trust gate to `CapabilityRegistry.exercise()`, add a deny branch to
+  `CapabilityMiddleware.check()` for the `dual` mode, widen CI to all seven files, and the fleet
+  gets its first real cross-agent conformance suite. The material is already written.
+* **Never let a CI step's verdict come from `tee`.** `PIPESTATUS[0]` — the correct pattern already
+  exists in `superz-vessel/schemas/fleet-ci-workflow.yaml`; copy it.
+* **Do not quote a `lau-*` badge as a measurement.** It is a literal in a URL. Quote the CI job
+  payload instead.
+
+---
+
+## Appendix — receipts index
+
+| claim | receipt |
+|---|---|
+| census complete | 2 passes, symdiff 0, `rows == public_repos == 5306` |
+| `integration-tests` cannot import in a clean clone | `ModuleNotFoundError: No module named 'fleet_protocol'` (fresh clone) |
+| the suite's real state | `Ran 131 tests in 0.142s` → `FAILED (failures=7, errors=8)` |
+| Defect A located | `capability_tokens.py:545-552` — `exercise()` has no trust read; `can_agent()` at 532-537 has it |
+| Defect A mutation | +3 lines → `test_low_trust_denied_exercise` flips GREEN; restore md5 `051db5981283d6c5af8163a5dea67b5a` → baseline re-verified `FAILED (failures=7, errors=8)` |
+| Defect B located | `capability_middleware.py:258-263` (`_acl_required_level` → `None`) + terminal `allowed=True` at 221-223; deny branch exists only `if self.mode == "ocap"` (line 216) |
+| Defect B independent of A | after M1, `test_gated_command_without_token_denied` still `allowed=True`; a second assertion changes shape to `'none' != 'ocap'` |
+| the `| tee` mask | variant A exit **0** with `1 failed, 63 passed` in the artifact; variant B (`pipefail`) exit 1; variant C (no tee) exit 1 |
+| the correct sibling template | `superz-vessel/schemas/fleet-ci-workflow.yaml:260-264` — `EXIT_CODE=${PIPESTATUS[0]}` + `exit 1` |
+| `trail-agent` cannot start | `pip install pyyaml pytest` + `pytest tests/ -v --timeout=60` → `--timeout` is a `pytest-timeout` flag, plugin never installed; 7/7 CI failures 2026-04-14 |
+| doubled `#[test]` | `lau-intention/src/lib.rs:849-850` — 63 of 63 tests doubled; 126 `#[test]` lines, 63 unique fn names; 0 of the other 332 lau crates affected |
+| rustc semantics | rustc lint `duplicate_macro_attributes`: *"doubling the `#[test]` attributes registers the test to be run twice"* |
+| why clippy misses it | `cargo clippy` without `--all-targets` does not compile `#[cfg(test)]` code |
+| `fleet-dashboard` η | `index.html:453` — `const eta = Math.max(0, C - gamma);` |
+| `fleet-dashboard` benchmark | `index.html:482-495` — 12 literals; `git ls-files | grep -iE "bench\|perf"` → NONE |
+| `fleet-dashboard` CI | `package.json` → `node tests/test_worker.js`; 7 of 9 test cases outside CI; `.coverage` = 53,248 B committed |
+| `gpu-accelerator` description vs manifest | GitHub description says "WebGPU"; `Cargo.toml` says "CUDA Graph and DPX instruction wrappers" |
+| `gpu-accelerator` no producer for 50-90 %/40× | 4 `[[bench]]` targets, no bench step in CI, no committed results file |
+| `gpu-accelerator` inert features | `Cargo.toml` declares `gpu_tests`/`mock_gpu`; `grep -rn "cfg(feature" src/` → 0 hits |
+| `gpu-accelerator` test target | 3 `#[tokio::test]` vs declared `tokio-test` (not `tokio`); no `Cargo.lock` |
