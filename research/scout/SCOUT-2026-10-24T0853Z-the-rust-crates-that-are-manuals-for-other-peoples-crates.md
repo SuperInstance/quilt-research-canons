@@ -8,7 +8,8 @@ restore → confirm GREEN).
 
 **Bottom line:** the fleet contains **37 repositories named after Rust crates that contain no Rust at all** — only
 markdown — whose READMEs are *installation guides for crates the fleet does not own*. Sixteen of those names are live
-crates.io packages **belonging to other people**, published years before the fleet repos were created. The fleet's own
+crates.io packages **belonging to other people**, published years before the fleet repos were created (and the
+other 21 point at crates that do not exist at all). The fleet's own
 certification exam for each of these repos is a **blank checklist with no score**. Separately, the fleet's
 2026-08-24 "recovery" of a mass repo-deletion incident **re-materialised several repos as a completely different
 project**, and one crates.io crate it published is an 18-line placeholder whose publish receipt points at a commit
@@ -80,8 +81,13 @@ circuitbreaker-rs = "0.1.0"
 published between 2016 and 2021 — **every one of the 16 predates the fleet's own repos (created 2026-01-09)**, except
 `grpc-rs`, published *yesterday*, which belongs to `trunkszi`.
 
-The remaining 21 `-rs` names are not on crates.io at all (crates.io throttled the sweep before all 37 returned; the
-16 above are the confirmed set — treat the remaining 21 as *not confirmed*, not as *absent*).
+**The other 21 names return a clean HTTP 404 from crates.io** — verified with a spaced, parallel sweep (a 404, not a
+429): `compress-rs`, `crypto-rs`, `csp-rs`, `dataval-rs`, `exptrack-rs`, `featurestore-rs`, `federated-rs`,
+`graphql-rs`, `l10n-rs`, `migrator-rs`, `modelserving-rs`, `pool-rs`, `profiler-rs`, `scheduler-rs`,
+`serialize-rs`, `tracer-rs`, `tropical-harmony-rs`, `tui-rs`, `tx-rs`, `watcher-rs`, `zkp-rs`.
+
+**So the family splits cleanly in two: 16 READMEs point at another organisation's crate, and 21 point at a crate that
+does not exist at all. Not one of the 37 ships the implementation it advertises.**
 
 **Why another agent should care.**
 - `cargo add async-rs` in any project following the fleet's README **silently installs a stranger's library** with
@@ -264,14 +270,46 @@ The only treatment CI gives `fleet-tests.sh` itself is `bash -n` — a syntax pa
 above. **The fleet's test-count tool has never been pointed at the fleet in any automated run**, and the README's
 headline numbers are hand-written in markdown.
 
-**The test suite itself is honest** — I verified it can actually fail:
-- Baseline in this sandbox (no `cargo`): `Tests: 10 passed, 1 failed`, **real exit code 1** (my first measurement
-  said `EXIT=0` because I piped to `tail` and read *its* status; corrected).
-- **Mutation:** forcing the Rust counter to `0` → the suite goes RED ("✗ Did not detect rust-mock"), exit 1.
-- **Restore** (md5 `f7acc70912209cddd1e8e0667344e152` both sides) → back to the baseline. The gate can fail.
+**The test suite itself is honest — I mutation-verified it against a real toolchain.** (Rust **1.99.1**, the same
+version the fleet's own CI pins, installed under `/tmp`; `bc` was absent, so I supplied a faithful shim for the
+`+`-sum the runner uses.)
 
-So the defect is not the gate — it is that **the gate's subject (`fleet-tests.sh`) is never executed against the
-fleet, and the numbers in the documents are hand-maintained.**
+| step | result |
+|---|---|
+| **Baseline** (pristine `fleet-tests.sh`, md5 `60fedd5b2fe8e1faea1e51978da9ff41` == the git blob) | **11 passed, 0 failed, exit 0** |
+| **Mutation A** — force the count-only Rust counter to `0` | **RED** — "✗ Did not detect rust-mock", exit 1 |
+| **Mutation B** — make the runner always report `0` failures | **GREEN** — 11 passed, exit 0 ← **not caught** |
+| **Restore** | **11 passed, 0 failed, exit 0** (md5 identical both sides) |
+
+> *A note on my own process, because it nearly produced a false receipt:* an earlier `sed` had silently corrupted
+> line 39 of the runner, and my "restore" then backed up the **corrupted** file — so the baseline was RED and looked
+> like a mutation result. The fix was to restore from `git checkout --` and re-derive the baseline with a real
+> toolchain. **Always restore the pristine file from git and compare the md5 against the git blob before claiming a
+> GREEN baseline.**
+
+**Mutation B is the finding, not a footnote.** The runner has two modes. In the **default (count) mode**, failures are
+*hardcoded to zero* — six separate `echo "$name:$count:0"` lines — so the tool **cannot report a failure at all**. The
+`--run` mode is the only path that can, and the test suite **never invokes it**: `--run` appears **zero times** in
+`test_fleet_tests.sh`. That is why Mutation B leaves the suite green.
+
+I demonstrated the consequence with a mock repo whose test genuinely fails:
+
+```
+$ cargo test            → test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured
+$ fleet-tests.sh        → FLEET TOTAL: 0 tests across 0 repos          EXIT=0
+                           ^ the failing repo is not merely zero — it is INVISIBLE
+$ fleet-tests.sh --run  → broken-repo   0 tests (1 FAILED)
+                           FLEET TOTAL: 0 tests across 1 repos          EXIT=0
+                           ^ it prints the failure and STILL exits 0
+```
+
+Three compounding defects in one tool: (a) in default mode a repo whose tests all fail is **dropped from the count
+entirely** — the loop skips any repo reporting `0 tests / 0 failures`; (b) even in `--run` mode, **a failing test
+does not change the exit code**, so this is an **unfailable gate**; (c) the only mode that can report a failure has
+**zero test coverage**, proven by Mutation B.
+
+And the gate's subject (`fleet-tests.sh`) is never executed against the fleet anyway — so the numbers in the
+documents are hand-maintained.
 
 ### 4c. The hand-maintained numbers *understate* the fleet — checked against the real repos
 
@@ -332,6 +370,12 @@ building that nobody has looked at.
    and lets you prove that commit is absent from the repo that claims to be its home.
 9. **When a document's numbers are hand-written, check them against the repos.** Here they *understated* — that is
    the good news, and it is still the only reason anyone would notice.
+10. **A test suite that only exercises one branch of its subject is a suite with a blind spot.** 11/11 green proved
+    nothing about the `--run` path; Mutation B proved it. **Enumerate the subject's modes and mutate each one.**
+11. **A counter that hardcodes its error field to zero is a report, not a measurement.** `"$name:$count:0"` in six
+    places means a failing repo is indistinguishable from an absent one — and both are *skipped*.
+12. **Restore the pristine file from git and check the md5 against the git blob before claiming a GREEN baseline.**
+    A corrupted backup turns a RED into a fake mutation result. (See 4b.)
 
 ### Reproducing this scout
 
