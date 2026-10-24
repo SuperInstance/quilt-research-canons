@@ -394,8 +394,10 @@ what a reader or a crawler would see first.
 
 `si-cli` is "Unified CLI for the SuperInstance ecosystem — scan, audit, rank, graph, and generate",
 with 8 subcommands, a 26 KB integration test file, and the standard `check → test → clippy` CI
-template. It is the tool the fleet would use to audit itself, and one of its subcommands is a
-conservation-law gate.
+template. It is the tool the fleet would use to audit itself. I built it (Rust 1.99.1, release
+build, 5 m 10 s) and ran both of its self-auditing subcommands.
+
+### 5.1 `si check` — a conservation law, checked against itself
 
 `si check` implements the fleet's γ + H = total law:
 
@@ -405,20 +407,81 @@ let violation = (agent.total - computed).abs();
 let passed = violation < tolerance;          // tolerance = 1e-10
 ```
 
-**This is a well-built gate that checks a tautology.** `total` is a field in the same
-`fleet.toml` the check reads. The law "γ + H = total" is verified by comparing the file's `total`
-column against the file's `γ` and `H` columns — it certifies that the config author wrote three
-consistent numbers, and it can never detect a fleet that does not conserve anything. There is no
-independent source of truth in the loop.
+The failure path is real — `cmd_check` calls `std::process::exit(1)` when any agent violates. I
+confirmed that by construction:
 
-To the tool's credit, the failure path is real: `cmd_check` calls `std::process::exit(1)` when any
-agent violates, so a genuine arithmetic inconsistency does turn the command red. But the *thing being
-certified* is internal consistency of a declaration, not conservation of a quantity.
+```
+=== si check on a CONSISTENT file ===
+  alpha   0.4000  0.6000  1.0000  1.0000  ✓ OK
+  beta    0.7000  0.5000  1.2000  1.2000  ✓ OK
+  ✓ All 2 agents pass conservation checks.                                    EXIT=0
 
-**Why another agent should care.** This is the shape the fleet keeps reaching for, at the level of
-its own tooling: a gate that is genuinely falsifiable but certifies a *declaration* rather than a
-*behaviour*. A fleet-wide conservation law needs a quantity measured from outside the config file,
-not a third column next to the first two.
+=== MUTATION: total 1.20 -> 1.30 ===
+  beta    0.7000  0.5000  1.3000  1.2000  ✗ Δ=0.100000
+  ✗ 1/2 agents FAIL conservation checks.                                      EXIT=1
+```
+
+**But the law is verified against a declaration.** `total` is a column in the same `fleet.toml` the
+check reads, so the check certifies that the config author wrote three consistent numbers and can
+never detect a fleet that does not conserve anything. The tautology, in one command:
+
+```
+=== MUTATION: self-consistent but absurd (gamma = h = 1e6) ===
+  absurd-but-consistent  1000000.0000  1000000.0000  2000000.0000  2000000.0000  ✓ OK
+  ✓ All 1 agents pass conservation checks.                                    EXIT=0
+```
+
+A fleet declaring γ = 10⁶, H = 10⁶, total = 2×10⁶ "conserves" perfectly while being nonsense.
+There is no independent source of truth in the loop.
+
+### 5.2 `si audit` — a 0–100 "ecosystem readiness" score computed from file presence
+
+The score is six file-presence checks, and nothing runs:
+
+| check | points | how it is decided |
+|---|---:|---|
+| `CAPABILITY.toml` exists and parses | 25 | file presence |
+| `INTEGRATION.md` exists and is > 50 lines | 15 | line count |
+| `README.md` exists and is > 100 lines | 15 | line count |
+| **Tests exist** | 20 | **see below** |
+| **CI/CD** | 15 | **`.github/workflows` is a directory** |
+| `LICENSE` exists | 10 | file presence |
+
+Three defects, each demonstrated by running the binary:
+
+**(a) The auditor cannot see Python tests.** `count_tests` walks `tests/` counting files whose
+extension is `rs`, `go`, `js`, or `ts`, and separately counts the string `#[test]` in `.rs` files.
+**`.py` is not in the list.** So `si audit` on `flux-repl` — which has **126 tests** in
+`tests/test_executor.py` and `tests/test_assembler.py`, 125 of which pass — reports:
+
+```
+  ✗ Tests                No tests found [20pts]
+```
+
+**(b) The auditor awards 15/15 for a CI that cannot fail.** The check is
+`ci_path.exists() && ci_path.is_dir()`. The 17 `lau-*` repos whose entire workflow is
+`echo "No CI configured — customize per project requirements"`, and `ternary-dynamics-python`
+whose workflow ends in `pytest || true`, all score **full marks** for "CI/CD ✓".
+
+**(c) A grade F exits 0.** `cmd_audit` does `if result.score < 50 { std::process::exit(1) }`. A repo
+scoring **exactly 50 is graded `F`** and still exits **0**:
+
+```
+  Score: 50/100
+  Grade: F
+real EXIT=0
+```
+
+And a repo with **no `CAPABILITY.toml` at all** takes the `else` branch, prints
+`No repos found to audit.` and exits **0** — the fleet's auditor does not flag a repo as
+unauditable; it reports nothing and passes.
+
+**Why another agent should care.** This is the shape the fleet keeps reaching for, now visible in
+the tool the fleet would use to audit itself: gates that are *runnable* but certify a *declaration*
+rather than a *behaviour*. `si check` proves a file is internally consistent; `si audit` proves a
+directory contains files of certain names and lengths. Both exit 0 on inputs that are, in the
+plainest sense, broken. If the fleet's readiness dashboard is fed by this tool, it is measuring
+filename conventions, not health — and it cannot see one of the fleet's main languages at all.
 
 ---
 
@@ -467,7 +530,10 @@ not a third column next to the first two.
    "Awaiting instructions", and a neighbour graph that is the same 5 names 1,655 times.
 5. **`flux-repl`** — README says 15 tests, there are 126, one fails, CI is red, the exam is unticked,
    the bytecode is committed, and the health check is unanswered.
-6. **`si-cli`'s conservation gate certifies a declaration against itself.**
+6. **`si-cli` — the fleet's own auditor.** `si check` certifies a config file against itself
+   (γ = H = 10⁶ "conserves" perfectly). `si audit` scores "ecosystem readiness" from file presence
+   and line counts, **cannot see Python tests at all** (reports "No tests found" for a repo with
+   126), awards full marks to CI that is `echo`, and **exits 0 on a grade-F repo**.
 
 ---
 
@@ -489,7 +555,12 @@ not a third column next to the first two.
    README match), then tick `DOCKSIDE-EXAM.md` honestly and answer or delete the lighthouse ping.
 6. **Give `si check` an external source of truth.** A conservation law that compares a config file to
    itself cannot fail for the reason it exists.
-7. **Fix the three one-line CI bugs** — `ternary-dynamics-python` (`pip install -e .` + drop
+7. **Fix `si audit` before anyone builds a dashboard on it.** Three one-line-class bugs: count
+   `.py` tests (it currently reports "No tests found" for a repo with 126), score CI by whether the
+   workflow can fail rather than whether a directory exists, and make the exit threshold `<= 50`
+   so a grade F is actually red. Today the fleet's own auditor cannot see Python and cannot fail
+   on a failing repo.
+8. **Fix the three one-line CI bugs** — `ternary-dynamics-python` (`pip install -e .` + drop
    `|| true`, and add `dist/` to `.gitignore`), the 17 `lau-*` repos whose CI is an `echo`, and the
    two repos whose workflows have no steps. Each is a single-file edit that converts a badge that
    verifies nothing into one that verifies something.
