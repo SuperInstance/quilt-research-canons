@@ -103,7 +103,7 @@ sequence):
 | `ternary-activation` | 0 | **18 passed / 0 failed** | 0 |
 | `ternary-pareto` | 0 | **23 passed / 0 failed** | 101 (3 lints) |
 
-**452 assertions, 0 failures, across 9 crates in 9 clean clones.**
+**507 assertions (452 from `lau-*`, 55 from `ternary-*`), 0 failures, across 9 crates in 9 clean clones.**
 
 ---
 
