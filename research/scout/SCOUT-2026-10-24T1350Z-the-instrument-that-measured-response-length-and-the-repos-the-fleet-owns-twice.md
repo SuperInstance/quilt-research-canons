@@ -123,6 +123,7 @@ The repo is honest, tested, green, well-specified, and cheap to fix. Its two rea
 | `HeartbeatConfig::timeout` "declared but never enforced" | **TRUE** | `grep -rn '\.timeout' src/` → exactly one hit, `heartbeat.rs:170`, inside a **test assertion** — never read by the heartbeat loop |
 | `generate_device_certificate` mints a client cert with **ClientAuth EKU** | **TRUE** | `tls.rs:148` sets `params.extended_key_usages = vec![ExtendedKeyUsagePurpose::ClientAuth]` — not merely a CN |
 | CI watches the branch that exists | **TRUE** | default branch `main`, `ci.yml` triggers on `branches: [main]` |
+| The features are "✅ — works today, exercised by the test suite" | **FALSE** | the crate **does not compile** (`src/tls.rs`, 4 errors) ⇒ 0 tests run. See below. |
 | "Not published" on crates.io | **TRUE** | README states it; the install section is git-only |
 
 A repo that names its own unwired features, retracts them in its own README, and marks each one with a glyph is doing the thing the rest of the fleet cannot. `quicunnel`'s `DOCKSIDE-EXAM.md` is, however, the fleet template left untouched: **21 checkboxes, 0 ticked, no score** — sitting directly beside a README that would have earned most of them.
@@ -144,7 +145,56 @@ Reading the failing **steps** of the latest `main` run (jobs API), not the run c
 | Security audit | `Run cargo-audit` | the job regenerates a lockfile because `Cargo.lock` is gitignored for a library crate |
 | **Build documentation** | **success** | |
 
-So the crate that publishes the fleet's most honest feature table has a **red test suite on `main`**, and the honest table says the features are "✅ — works today, exercised by the test suite". I could not reproduce the failure locally: `quicunnel` pulls `aws-lc-sys` (BoringSSL) and the build did not finish inside my sandbox window, so **I report the CI's own step-level receipt and do not claim to have reproduced the test failure.** The README's claim that these features are "exercised by the test suite" rests on a suite that CI says has been failing on `main` since April — **that contradiction is the finding, and it is the repo's to fix, not mine to guess at.**
+### 🔴 REPRODUCED — the crate does not compile at all, and the manifest is the reason
+
+I built it locally (Rust 1.99.1). The suite does not fail; **it never starts**:
+
+```
+   Compiling quicunnel v0.1.0 (/tmp/deep/quicunnel)
+error[E0599]: no method named `map_err` found for opaque type
+  `impl Iterator<Item = std::result::Result<CertificateDer<'static>, std::io::Error>> + '_`
+  --> src/tls.rs:41:10
+error[E0308]: mismatched types
+  --> src/tls.rs:87:32   (expected fn pointer, found fn item)
+error[E0308]: mismatched types
+  --> src/tls.rs:90:32
+error[E0308]: mismatched types
+  --> src/tls.rs:93:32
+error: could not compile `quicunnel` (lib) due to 4 previous errors
+QUIC_CARGO_EXIT=101
+```
+
+**Root cause, and it is one line of `Cargo.toml`.** `Cargo.toml:36` says
+
+```toml
+rustls-pemfile = "2.2"
+```
+
+but `src/tls.rs` is written against the **1.x** API:
+
+| call site | 1.x API (what the source expects) | 2.x API (what the manifest asks for) |
+|---|---|---|
+| `tls.rs:40` `certs(&mut r)` | `io::Result<Vec<CertificateDer>>` → `.map_err(..)` works | `impl Iterator<Item = Result<CertificateDer, io::Error>>` → **no `map_err`** |
+| `tls.rs:77` `try_parse` closure | expects `fn(&mut dyn BufRead) -> io::Result<Vec<Vec<u8>>>` | `rsa_private_keys` / `ec_private_keys` / `pkcs8_private_keys` now return **iterators of `PrivatePkcs1KeyDer` / `PrivateSec1KeyDer` / `PrivatePkcs8KeyDer`** → **3× type mismatch** |
+
+**The diagnosis is confirmed by the fix.** Changing one line and rebuilding:
+
+| `rustls-pemfile` | Result |
+|---|---|
+| `"2.2"` (as shipped) | **4 compile errors** in `src/tls.rs`, `cargo test` exit **101**, **0 tests run** |
+| `"1"` (one-line pin) | **28 unit tests passed, 0 failed** + **9 doc tests passed** — exit 0 |
+
+So `quicunnel`'s **28 unit tests have never executed in the current dependency configuration**, and the code that fails to compile is `src/tls.rs` — **the mutual-TLS certificate handling, the crate's headline feature.** The README's status table marks that area "✅ — works today, exercised by the test suite". It is exercised by a suite that cannot compile.
+
+**And nothing catches it, by design.** `Cargo.lock` is **gitignored**:
+
+```
+# Cargo lockfile (library crate: Cargo.lock is not committed by convention;
+# ... remove this line and track Cargo.lock instead.
+Cargo.lock
+```
+
+The comment contains the fix. A library crate with `Cargo.lock` gitignored resolves the newest `rustls-pemfile` on every build, so the crate's buildability is decided by whatever a transitive dependency did last week. **This is the fleet's "badge layer outruns the code layer" class one level deeper: the badge says "CI: failure" and the code says "we publish a ✅ table", and neither one is reading the other.** The honest README is honest *about the features* and blind *to the fact that the features cannot currently be compiled at all*.
 
 ### 🟡 And the crate's own doc comment makes the claim its README retracts
 
@@ -305,4 +355,4 @@ The fleet contains **59** repos named `recovered-copy-20260824-*`, **55** of whi
 
 - **New this round:** the `git/trees` commit-vs-tree detector defect (method, fleet-wide consequence); the 17 byte-identical shell repos; the 13 verified byte-identical recovery twins; `fleet-resonance` (unexamined); `quicunnel` (unexamined); `ternary-rom` (unexamined); the `issubset` one-sided assertion.
 - **Confirmed still live from prior rounds:** `plato-portal`'s 2,000-of-5,308 truncation; class (cl) 40 empty repos; class (x) Dependabot outrunning CI (106 of 131 runs in `quicunnel`); class (c) parameter accepted and ignored; class (db) `DOCKSIDE-EXAM.md` unfilled; class (d) a red first step skipping the rest.
-- **Not claimed:** I did not reproduce `quicunnel`'s CI test failure locally (`aws-lc-sys` did not finish building in the sandbox window) — the receipt is the CI's own step-level jobs API. I did not claim a `cargo` build result for any Rust repo other than `fleet-resonance` (62/62, exit 0) and `ternary-rom` (424/424, exit 0).
+- **Not claimed:** no `cargo` build result is claimed for any Rust repo other than `fleet-resonance` (62/62, exit 0), `ternary-rom` (424/424, exit 0) and `quicunnel` (4 compile errors as shipped; 28+9 pass with a one-line `rustls-pemfile` pin). `ternary-rom`'s 424 cases were executed through the minimal pytest shim in `research/scout-repro/2026-10-24T1350Z/`, which is **not pytest** and is labelled as such there.

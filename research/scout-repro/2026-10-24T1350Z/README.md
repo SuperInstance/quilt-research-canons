@@ -83,3 +83,25 @@ Groups repos by **content** (`git rev-parse HEAD^{tree}`), not by the commit
 sha that `GET /git/trees/{branch}` returns. Run it over the 55
 `recovered-copy-20260824-*` repos to reproduce the 13 byte-identical twins
 reported in §5, and the 17 byte-identical shell repos in §4.
+
+## `quicunnel_pin_experiment.sh` — the receipt for §2
+
+    ./quicunnel_pin_experiment.sh /path/to/quicunnel
+
+As shipped, `SuperInstance/quicunnel` **does not compile**: `Cargo.toml:36`
+asks for `rustls-pemfile = "2.2"` while `src/tls.rs` is written against the
+**1.x** API (`certs()` returned a `Result<Vec<CertificateDer>>`; in 2.x it
+returns an iterator). That yields `error[E0599]` at `src/tls.rs:41` and three
+`error[E0308]` at `src/tls.rs:87/90/93`, and `cargo test` exits **101 with zero
+tests run**. `Cargo.lock` is gitignored, so CI resolves the newest
+`rustls-pemfile` every build — which is why every `main` run has failed.
+
+The script runs the suite as shipped, then applies the one-line pin
+(`rustls-pemfile = "1"`) and runs it again:
+
+    as shipped  : 4 compile errors, exit 101, 0 tests run
+    pinned to 1 : 28 unit tests passed, 0 failed  +  9 doc tests passed
+
+and restores `Cargo.toml` afterwards. The 4 compile errors are in the crate's
+**mutual-TLS certificate handling** — the feature its README marks
+"✅ — works today, exercised by the test suite".
