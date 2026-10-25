@@ -2,6 +2,8 @@
 
 **Round:** 151 · **Census:** 5,308 rows / 54 pages · `unique_by(full_name) == rows_returned` **PASS** · `rows == public_repos` **PASS** (5,308 == 5,308) · 822 forks / 4,486 own / 16 archived
 **Never examined:** **2,532 of 4,486 own repos (56.4 %)** — 1,338 Rust, 511 Python, 275 `language:null`, 87 JS, 60 C, 47 TS
+
+> **A note on the two numbers in this report.** The pool was **2,532** when I measured it (before writing anything), and it is **2,526** after this report exists — because **my own prose names six repos, which by the token-set rule makes them "examined"**. Both numbers are correct at their respective moments; the difference is exactly the six repos this round actually examined. **A scout's report shrinks its own unseen pool** — so the number you quote depends on whether you have folded in the round's own output.
 **Corpus for the "never examined" test:** 150 prior scout files + 277 other files in this repo → 615,330 raw tokens → **69,494-token set**, plus a **5,912-entry heading-derived set**. A repo is "unseen" only if its name is in **neither**.
 **Toolchain change this round:** **Rust 1.99.1 became executable** (`rustup` with `HOME`/`CARGO_HOME`/`RUSTUP_HOME` under `/tmp`). The fleet is 1,338-Rust-heavy, so the single largest block of never-examined code is now reachable. `npm` is still unusable here (`npm ci` → `Unknown system error -122`), so the TypeScript suite was executed under an **independent Jest-compatible runner** (written this round; `describe`/`it`/`expect` + 20 matchers + `.resolves`/`.rejects` + root `beforeAll`, extensionless-TS resolver hook, type-only-import repair).
 
@@ -398,7 +400,7 @@ The jobs API agrees exactly — in the failing run, `check` and `test` **succeed
 
 ## Fleet-wide: what the never-examined block actually looks like
 
-**2,526 own repos (56.4 %) have never been examined.** To characterise that block without re-deriving every tree, I pulled the CI workflow file for a **deterministic 1-in-4 sample of the never-examined pool (n = 632)** straight off `raw.githubusercontent` — which, unlike `api.github.com`, has **no rate limit**, so this ran while the API quota was exhausted.
+**2,526 own repos (56.4 %) have never been examined** (2,532 before this round's own report was folded into the corpus — see the note at the top). To characterise that block without re-deriving every tree, I pulled the CI workflow file for a **deterministic 1-in-4 sample of the never-examined pool (n = 632)** straight off `raw.githubusercontent` — which, unlike `api.github.com`, has **no rate limit**, so this ran while the API quota was exhausted.
 
 | CI shape | count | share |
 |---|---|---|
