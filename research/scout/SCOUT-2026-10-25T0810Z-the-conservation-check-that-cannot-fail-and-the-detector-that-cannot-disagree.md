@@ -20,7 +20,7 @@ Three never-examined libraries in this round ship a **verification function** wh
 
 This is a new class, distinct from the taxonomy's "unfailable test step" (g) — the *test step* here is real and can go red for other reasons. The step that cannot go red is the **assertion about the detector**.
 
-> **(dt) A verifier whose failure branch is never asserted.** Detector → `false`/`violations`/`not satisfied`, and the suite still passes because every test feeds the detector a well-formed input and asserts the *success* verdict. The detector's own name promises detection; the suite only proves it can agree. **Detector: grep the suite for the detector's negative verdict (`assert!(!x)`, `satisfied == false`, `violations.is_empty()`, `return false` on the reject path). If the negative verdict never appears, the detector is unfalsifiable by that suite.**
+> **(du) A verifier whose failure branch is never asserted.** Detector → `false`/`violations`/`not satisfied`, and the suite still passes because every test feeds the detector a well-formed input and asserts the *success* verdict. The detector's own name promises detection; the suite only proves it can agree. **Detector: grep the suite for the detector's negative verdict (`assert!(!x)`, `satisfied == false`, `violations.is_empty()`, `return false` on the reject path). If the negative verdict never appears, the detector is unfalsifiable by that suite.**
 
 ---
 
@@ -140,7 +140,9 @@ That is a **disjunction of the two halves of the same detector**. It passes if *
 
 **Positive control (the suite has teeth):** replacing the balance comparison with the diagonal entries → **61p/1f RED**. So the suite is not vacuous in general — it is blind on exactly one axis: the detection axis.
 
-> **(du) An assertion that is a disjunction of the two halves of a detector.** `A || B` where the fixture and the test name both promise `A && B`. It is satisfied when **either half** of the detector is alive, so half of the detector can be deleted undetected. **Detector: read the assertion, not the fixture — if it uses `||` over two quantities that both come from the same check, it cannot fail unless *both* are broken.**
+> **(dv) An assertion that is a disjunction of the two halves of a detector.** `A || B` where the fixture and the test name both promise `A && B`. It is satisfied when **either half** of the detector is alive, so half of the detector can be deleted undetected. **Detector: read the assertion, not the fixture — if it uses `||` over two quantities that both come from the same check, it cannot fail unless *both* are broken.**
+
+> **(dw) A test suite shipped in the same commit that broke the build.** `dial-ecology`'s "chore: add production files" commit added `src/{tradition,equilibrium,error}.rs` **and** `tests/integration.rs` (40 tests) in one go. The three new modules were never declared in `lib.rs`, and the test file was written against a pre-rename API — so the suite **was committed already broken and has never been green once**, while the CI went from 3 green runs to 5 consecutive failures. **Detector: read the Actions API's run history — if a repo's last green run predates the commit that added its tests, the tests were never green. Cross-check the tree at the last green SHA (`git/trees/{sha}?recursive=1`) for a `tests/` directory.**
 
 ---
 
