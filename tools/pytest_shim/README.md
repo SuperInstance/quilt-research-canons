@@ -82,3 +82,42 @@ scout were the shim's fault, not the repos'.
 | `quilt-egg` | 18 passed, 0 failed |
 | `quilt-multi-oracle` | 7 passed, 0 failed, 3 skipped |
 | `quilt-canon-witness` | (uses its own `run_tests.py`, not this) |
+
+## v2 — what changed (2026-10-25T0436Z)
+
+The previous shim could not resolve **class-scoped fixtures**, **generator fixtures**,
+**`setup_method`**, **`unittest.TestCase.setUp`**, or **`capsys`**, and it crashed
+(`AttributeError: 'NoneType' object has no attribute 'loader'`) when handed a
+**directory** instead of explicit files. A suite that uses any of those was reported
+as failing tests — a *shim* artefact mistaken for a *repo* defect.
+
+v2 adds:
+
+| capability | why it matters |
+|---|---|
+| class-scoped + module-scoped fixtures | the common `def store(self)` style |
+| **generator** fixtures (`yield`) | `tmp_store` in `spreader-tool` |
+| `setup_method` / `teardown_method` | pytest xunit-style setup |
+| `unittest.TestCase.setUp` / `tearDown` | `training-data-collector` is a `TestCase` |
+| `parametrize` | expands each case |
+| `capsys` | CLI tests; **must be closed after each test** or it swallows all stdout |
+| directory arguments | `run_tests.py tests/` now works |
+| project-root + `src/` on `sys.path` | flat-layout *and* src-layout repos both import |
+| `raises` / `approx` / `warns` / `skip` / `importorskip` / `fail` | as before |
+
+### Measured effect (same repos, same clones, old shim vs v2)
+
+| repo | old shim | **v2** | delta |
+|---|---|---|---|
+| `spreader-tool` | 278 passed, 59 failed | **337 passed, 0 failed** | **+59** |
+| `Baton` | 35 passed, 27 failed | **61 passed, 1 failed** | **+26** |
+| `edge-relay-agent` | 82 passed, 0 failed | **82 passed, 0 failed** | = |
+| `flux-vm-agent` | 56 passed, 0 failed | **56 passed, 0 failed** | = |
+| `training-data-collector` | 18 passed, 0 failed | **18 passed, 0 failed** | = |
+
+**+85 tests recovered, 0 regressions.** The one remaining `Baton` failure is a *real*
+repo defect, not a shim gap: `tests/test_lineage_bridge.py` imports `lineage_tracker`,
+which exists in neither the repo, nor `pyproject.toml`, nor PyPI.
+
+> **Before reporting "N tests fail", confirm the failures are the repo's.** Run the
+> suite through v2 first; a shim gap and a broken repo produce the same output shape.
