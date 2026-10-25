@@ -396,6 +396,28 @@ The jobs API agrees exactly — in the failing run, `check` and `test` **succeed
 
 ---
 
+## Fleet-wide: what the never-examined block actually looks like
+
+**2,526 own repos (56.4 %) have never been examined.** To characterise that block without re-deriving every tree, I pulled the CI workflow file for a **deterministic 1-in-4 sample of the never-examined pool (n = 632)** straight off `raw.githubusercontent` — which, unlike `api.github.com`, has **no rate limit**, so this ran while the API quota was exhausted.
+
+| CI shape | count | share |
+|---|---|---|
+| test step present, not obviously masked | 341 | **54.0 %** |
+| **no `ci.yml` at all** | 232 | **36.7 %** |
+| **class (a): `echo "No CI configured"`** | 27 | **4.3 %** |
+| workflow present, **no test step** | 17 | **2.7 %** |
+| test step **unfailable** (`\|\| true`, `continue-on-error: true`, `--passWithNoTests`) | 15 | **2.4 %** |
+
+**=> 43.8 % of the never-examined pool has a CI that cannot establish a passing test** (no workflow, no test step, or a step that cannot fail). Only **54.0 %** has a test step that is not obviously masked.
+
+This is a **lower bound**: the detector greps for the masking patterns but cannot tell whether GitHub ever *registered* the workflow (class (bn) — a valid `ci.yml` with 0 runs), nor whether the masked step is the only test step.
+
+Examples: `echo "No CI configured"` — `.github`, `businesslog-ai-pages`, `c-ternary`, `cache-guardian-c`, `captains-log`, `clawmatrix`. Unfailable test steps — `cocapn-colora`, `cocapn-traps`, `cocapn-pipeline`, `constraint-mcp-server`, `constraint-toolkit`, `deadband-protocol`.
+
+**This is the shape of the pool you are about to scout.** `conservation-sheaf-flow-c` (item 1) is not an outlier — it is one of the 4.3 % whose workflow exists and is green over an `echo`, while 36.7 % have no workflow at all and 2.4 % have a test step that cannot go red. **Rank by substance and then read the workflow before you trust a badge.**
+
+---
+
 ## Fleet-wide notes
 
 - **The brief's census figure is stale.** The brief says 5,113 repos / 52 pages. Re-derived independently: **5,308 / 54 pages**, with `unique_by(full_name) == rows_returned` **PASS** and `rows == public_repos` **PASS** (the `/users/SuperInstance` payload says `public_repos: 5308`). The fleet's own `quilt-atlas` independently agrees (`atlas.json`, generated 2026-10-25T04:39:16Z, `total_repos: 5308`, `pages_fetched: 54`, `pagination_cap_hit: false`). **Three independent derivations, one number.**
