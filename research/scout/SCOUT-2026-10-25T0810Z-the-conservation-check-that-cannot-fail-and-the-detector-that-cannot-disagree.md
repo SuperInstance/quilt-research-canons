@@ -16,6 +16,7 @@ Three never-examined libraries in this round ship a **verification function** wh
 | `conservation-sheaf-flow-c` | `csf_global_conservation_check` | returns `true` for **every** quantity vector (400/400 randomised) | **78/78 GREEN** |
 | `boltzmann-agent` | `DetailedBalance::verify` | `violations` can never be populated | **62/62 GREEN** |
 | `ctl-model` | `eval_eu` side-condition | EU silently becomes EF | **71/71 GREEN** |
+| `exocortex-mcp-ts` | MCP `notebook_train` params | `epochs`/`learningRate`/`k` accepted, then discarded | **89/89 GREEN** |
 
 This is a new class, distinct from the taxonomy's "unfailable test step" (g) — the *test step* here is real and can go red for other reasons. The step that cannot go red is the **assertion about the detector**.
 
@@ -204,6 +205,47 @@ M4 survives because **no test asserts a confidence *value*** — the suites chec
 ```
 The suite has **89** `it()`/`test()` blocks, with **zero** `.skip` / `.todo` / `.only` — so the badge is wrong by two. It errs in the safe direction (it *understates*), but it is a hand-typed literal, not a status. (Class: static badge. The README's other badges — TypeScript 5.4, MIT, zero-deps — are also literals.)
 
+### The repo's own catalogue of six defects — two fixed, four not
+
+`memory/JOURNAL.md` records a *"Production Hardening Pass — Round 4 (2026-07-11)"* whose stated scope was to *"read all source + tests (not just README), fix real bugs, tighten fake-green tests, and mark honestly any claimed feature that is a stub."* Six findings are catalogued. I checked each against the current tree:
+
+| catalogued defect (JOURNAL, 2026-07-11) | status today |
+|---|---|
+| `randn()` in `src/compute/stats.ts` is a broken Box-Muller transform (missing `cos`/`sin`), "only masked by a 'returns finite numbers' test" | **FIXED** — `stats.ts:132` now uses the proper polar form (`radius = sqrt(-2 ln u)`, `angle = 2π v`) with a spare cache |
+| REST routes ignore `ToolResult.isError` and `JSON.parse` an `"Error: ..."` string → confusing 500 | **FIXED** — `src/rest/routes.ts:50` now branches on `result.isError` |
+| **`notebook_train` accepts `epochs`/`learningRate`/`k` in its schema and the README but the tool handler never passes them to the kernels** | **STILL BROKEN** — see below |
+| `runMcpServer` has an async race across stdin `data` events and no guard around `handleRequest` throwing | shape remains (`src/mcp/server.ts:65` is still an `async` chunk handler with no serialisation guard) |
+| `kmeans.test.ts` "respects maxIterations" asserts `<= 3` for `maxIterations=2` — "too loose to catch a regression" | **STILL LOOSE** — `tests/kmeans.test.ts:86` is unchanged; the cap is 2 and the bound is 3, so the assertion can only fire if the implementation exceeds its own cap by more than one iteration |
+| "CI only runs `npm test --if-present` on main/master pushes; no lint, no build, no coverage of feature branches" | **STILL TRUE** — the shipped `.github/workflows/ci.yml` is exactly `npm ci` + `npm test --if-present`, node 18/20/22 |
+
+**The surviving one, proved behaviourally rather than by grep.** `src/mcp/tools.ts:53-62` publishes the MCP tool schema with `epochs`, `learningRate` and `k` as accepted properties. The handler at `src/mcp/tools.ts:171-178` reads `algorithm`, `data` and `labels` — and nothing else:
+
+```ts
+case 'notebook_train': {
+  const algorithm = args.algorithm as string;
+  const data = args.data as DataPoint[];
+  const labels = args.labels as string[] | undefined;
+  const kernel = getOrCreateKernel(algorithm);
+  const report = await kernel.train(data, labels);   // args.epochs / args.learningRate / args.k never read
+  return makeTextResult(JSON.stringify(report));
+}
+```
+
+Driving the real handler with wildly different parameter values (wall-clock `latencyMs` excluded):
+
+```
+logistic  epochs=1/lr=1e-4/k=2 : {"accuracy":1,"samples":5}
+          epochs=1000/lr=0.9/k=7 : {"accuracy":1,"samples":5}
+          (no params)           : {"accuracy":1,"samples":5}
+          => IDENTICAL (ignoring latencyMs)? YES
+micro-nn  epochs=1/lr=1e-4/k=2 : {"accuracy":1,"samples":5}
+          epochs=1000/lr=0.9/k=7 : {"accuracy":1,"samples":5}
+          (no params)           : {"accuracy":1,"samples":5}
+          => IDENTICAL (ignoring latencyMs)? YES
+```
+
+**The knobs do not merely go unused — they cannot be used.** The kernels' `train` signatures are `train(data, labels?)` (`src/compute/logistic.ts:17`, `src/compute/micro-nn.ts:33`, `src/compute/kmeans.ts:16`); the epoch counts are **hardcoded inside them** (`const epochs = 500;` at `logistic.ts:38`, `const epochs = 100;` at `micro-nn.ts:69`) and no kernel has a learning-rate parameter at all. So an MCP client that sends `{"epochs": 1000, "learningRate": 0.9}` gets **no error, no warning, and no effect** — the schema promises a control the implementation has nowhere to put. (Class (c), *parameter accepted and ignored* — and here the author had already written the bug report and did not close it.)
+
 **Why it matters:** a second, independent implementation of an MCP surface (after the Python one) is exactly the cross-implementation comparison the fleet has repeatedly needed and never had — see `plato-protocol-test`, whose matrix **names** C/Rust/Elixir/Zig and **starts none**. This one *starts* its server and *exercises* it over both transports.
 
 ---
@@ -248,6 +290,36 @@ duplicate groups: 0
 Among the **40 largest** by file count, **37 have a `src/` subtree and all 37 `src/` subtree SHAs are distinct**. The three largest are genuinely different shapes: `ternary-rom` (251 files — 31 PDK cell libraries under `cells/<process>/`), `ternary-fleet` (23), `ternary-wiki` (14).
 
 **Correction, logged because my instrument lied first.** My first probe reported *"3 repos share an identical `src/` subtree"*. That was **my bug**: `git rev-parse HEAD:src` **prints the unresolved argument to stdout and exits non-zero** when the path does not exist, so all three repos "matched" on the literal string `HEAD:src`. The validator was added only after the false positive. The corrected probe validates exit status *and* a 40-hex match; under it, the family is 372/372 distinct. **This is the second time in this round that an instrument failed confidently — a reminder to assert the detector's own success before believing its verdict.**
+
+---
+
+## 7. `dial-ecology` — a crate whose integration suite has never compiled (negative finding)
+
+**What it is.** A Rust crate modelling cultural traditions as competing species: Lotka-Volterra competition equations, niches, coexistence, extinction, succession, biodiversity — 10 source files, `src/lib.rs` + 9 modules, `tests/integration.rs`. It is one of the **highest-substance never-examined repos** (82 KB of code bytes), and its README is written with real care (it opens with the framing question and derives the equations).
+
+**The defect.** `src/lib.rs` declares only six modules:
+
+```
+pub mod biodiversity;  pub mod coexistence;  pub mod extinction;
+pub mod lotka_volterra;  pub mod niche;  pub mod succession;
+```
+
+**`src/tradition.rs` (61 lines), `src/equilibrium.rs` (200 lines) and `src/error.rs` (49 lines) are never declared** — 310 lines that are not compiled, not linted, not formatted and not tested. The crate root has no `mod` line for them, so they are orphans (class (bs): *a `src/*.rs` the crate root never declares*).
+
+**And the orphan is not the whole story — the declared API was renamed and nothing downstream was updated.** `src/succession.rs` (246 lines) defines `SuccessionStage`, `SuccessionResult`, `SuccessionParams`, `run_succession`, `StageClass` and `TraditionSpecies`. `tests/integration.rs` asks for `SuccessionModel`, `Tradition`, `SolverMethod`, `LotkaVolterraConfig`, `compute_from_traditions` and `biodiversity::compute` — **none of which exist under those names any more**.
+
+**Receipts:**
+
+```
+cargo build                 -> Finished (the library itself compiles)
+cargo check --all-features  -> Finished  (CI's `check` job is GREEN)
+cargo test --lib            -> ok. 68 passed; 0 failed          (the 68 unit tests are fine)
+cargo test --all-features   -> 78 errors                        (the integration suite does not compile)
+```
+
+There is **no `[features]` section** in `Cargo.toml`, so no feature combination rescues it. The **40 `#[test]` functions in `tests/integration.rs` have never executed** — not because they fail, but because the file cannot be compiled: every one of them references a type or function that a rename deleted.
+
+So `dial-ecology` is *not* a green badge over nothing — its CI is **red** (`test`, and therefore `clippy` and any dependent job). But it is the sharper version of the same disease the fleet has in abundance: **a rename refactor landed in `src/` and the crate root and the test file were never updated to follow.** This is what the top of the never-examined pool looks like at the boundary between "substantive" and "shippable" — and it is why ranking by code bytes alone would have promoted a crate that has never built.
 
 ---
 
