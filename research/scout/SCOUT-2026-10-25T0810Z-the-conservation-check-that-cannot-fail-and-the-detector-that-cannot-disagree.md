@@ -9,9 +9,9 @@
 
 ---
 
-## THE HEADLINE — a verifier tested only in its passing direction, three times, in two languages
+## THE HEADLINE — a verifier tested only in its passing direction, four times, in three languages
 
-Three never-examined libraries in this round ship a **verification function** whose job is to *detect* something. In all three, the suite exercises the detector **only on the case where it succeeds**. The failure branch is never asserted. **In all three, the detector can be disabled and the suite stays green.**
+Three never-examined libraries in this round ship a **verification function** whose job is to *detect* something. In all four, the suite exercises the detector **only on the case where it succeeds**. The failure branch is never asserted. **In all four, the detector can be disabled and the suite stays green.**
 
 | repo | detector | the detector disabled | suite after disabling it |
 |---|---|---|---|
