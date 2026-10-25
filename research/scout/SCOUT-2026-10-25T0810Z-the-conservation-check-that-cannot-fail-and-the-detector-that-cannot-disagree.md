@@ -102,6 +102,8 @@ with `q = {1,2,3,4}` on a path graph — a well-formed field. There is no test t
 ```
 There **is** a `make test` target and a 78-test suite — **78 passed, 0 failed** when I ran it by hand. **A real, passing test suite that its own CI has never executed**, and a workflow file that can never go red. (Class (a), unfalsifiable gate — the fleet's oldest defect, in a repo whose README is otherwise exemplary.)
 
+**The green badge is real, and it is an `echo`.** The Actions API shows **2 CI runs, both `success`** (2026-06-08, 2026-07-12). The workflow ran, it passed, and what it passed was the absence of a check — over a 78-test suite that has never been executed by CI.
+
 **Also worth copying:** the repo separates *judging* from *doing* — it reports `theorem_holds=false (EXPERIMENTAL — not a proven theorem)` in the test output rather than quietly dropping the case.
 
 ---
@@ -320,6 +322,75 @@ cargo test --all-features   -> 78 errors                        (the integration
 There is **no `[features]` section** in `Cargo.toml`, so no feature combination rescues it. The **40 `#[test]` functions in `tests/integration.rs` have never executed** — not because they fail, but because the file cannot be compiled: every one of them references a type or function that a rename deleted.
 
 So `dial-ecology` is *not* a green badge over nothing — its CI is **red** (`test`, and therefore `clippy` and any dependent job). But it is the sharper version of the same disease the fleet has in abundance: **a rename refactor landed in `src/` and the crate root and the test file were never updated to follow.** This is what the top of the never-examined pool looks like at the boundary between "substantive" and "shippable" — and it is why ranking by code bytes alone would have promoted a crate that has never built.
+
+### The provenance trail: the test suite was committed already broken
+
+The Actions API gives the exact history (`run_number` → conclusion → head sha → commit message):
+
+```
+  8 failure  2026-06-13  head=a521cbf4  '🔀 Merge main into master'      <- current HEAD
+  7 failure  2026-06-11  head=af9c5ac4  'update: Cargo.toml'
+  6 failure  2026-06-09  head=d71bcc9d  'chore: add production files (LICENSE, CONTRIBUTING, m…'
+  5 success  2026-06-09  head=c2c1e81c  'docs: world-class tutorial'
+  4 success  2026-06-09  head=5dd091c1  'docs: world-class documentation, tutorials, and exam'
+  3 success  2026-06-08  head=608e8222  'fix: clippy warnings, doc comments, rust-version for'
+  2 failure  2026-06-08  head=e31b9410  'Production maturity: CI, changelog, contributing, ex'
+  1 failure  2026-06-08  head=396d1144  'ci: add CI workflow'
+```
+
+The tree at the **last green commit `c2c1e81c`** (run 5) contained **20 files** and — critically — **no `tests/` directory at all**, and no `tradition.rs`, `equilibrium.rs` or `error.rs`:
+
+```
+files at c2c1e81c: 20
+  .github/workflows/ci.yml   src/biodiversity.rs   src/coexistence.rs   src/extinction.rs
+  .gitignore  AGENT.md  CHANGELOG.md  CONTRIBUTING.md  Cargo.lock  Cargo.toml  LICENSE
+  README.md  examples/advanced.rs  examples/basic.rs  examples/tutorial.rs  memory/JOURNAL.md
+  src/lib.rs  src/lotka_volterra.rs  src/niche.rs  src/succession.rs
+```
+
+The current HEAD has **18 files**: `examples/`, `AGENT.md`, `CHANGELOG.md` and `memory/JOURNAL.md` were removed, and **`src/equilibrium.rs`, `src/error.rs`, `src/tradition.rs` and `tests/integration.rs` were added**. So:
+
+> **The 40-test integration suite was added by the very commit that broke the build.** It has never been green, not even once. The "production files" commit shipped a test file that could not compile.
+
+**Which symbols the dead test needs, and where they actually live:**
+
+| symbol the test imports | where it really is |
+|---|---|
+| `Tradition` | `src/tradition.rs:9` — an **orphan module**, never declared in `lib.rs`, so the type does not exist to the crate |
+| `LotkaVolterraConfig` | `src/equilibrium.rs:2` — also an **orphan module** |
+| `SolverMethod` | **not present anywhere in the repo** |
+| `compute_from_traditions` | **not present anywhere in the repo** |
+| `SuccessionModel` | **not present anywhere** — `src/succession.rs` defines `SuccessionStage` / `SuccessionResult` / `SuccessionParams` / `run_succession` / `StageClass` |
+| `biodiversity::compute` | **not present** under that name |
+
+Four of the six imports never existed under those names at all, and the two that do exist live in modules the crate root never declares. **The integration suite and the orphan modules are the same mistake, committed together.**
+
+---
+
+## CI history, verified against the Actions API
+
+The API quota reset mid-round, so the run history for every repo above is now **measured**, not inferred. Grouping by workflow **name** (not by conclusion):
+
+| repo | runs | by workflow / conclusion | what it means |
+|---|---|---|---|
+| `conservation-sheaf-flow-c` | 2 | **CI × 2 success** | the green is the `echo "No CI configured"` — it has run, and it has passed, twice |
+| `ctl-model` | 2 | CI × 2 success | real CI over a real suite |
+| `boltzmann-agent` | 1 | CI × 1 success | real |
+| `exocortex-mcp-ts` | 4 | CI × 4 success | real (node 18/20/22 matrix) |
+| `dial-ecology` | 8 | **CI × 5 failure, 3 success** | newest run is a **failure**; red since run 6 |
+| `gpu-bench-lab` | 2 | **CI × 1 failure, 1 success** | newest is a failure — but on `fmt`/`clippy`, not on the science |
+
+**`gpu-bench-lab` is red for cosmetic reasons only, and I reproduced both failures locally:**
+
+```
+cargo fmt --all -- --check          EXIT=1   (296 diff lines)
+cargo clippy --all-features -- -D warnings   EXIT=101
+   error: unnecessary parentheses around closure body
+   error: casting to the same type is unnecessary (`i8` -> `i8`)
+   error: manually reimplementing `div_ceil`
+```
+
+The jobs API agrees exactly — in the failing run, `check` and `test` **succeeded** and only `fmt` and `clippy` failed. So the badge is red while `cargo test --all-features` is green. Worth stating plainly: **a red badge is not a broken repo, and a green badge is not a working one** — `conservation-sheaf-flow-c` is the proof of the second half.
 
 ---
 
