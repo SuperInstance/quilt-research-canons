@@ -1,6 +1,6 @@
 # SCOUT 2026-10-25T0130Z — the borrowed crate name, the gate that cannot fail, and the 372-crate ternary department
 
-**Scope:** the previously-unexamined pool of the SuperInstance fleet — **2,643 own repos**, of which **1,060** had their real git tree pulled and measured, **169** had their Python suite executed, **31** had their crates.io badge targets resolved against the live registry, and **12** were examined file-by-file with mutation receipts. Verified by execution where the toolchain allowed, and by inspection where it did not.
+**Scope:** the previously-unexamined pool of the SuperInstance fleet — **2,643 own repos**, of which **1,060** had their real git tree pulled and measured, **169** had their Python suite executed, **7** had their Rust suite executed in clean clones, **31** had their crates.io badge targets resolved against the live registry, and **14** were read file-by-file — one of them (`flux-visual-editor`) with a full mutation battery against its real CI workflow. Verified by execution where the toolchain allowed, and by inspection where it did not.
 
 **Census re-derived (the brief's numbers are stale):** `GET /users/SuperInstance/repos?per_page=100&sort=full_name&direction=asc`, paged to exhaustion.
 **54 pages, 5,308 public repos, 0 page overlaps, 0 duplicate `full_name`** (asserted `unique_by(.full_name) == rows` on every page; the short final page held 8 rows).
@@ -189,7 +189,22 @@ Every `lau-<topic>` crate in the mathematics department has a twin under a diffe
 
 Both halves carry their **own** `repository =` URL and their own `version = "0.1.0"`. They are two publishable crates with the same code.
 
-`algtop-rs` is the interesting case because the divergence is meaningful: `lau-algebraic-topology` is the **superset** — its `network.rs` adds 130 lines of "agent network topology analysis" and its description says *"Fundamental algebraic topology"* against `algtop-rs`'s *"Algebraic topology in Rust"*. The `lau-` twin is the newer and better one, and it is the one published; `algtop-rs` is a stale snapshot.
+### Executed: the twins run the same suite, twice, under two incompatible APIs
+
+A Rust toolchain was installed under `/tmp` (the sandbox `$HOME` is a full NAS mount, so `HOME`/`CARGO_HOME`/`RUSTUP_HOME` must be redirected; `rustc 1.99.1`, `cargo 1.99.1`) and the suites were run in clean `--depth 1` clones:
+
+```
+algtop-rs               | rc=0 | 76 passed; 0 failed
+lau-algebraic-topology  | rc=0 | 76 passed; 0 failed
+```
+
+**The same 76 tests, green in both.** And the one file that differs — `network.rs`, the only file the byte-diff flagged — is **the same 431 lines with the vocabulary swapped from "node" to "agent"**. Undoing the rename set (`Node`→`Agent`, `Network`→`AgentNetwork`, `add_node`→`add_agent`, `is_connected`→`is_connected_when_complete`, `num_nodes`→`num_agents`), the crate name, and the doc comments makes the two files **byte-identical**:
+
+```
+network.rs IDENTICAL after undoing the rename set + crate name + doc comments: True
+```
+
+So `algtop-rs` is **not** a stale subset of `lau-algebraic-topology`. The two are the same crate, published under two names, with two public type names changed — `Network`/`Node` versus `AgentNetwork`/`Agent`. The *algorithms* are identical; the *APIs are not interchangeable*. The fleet cannot simply deprecate one and point the other at it, and a downstream user who switches crates must rewrite every `Node` reference. Two green suites, one algorithm, zero deprecation path.
 
 **crates.io confirms one of each pair is published and the other is not** — and which one is arbitrary, not principled:
 
@@ -282,15 +297,15 @@ The `.pyc` filename pins the tree to a **specific pytest 9.0.3 run on CPython 3.
 
 The brief asked for gems as much as for defects. These are the ones worth a reader's time, all previously unexamined, all with real code and (mostly) real CI.
 
-**`lau-git-render`** — *"THE rendering layer. Same agent state, 8 output formats. One render call."* 86 KB of code, **96 `#[test]`** functions, CI runs `cargo check` / `cargo test` / `cargo clippy -- -D warnings`. Nine source files. This is the fleet's agent-state renderer, and the 8-format single-call discipline is exactly the kind of thing the rest of the fleet reinvents badly.
+**`lau-git-render`** — *"THE rendering layer. Same agent state, 8 output formats. One render call."* 86 KB of code, **96 `#[test]`**, **executed here: 96 passed / 0 failed**, CI runs `cargo check` / `cargo test` / `cargo clippy -- -D warnings`. Nine source files. This is the fleet's agent-state renderer, and the 8-format single-call discipline is exactly the kind of thing the rest of the fleet reinvents badly.
 
-**`lau-memory-tiles`** — 71 `#[test]`, same CI shape. A typed, timestamped, importance-weighted memory substrate for agents: 9 tile categories (Observation, Action, Thought, Decision, Dream, Error, Signal, Response, Custom), capacity-bounded store with importance-decay and LRU-like eviction, reinforcement on access, a weighted tile-connection graph with BFS strongest-path, a fluent query builder, and a **"dream phase" consolidator** that clusters similar tiles into higher-order Dream tiles and decays the sources. Pure Rust, `serde` only. The decay/reinforce dynamics are a real, stated model of memory — not a metaphor.
+**`lau-memory-tiles`** — 71 `#[test]`, **executed here: 71 passed / 0 failed**, same CI shape. A typed, timestamped, importance-weighted memory substrate for agents: 9 tile categories (Observation, Action, Thought, Decision, Dream, Error, Signal, Response, Custom), capacity-bounded store with importance-decay and LRU-like eviction, reinforcement on access, a weighted tile-connection graph with BFS strongest-path, a fluent query builder, and a **"dream phase" consolidator** that clusters similar tiles into higher-order Dream tiles and decays the sources. Pure Rust, `serde` only. The decay/reinforce dynamics are a real, stated model of memory — not a metaphor.
 
-**`spacedrive-fleet`** — *"Your NAS is full. You find out when the backup fails at 3 AM. This crate prevents that."* 41 `#[test]`. Its CI is the most complete in this batch: **five jobs** — `cargo check --locked`, `cargo fmt --check`, `cargo clippy -- -D warnings`, `cargo test`, and `cargo doc --no-deps` with `RUSTDOCFLAGS: -D warnings` — plus `RUSTFLAGS: -D warnings` globally. It is the only repo here that locks its dependencies and the only one that gates its own docs. Storage tier management for Spacedrive: volume-utilisation monitoring across tiers, escalation before fill, deadband, handoff, tiering, and cold-data migration. It ships `examples/nas_fill_scenario.rs` — a *NAS-fill scenario* example. (This sandbox's own `/workspace` is a NAS at 100%, so the failure mode is not hypothetical.)
+**`spacedrive-fleet`** — *"Your NAS is full. You find out when the backup fails at 3 AM. This crate prevents that."* **executed here: 55 passed / 0 failed** (18 unit + 37 integration). Its CI is the most complete in this batch: **five jobs** — `cargo check --locked`, `cargo fmt --check`, `cargo clippy -- -D warnings`, `cargo test`, and `cargo doc --no-deps` with `RUSTDOCFLAGS: -D warnings` — plus `RUSTFLAGS: -D warnings` globally. It is the only repo here that locks its dependencies and the only one that gates its own docs. Storage tier management for Spacedrive: volume-utilisation monitoring across tiers, escalation before fill, deadband, handoff, tiering, and cold-data migration. It ships `examples/nas_fill_scenario.rs` — a *NAS-fill scenario* example. (This sandbox's own `/workspace` is a NAS at 100%, so the failure mode is not hypothetical.)
 
-**`db-internals`** — 102 KB, **72 `#[test]`**, CI green-shaped. A Rust database-internals crate with its own tiering/escalation modules.
+**`db-internals`** — 102 KB, **72 `#[test]`, executed here: 72 passed / 0 failed**, CI green-shaped. A Rust database-internals crate — B-trees, hash indexes, relational algebra and normal forms, query optimisation, transactions, concurrency control and recovery — with inline `mod tests` in every module.
 
-**`information-geometry`** — 90 KB, **83 `#[test]`**, CI runs `cargo check` / `cargo test` / `cargo clippy -- -D warnings`. Fisher information metric (analytic + empirical), 6 exponential-family distributions with sufficient statistics and Hessians, Christoffel symbols, RK4 geodesics, exponential map, parallel transport, natural-gradient descent, KL divergence, Fisher-Rao distance, and Amari's α-connections (e- and m-connection duality). **Its README badge claims `tests-83-green` and the actual count is 83 — verified honest.**
+**`information-geometry`** — 90 KB, **83 `#[test]`, executed here: 83 passed / 0 failed**, CI runs `cargo check` / `cargo test` / `cargo clippy -- -D warnings`. Fisher information metric (analytic + empirical), 6 exponential-family distributions with sufficient statistics and Hessians, Christoffel symbols, RK4 geodesics, exponential map, parallel transport, natural-gradient descent, KL divergence, Fisher-Rao distance, and Amari's α-connections (e- and m-connection duality). **Its README badge claims `tests-83-green`; the attribute count is 83 **and the suite executes 83 passed / 0 failed** — verified honest, twice over.**
 
 **`flux-cross-assembler`** — a dual-target FLUX assembler: the same `.fluxasm` source compiles to cloud (4-byte fixed) or edge (variable-width 1–3 byte) bytecode, with auto-detecting disassembly and confidence fusion for `CADD`/`CSUB`/`CMUL`/`CDIV`. I ran its self-test: **14/14 pass, exit 0**, including the measured density claim — *"Edge encoding is ~56% the size of cloud"* — asserted and met at **56.2%**.
 
@@ -306,7 +321,7 @@ Rule 6 says report negative findings as findings. These are the ones that matter
 
 **`SuperInstance/ecc-rs` is not squatting.** Its Cargo *package* is `ecc-codes`. The fleet never published `ecc-rs`; `eunomia-bpf` did, in 2023. The defect is a borrowed badge target, not a name grab.
 
-**Most of the Python "failures" I first measured were my own harness's fault, and I did not report them.** I executed 137 Python repos' suites with the canons repo's `tools/pytest_shim` (PyPI is firewalled here, so real `pytest` is unavailable). The first pass showed 28 repos with failing assertions. On inspection:
+**Most of the Python "failures" I first measured were my own harness's fault, and I did not report them.** I executed 169 Python repos' suites with the canons repo's `tools/pytest_shim` (PyPI is firewalled here, so real `pytest` is unavailable). The first pass showed 28 repos with failing assertions. On inspection:
 
 - **38 repos** were blocked by missing third-party packages (`requests`, `yaml`, `rich`, `networkx`) — environment, not defect.
 - **2 repos** hit shim limitations (`monkeypatch.setattr` with a `Path` name; `unittest`-style `setUp` on plain classes).
@@ -315,7 +330,19 @@ Rule 6 says report negative findings as findings. These are the ones that matter
 
 **None of these are repo findings and none are in this report.** A failure caused by the harness is not a defect in the thing under test. I did not find a Python repo in this batch whose failure I could attribute to the repo itself with confidence — and I am reporting that as a *negative* rather than manufacturing one.
 
-**What I could not execute:** Rust (`cargo`/`rustc` absent), CUDA, Mojo, Zig, Fortran, Chapel. For Rust crates I counted `#[test]` attributes and read the CI bodies; I am **not** claiming any Rust suite passes. All mutation receipts in this report are from `node` and `python3`, which I ran.
+**What I executed:** 169 Python suites (via the canons repo's `tools/pytest_shim` — PyPI is firewalled here, so real `pytest` is unavailable) and **7 Rust suites** in clean `--depth 1` clones with a toolchain installed under `/tmp` (`rustc 1.99.1`, `cargo 1.99.1`; `HOME`/`CARGO_HOME`/`RUSTUP_HOME` redirected off the full NAS mount, or `rustup` dies with `Disk quota exceeded`).
+
+| Rust crate | executed result |
+|---|---|
+| `information-geometry` | **83 passed, 0 failed** |
+| `lau-git-render` | **96 passed, 0 failed** |
+| `db-internals` | **72 passed, 0 failed** |
+| `lau-memory-tiles` | **71 passed, 0 failed** |
+| `algtop-rs` | **76 passed, 0 failed** |
+| `lau-algebraic-topology` | **76 passed, 0 failed** |
+| `spacedrive-fleet` | **55 passed, 0 failed** (18 unit + 37 integration) |
+
+**What I could not execute:** CUDA, Mojo, Zig, Fortran, Chapel — and no Rust crate in this batch failed. All mutation receipts in this report are from `node` and `python3`, which I ran; the Rust results are suite runs, not mutations.
 
 ---
 
@@ -327,7 +354,7 @@ Rule 6 says report negative findings as findings. These are the ones that matter
 
 **Unexamined set.** 148 prior scout files + every `.md` under `research/` (3,839,250 chars) token-matched against every repo name. 1,933 matched / 3,375 unexamined. Every final candidate re-checked individually for prior mentions (all 0).
 
-**Substance.** Trees via `codeload.github.com/SuperInstance/<repo>/tar.gz/refs/heads/{main,master}` — **no API rate limit consumed** (1,057 trees; API calls stayed under 1,400 of 5,000). Branch must be probed: `plato-music-sync` has **no `main`** (404) and lives on `master`. One repo (`sonar-vision-landing`) failed to fetch on either branch.
+**Substance.** Trees via `codeload.github.com/SuperInstance/<repo>/tar.gz/refs/heads/{main,master}` — **no API rate limit consumed** (1,060 trees; API calls stayed under 1,400 of 5,000). Branch must be probed: `plato-music-sync` has **no `main`** (404) and lives on `master`. One repo (`sonar-vision-landing`) failed to fetch on either branch.
 
 **Mutations.** `index.html` pristine md5 `64b6cd7c5e537c36159bf3a6e1a3fd58`; every mutation applied to a copy, restored, and re-verified byte-identical by md5; the full CI (both jobs, all 5 `run:` steps) re-simulated with `bash -e` after each.
 
@@ -336,8 +363,9 @@ Rule 6 says report negative findings as findings. These are the ones that matter
 1. **Rust tests are INLINE. Counting test *files* reports 0 for a crate with 83 tests.** My first pass classified `information-geometry` as "0 tests, badge claims 83 — badge lie". Wrong: `src/lib.rs` carries `#[cfg(test)] mod tests` with all 83 `#[test]` attributes. Any Rust-scouting metric must count `#[test]` attributes, not test paths. This single error would have produced a false headline finding.
 2. **`bash -e` does not abort on a failing command that is not the last element of an `&&` list.** This is the mechanism behind finding 2, and it is a general trap: a step of N `grep -q X && echo` lines has the exit status of the **last** grep only. I initially mis-simulated a CI because of it and caught it by checking that my simulator actually propagated a failure to its exit code.
 3. **A simulator that does not propagate failure to its exit code reports every mutation as GREEN.** My first mutation battery said "GREEN" for a mutation I had already watched go red. Always assert `baseline exit == 0` and `mutated exit != 0` on the same simulator before trusting a battery.
-4. **Normalising by the crate name to find duplicates creates false positives.** `test2` — a repo I believed was a stray byte-identical clone of `plato-music-sync` — turned out to be **my own download artifact** (`tb/test2.tgz` was my early curl of that repo's `master` branch), absent from the census. Always re-check a candidate against the census before reporting it.
-5. **`codeload` tarballs bypass API rate limits** — the cheapest way to get true tree bytes at fleet scale. API `size` is history and inflates by up to 68x on this fleet.
+4. **Counting `#[test]` undercounts async suites: `#[tokio::test]` is not `#[test]`.** `spacedrive-fleet` greps as 41 `#[test]` but executes **55** — the other 14 are `#[tokio::test]`. Any Rust test-count metric must count both attributes, or be labelled as "synchronous `#[test]` attributes".
+5. **Normalising by the crate name to find duplicates creates false positives.** `test2` — a repo I believed was a stray byte-identical clone of `plato-music-sync` — turned out to be **my own download artifact** (`tb/test2.tgz` was my early curl of that repo's `master` branch), absent from the census. Always re-check a candidate against the census before reporting it.
+6. **`codeload` tarballs bypass API rate limits** — the cheapest way to get true tree bytes at fleet scale. API `size` is history and inflates by up to 68x on this fleet.
 
 ---
 
@@ -352,4 +380,4 @@ The failure mode is not fabrication. It is **mis-aimed gates and borrowed names*
 
 ---
 
-*Scout run 2026-10-25T0130Z. 5,308 repos censused across 54 pages (0 page overlaps); 2,643 own repos unexamined; **1,060 git trees pulled and measured**; **169 Python suites executed**; **68 badge targets resolved against the live crates.io registry** across 51 repos; **523 package-metadata URLs audited**; **16 near-duplicate crate pairs diffed at byte level**; **8 mutations applied to a real CI workflow** (3 positive controls, 5 aimed at the product). Every claim above carries a command that produces it.*
+*Scout run 2026-10-25T0130Z. 5,308 repos censused across 54 pages (0 page overlaps); 2,643 own repos unexamined; **1,060 git trees pulled and measured**; **169 Python suites + 7 Rust suites executed**; **68 badge targets resolved against the live crates.io registry** across 51 repos; **523 package-metadata URLs audited**; **16 near-duplicate crate pairs diffed at byte level**; **8 mutations applied to a real CI workflow** (3 positive controls, 5 aimed at the product). Every claim above carries a command that produces it.*
